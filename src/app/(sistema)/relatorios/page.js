@@ -99,23 +99,23 @@ export default function RelatoriosPage() {
  
   return (
     <div className={styles.page}>
-      {/* Topbar */}
+      {/* BARRA SUPERIOR */}
       <header className={styles.topbar}>
-        <span className={styles.breadcrumb}>
-          Hotel Grand Plaza <span className={styles.sep}>/</span>{" "}
-          <strong>Relatórios</strong>
-        </span>
+        <span className={styles.topbarTitle}>Hotel Grand Plaza / Central de Reservas</span>
         <div className={styles.topbarUser}>
-          <span>Admin Panel</span>
+          <span>Admin Painel</span>
           <div className={styles.avatar} />
         </div>
       </header>
  
-      <div className={styles.content}>
-        {/* Cabeçalho */}
-        <h1 className={styles.title}>Relatórios</h1>
-        <p className={styles.subtitle}>Analise o desempenho operacional e financeiro do hotel.</p>
+      {/* CABEÇALHO */}
+      <section className={styles.banner}>
+        <span className={styles.bannerBreadcrumb}>Relatórios &gt; Visão Geral</span>
+        <h1 className={styles.bannerTitle}>Relatórios</h1>
+        <p className={styles.bannerText}>Analise o desempenho operacional e financeiro do hotel.</p>
+      </section>
  
+      <div className={styles.content}>
         {/* Gráfico + categorias */}
         <div className={styles.topGrid}>
           <div className={styles.panel}>

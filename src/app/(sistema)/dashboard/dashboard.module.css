@@ -2,9 +2,81 @@
   box-sizing: border-box;
   width: 100%;
   min-height: 100%;
-  background: #eef2f6;
-  color: #273447;
-  font-family: Arial, Helvetica, sans-serif;
+  background: #eceef3;
+  color: #1f232b;
+}
+ 
+/* =========================
+   BARRA SUPERIOR
+========================= */
+ 
+.topbar {
+  height: 52px;
+  flex-shrink: 0;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 36px;
+  border-bottom: 1px solid #e3e5ea;
+}
+ 
+.topbarTitle {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #3a3f48;
+}
+ 
+.topbarUser {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12.5px;
+  color: #3a3f48;
+}
+ 
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 38%, #e0b48f 0 28%, #3a2418 30% 100%);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px #d8d8d8;
+}
+ 
+/* =========================
+   CABEÇALHO (BANNER)
+========================= */
+ 
+.dashboard .banner {
+  display: block;
+  background-color: #8a7160;
+  background-image: linear-gradient(90deg, #8a7160 0%, #a48b76 100%);
+  color: #ffffff;
+  padding: 28px 36px 30px;
+}
+ 
+.dashboard .banner .breadcrumb,
+.dashboard .banner .bannerTitle,
+.dashboard .banner .bannerText {
+  color: #ffffff;
+}
+ 
+.breadcrumb {
+  font-size: 10.5px;
+  opacity: 0.9;
+}
+ 
+.bannerTitle {
+  margin: 4px 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+ 
+.bannerText {
+  margin: 0;
+  font-size: 12.5px;
+  opacity: 0.9;
 }
  
 /* =========================
@@ -14,61 +86,7 @@
 .mainContent {
   box-sizing: border-box;
   width: 100%;
-  padding: 20px 16px;
-  background: #eef2f6;
-}
- 
-/* =========================
-   TOPO
-========================= */
- 
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 9px;
-}
- 
-.topbar h1 {
-  margin: 0;
-  color: #273447;
-  font-size: 15px;
-  font-weight: 700;
-}
- 
-.topbar p {
-  margin: 2px 0 0;
-  color: #8b96a3;
-  font-size: 7px;
-}
- 
-.userProfile {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 7px 4px 4px;
-  border: 1px solid #dde3e8;
-  border-radius: 15px;
-  background: white;
-  color: #687587;
-  font-size: 6px;
-}
- 
-.userAvatar {
-  width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: #aa8870;
-  color: white;
-  font-size: 7px;
-}
- 
-.chevron {
-  color: #8d98a4;
-  font-size: 8px;
+  padding: 36px 36px 48px;
 }
  
 /* =========================
@@ -76,9 +94,10 @@
 ========================= */
  
 .sectionTitle {
-  margin: 0 0 5px;
-  color: #536173;
-  font-size: 8px;
+  margin: 0 0 12px;
+  color: #1f232b;
+  font-size: 15px;
+  font-weight: 600;
 }
  
 /* =========================
@@ -88,16 +107,15 @@
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 8px;
-  margin-bottom: 10px;
+  gap: 16px;
+  margin-bottom: 22px;
 }
  
 .statCard {
   box-sizing: border-box;
-  min-height: 61px;
-  padding: 8px;
-  border: 1px solid #dfe5ea;
-  border-radius: 6px;
+  padding: 18px;
+  border: 1px solid #e3e5ea;
+  border-radius: 8px;
   background: white;
 }
  
@@ -105,17 +123,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 7px;
+  margin-bottom: 14px;
 }
  
 .statIcon {
-  width: 17px;
-  height: 17px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
-  font-size: 8px;
+  border-radius: 6px;
+  font-size: 15px;
 }
  
 .blue { background: #eaf4ff; color: #3b8ff3; }
@@ -126,9 +144,10 @@
 .positive,
 .negative,
 .normal {
-  padding: 2px 4px;
-  border-radius: 3px;
-  font-size: 5px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 500;
 }
  
 .positive { background: #e7f7ef; color: #35a973; }
@@ -137,15 +156,19 @@
  
 .statLabel {
   display: block;
-  color: #7c8795;
-  font-size: 6px;
+  color: #3a3f48;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
 }
  
 .statValue {
   display: block;
-  margin-top: 2px;
-  color: #273447;
-  font-size: 12px;
+  margin-top: 6px;
+  color: #1f232b;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1;
 }
  
 /* =========================
@@ -155,14 +178,14 @@
 .middleGrid {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 16px;
+  margin-bottom: 22px;
 }
  
 .bottomGrid {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 10px;
+  gap: 16px;
 }
  
 /* =========================
@@ -172,9 +195,9 @@
 .panel {
   box-sizing: border-box;
   min-width: 0;
-  padding: 10px;
-  border: 1px solid #dfe5ea;
-  border-radius: 7px;
+  padding: 18px;
+  border: 1px solid #e3e5ea;
+  border-radius: 8px;
   background: white;
 }
  
@@ -182,27 +205,29 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
 }
  
 .panelHeader h2 {
   margin: 0;
-  color: #394658;
-  font-size: 8px;
+  color: #1f232b;
+  font-size: 15px;
+  font-weight: 600;
 }
  
 .panelHeader p {
-  margin: 3px 0 0;
-  color: #9aa4b0;
-  font-size: 5.5px;
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 11.5px;
 }
  
 .period {
-  padding: 4px 6px;
-  border-radius: 4px;
+  padding: 5px 10px;
+  border-radius: 5px;
   background: #edf6ff;
   color: #398bea;
-  font-size: 5px;
+  font-size: 10.5px;
+  font-weight: 500;
 }
  
 /* =========================
@@ -211,25 +236,25 @@
  
 .chart {
   position: relative;
-  height: 105px;
-  padding-left: 26px;
+  height: 220px;
+  padding-left: 40px;
 }
  
 .chartGrid {
   position: absolute;
-  top: 5px;
+  top: 10px;
   left: 0;
-  bottom: 18px;
+  bottom: 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  color: #a0aab5;
-  font-size: 5px;
+  color: #9aa1ad;
+  font-size: 10.5px;
 }
  
 .chartArea {
   position: relative;
-  height: 80px;
+  height: 170px;
 }
  
 .chartArea::before,
@@ -247,7 +272,7 @@
 .chartSvg {
   display: block;
   width: 100%;
-  height: 80px;
+  height: 170px;
 }
  
 .chartValues {
@@ -255,9 +280,10 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 65px;
+  height: 140px;
   color: #3989e9;
-  font-size: 5px;
+  font-size: 10.5px;
+  font-weight: 500;
 }
  
 .chartValues span {
@@ -268,9 +294,9 @@
 .days {
   display: flex;
   justify-content: space-between;
-  margin-top: 2px;
-  color: #8d98a5;
-  font-size: 5px;
+  margin-top: 8px;
+  color: #6b7280;
+  font-size: 10.5px;
 }
  
 /* =========================
@@ -280,33 +306,33 @@
 .roomStatus {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 14px;
 }
  
 .statusRow {
   display: grid;
-  grid-template-columns: 72px 1fr 15px;
+  grid-template-columns: 100px 1fr 26px;
   align-items: center;
-  gap: 6px;
-  color: #6d7887;
-  font-size: 6px;
+  gap: 10px;
+  color: #3a3f48;
+  font-size: 12px;
 }
  
 .statusRow span {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
 }
  
 .statusRow strong {
-  color: #536071;
-  font-size: 6px;
+  color: #1f232b;
+  font-size: 12px;
   text-align: right;
 }
  
 .statusRow i {
-  width: 4px;
-  height: 4px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
 }
  
@@ -317,7 +343,7 @@
 .dotGray { background: #9da6b1; }
  
 .statusBar {
-  height: 4px;
+  height: 7px;
   overflow: hidden;
   border-radius: 4px;
   background: #e5e9ed;
@@ -337,16 +363,17 @@
 .totalRooms {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
-  padding-top: 7px;
+  align-items: center;
+  margin-top: 18px;
+  padding-top: 14px;
   border-top: 1px solid #edf0f3;
-  color: #9aa4b0;
-  font-size: 5.5px;
+  color: #6b7280;
+  font-size: 11.5px;
 }
  
 .totalRooms strong {
-  color: #526071;
-  font-size: 8px;
+  color: #1f232b;
+  font-size: 16px;
 }
  
 /* =========================
@@ -357,7 +384,9 @@
   border: none;
   background: transparent;
   color: #398bea;
-  font-size: 5.5px;
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
   cursor: pointer;
 }
  
@@ -366,21 +395,22 @@
   display: grid;
   grid-template-columns: 1.7fr 1fr 1fr 1fr .9fr;
   align-items: center;
-  gap: 7px;
+  gap: 12px;
 }
  
 .tableHeader {
-  padding-bottom: 6px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #edf0f3;
-  color: #8d98a5;
-  font-size: 5px;
+  color: #6b7280;
+  font-size: 10.5px;
+  font-weight: 500;
 }
  
 .tableRow {
-  min-height: 27px;
+  min-height: 52px;
   border-bottom: 1px solid #f0f2f5;
-  color: #657284;
-  font-size: 5.5px;
+  color: #3a3f48;
+  font-size: 11.5px;
 }
  
 .tableRow:last-child {
@@ -389,24 +419,24 @@
  
 .guest strong {
   display: block;
-  color: #455265;
-  font-size: 6px;
+  color: #1f232b;
+  font-size: 12px;
 }
  
 .guest small {
   display: block;
-  margin-top: 2px;
-  color: #a1aab5;
-  font-size: 4.5px;
+  margin-top: 3px;
+  color: #9aa1ad;
+  font-size: 10px;
 }
  
 .confirmed,
 .waiting {
   display: inline-block;
-  padding: 3px 5px;
+  padding: 4px 9px;
   border-radius: 4px;
-  font-size: 4.5px;
-  font-weight: 400;
+  font-size: 10px;
+  font-weight: 500;
 }
  
 .confirmed { background: #e5f8ef; color: #2eb578; }
@@ -419,28 +449,28 @@
 .alerts {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 12px;
 }
  
 .alert {
   display: flex;
-  gap: 8px;
-  padding: 8px;
-  border-radius: 6px;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 8px;
 }
  
 .warning { background: #fff2c9; }
 .info { background: #edf7ff; }
  
 .alertIcon {
-  width: 15px;
-  height: 15px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   border-radius: 50%;
-  font-size: 7px;
+  font-size: 13px;
   font-weight: 700;
 }
  
@@ -449,27 +479,27 @@
  
 .alert strong {
   display: block;
-  color: #596373;
-  font-size: 6px;
+  color: #1f232b;
+  font-size: 12px;
   line-height: 1.4;
 }
  
 .alert span,
 .alert small {
   display: block;
-  color: #8a94a0;
-  font-size: 5px;
+  color: #6b7280;
+  font-size: 10.5px;
 }
  
 .alert small {
-  margin-top: 2px;
+  margin-top: 3px;
 }
  
 /* =========================
    RESPONSIVO
 ========================= */
  
-@media (max-width: 850px) {
+@media (max-width: 1100px) {
   .statsGrid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -484,14 +514,14 @@
   .statsGrid {
     grid-template-columns: repeat(2, 1fr);
   }
+ 
+  .tableWrapper {
+    overflow-x: auto;
+  }
 }
  
 @media (max-width: 450px) {
   .statsGrid {
     grid-template-columns: 1fr;
-  }
- 
-  .userProfile {
-    display: none;
   }
 }

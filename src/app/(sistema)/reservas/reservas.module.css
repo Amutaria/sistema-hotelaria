@@ -1,388 +1,395 @@
 .page {
-  min-height: 100vh;
-  background: #eef3f8;
-  color: #263342;
-  font-family: Arial, Helvetica, sans-serif;
-  padding: 0 18px 40px;
   box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
+  background: #eceef3;
+  color: #1f232b;
 }
-
+ 
 /* =========================
-   CABEÇALHO
+   BARRA SUPERIOR
 ========================= */
-
-.header {
-  min-height: 66px;
+ 
+.topbar {
+  height: 52px;
+  flex-shrink: 0;
+  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 2px 10px;
-  box-sizing: border-box;
+  padding: 0 36px;
+  border-bottom: 1px solid #e3e5ea;
 }
-
-.headerLeft {
-  display: flex;
-  flex-direction: column;
+ 
+.topbarTitle {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #3a3f48;
 }
-
-.breadcrumb {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  font-size: 9px;
-  color: #8190a0;
-  margin-bottom: 5px;
-}
-
-.breadcrumb strong {
-  color: #8b6e5b;
-}
-
-.header h1 {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 700;
-  color: #273544;
-}
-
-.header p {
-  margin: 4px 0 0;
-  font-size: 10px;
-  color: #8794a2;
-}
-
-.userArea {
+ 
+.topbarUser {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: white;
-  border: 1px solid #e1e6eb;
-  border-radius: 20px;
-  padding: 4px 7px 4px 13px;
-  color: #6d7884;
-  font-size: 9px;
+  gap: 14px;
+  font-size: 12.5px;
+  color: #3a3f48;
 }
-
+ 
 .avatar {
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background: #967965;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
+  background: radial-gradient(circle at 50% 38%, #e0b48f 0 28%, #3a2418 30% 100%);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px #d8d8d8;
 }
-
+ 
+/* =========================
+   CABEÇALHO MARROM
+========================= */
+ 
+.page .banner {
+  display: block;
+  background-color: #8a7160;
+  background-image: linear-gradient(90deg, #8a7160 0%, #a48b76 100%);
+  color: #ffffff;
+  padding: 28px 36px 30px;
+}
+ 
+.page .banner .breadcrumb,
+.page .banner .bannerTitle,
+.page .banner .bannerText {
+  color: #ffffff;
+}
+ 
+.breadcrumb {
+  font-size: 10.5px;
+  opacity: 0.9;
+}
+ 
+.bannerTitle {
+  margin: 4px 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+ 
+.bannerText {
+  margin: 0;
+  font-size: 12.5px;
+  opacity: 0.9;
+}
+ 
+/* =========================
+   CONTEÚDO
+========================= */
+ 
+.content {
+  padding: 36px 36px 48px;
+}
+ 
 /* =========================
    CARD DE BUSCA
 ========================= */
-
+ 
 .searchCard {
   background: #ffffff;
-  border: 1px solid #e0e6eb;
-  border-radius: 9px;
-  padding: 14px 13px 13px;
-  margin-bottom: 12px;
+  border: 1px solid #e3e5ea;
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 22px;
 }
-
+ 
 .searchTitle {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
 }
-
+ 
 .searchIcon {
   color: #16b88a;
   font-size: 18px;
 }
-
+ 
 .searchTitle strong {
-  font-size: 11px;
-  color: #273544;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f232b;
 }
-
+ 
 .searchTitle span {
-  color: #9ba5ae;
-  font-size: 8px;
+  color: #6b7280;
+  font-size: 11.5px;
 }
-
+ 
 /* =========================
    FORMULÁRIO
 ========================= */
-
+ 
 .searchForm {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr auto;
-  gap: 9px;
+  gap: 14px;
   align-items: end;
 }
-
+ 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 7px;
 }
-
+ 
 .field label {
-  font-size: 8px;
-  font-weight: 700;
-  color: #3e4b58;
+  font-size: 11px;
+  font-weight: 600;
+  color: #3a3f48;
 }
-
+ 
 .field label span {
   color: #a17863;
 }
-
+ 
 .field input,
 .field select {
   width: 100%;
-  height: 26px;
-  border: 1px solid #dce3e9;
-  border-radius: 5px;
-  background: #f8fafc;
-  padding: 0 8px;
+  height: 36px;
+  border: 1px solid #e3e5ea;
+  border-radius: 6px;
+  background: #f4f5f8;
+  padding: 0 12px;
   box-sizing: border-box;
-  color: #697684;
-  font-size: 8px;
+  color: #1f232b;
+  font-family: inherit;
+  font-size: 12.5px;
   outline: none;
 }
-
+ 
 .field input:focus,
 .field select:focus {
-  border-color: #a58a76;
+  border-color: #a38a74;
   background: #fff;
 }
-
+ 
 .searchButton {
-  height: 26px;
-  padding: 0 15px;
+  height: 36px;
+  padding: 0 22px;
   border: none;
-  border-radius: 5px;
-  background: #927563;
+  border-radius: 6px;
+  background: #a8907b;
   color: white;
-  font-size: 8px;
-  font-weight: 700;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
+  transition: background 0.15s;
 }
-
+ 
 .searchButton:hover {
-  background: #806554;
+  background: #957c67;
 }
-
+ 
 /* =========================
    ESTADO VAZIO
 ========================= */
-
+ 
 .emptyCard {
   background: white;
-  border: 1px solid #e1e6eb;
-  border-radius: 9px;
-  padding: 45px 20px;
+  border: 1px solid #e3e5ea;
+  border-radius: 10px;
+  padding: 60px 24px;
   text-align: center;
 }
-
+ 
 .emptyIcon {
-  font-size: 25px;
-  color: #a58a76;
+  font-size: 34px;
+  color: #a38a74;
 }
-
+ 
 .emptyCard h2 {
-  margin: 10px 0 5px;
-  font-size: 15px;
+  margin: 12px 0 8px;
+  font-size: 18px;
+  font-weight: 600;
 }
-
+ 
 .emptyCard p {
-  max-width: 480px;
+  max-width: 520px;
   margin: auto;
-  color: #8995a1;
-  font-size: 9px;
+  color: #6b7280;
+  font-size: 12.5px;
   line-height: 1.6;
 }
-
+ 
 /* =========================
    RESUMO
 ========================= */
-
+ 
 .summaryGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: 16px;
+  margin-bottom: 22px;
 }
-
+ 
 .summaryCard {
-  min-height: 38px;
   background: white;
-  border: 1px solid #e0e6eb;
+  border: 1px solid #e3e5ea;
   border-radius: 8px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 7px 12px;
+  gap: 14px;
+  padding: 16px 18px;
   box-sizing: border-box;
 }
-
+ 
 .summaryIcon {
   color: #13b789;
-  font-size: 17px;
+  font-size: 22px;
 }
-
+ 
 .summaryCard div:last-child {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
-
+ 
 .summaryLabel {
-  font-size: 7px;
-  color: #95a0ab;
+  font-size: 10px;
+  font-weight: 500;
+  color: #6b7280;
 }
-
+ 
 .summaryCard strong {
-  font-size: 9px;
-  color: #344250;
+  font-size: 14px;
+  color: #1f232b;
 }
-
+ 
 /* =========================
    RESULTADOS
 ========================= */
-
+ 
 .resultsCard {
   background: white;
-  border: 1px solid #e0e6eb;
-  border-radius: 9px;
-  padding: 13px;
+  border: 1px solid #e3e5ea;
+  border-radius: 10px;
+  padding: 18px;
 }
-
+ 
 .resultsCard h2 {
-  margin: 0 0 10px;
-  font-size: 10px;
-  color: #344250;
+  margin: 0 0 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f232b;
 }
-
+ 
 /* =========================
    TABELA
 ========================= */
-
+ 
 .tableWrapper {
   width: 100%;
   overflow-x: auto;
 }
-
+ 
 .tableWrapper table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
 }
-
+ 
 .tableWrapper th {
   text-align: left;
-  padding: 6px 8px;
-  border-bottom: 1px solid #dfe5ea;
-  color: #82909d;
-  font-size: 7px;
-  font-weight: 700;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e3e5ea;
+  color: #4b5563;
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
 }
-
+ 
 .tableWrapper td {
-  padding: 8px;
-  border-bottom: 1px solid #e8edf1;
-  color: #596774;
-  font-size: 7px;
+  padding: 14px 12px;
+  border-bottom: 1px solid #edf0f3;
+  color: #3a3f48;
+  font-size: 12px;
   vertical-align: middle;
 }
-
+ 
 .tableWrapper tr:last-child td {
   border-bottom: none;
 }
-
+ 
 .roomName {
-  color: #394653;
-  font-size: 8px;
+  color: #1f232b;
+  font-size: 13px;
   font-weight: 700;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
-
+ 
 .tableWrapper small {
-  color: #9ba5ae;
-  font-size: 6px;
+  color: #9aa1ad;
+  font-size: 10.5px;
 }
-
+ 
 .capacity {
-  color: #84909b;
-  margin-right: 4px;
+  color: #6b7280;
+  margin-right: 6px;
 }
-
+ 
 .amenities {
-  color: #7c8995;
-  font-size: 6px;
+  color: #6b7280;
+  font-size: 11px;
 }
-
+ 
 .price {
   color: #16b789;
-  font-size: 8px;
+  font-size: 13px;
 }
-
+ 
 .reserveButton {
-  height: 22px;
-  min-width: 76px;
+  height: 32px;
+  min-width: 96px;
   border: none;
-  border-radius: 4px;
-  background: #917360;
+  border-radius: 6px;
+  background: #a8907b;
   color: white;
-  font-size: 7px;
-  font-weight: 700;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
+  transition: background 0.15s;
 }
-
+ 
 .reserveButton:hover {
-  background: #7e6251;
+  background: #957c67;
 }
-
+ 
 /* =========================
    RESPONSIVO
 ========================= */
-
-@media (max-width: 900px) {
+ 
+@media (max-width: 1000px) {
   .searchForm {
     grid-template-columns: 1fr 1fr;
   }
-
+ 
   .searchButton {
     width: 100%;
   }
 }
-
+ 
 @media (max-width: 650px) {
-  .page {
-    padding: 0 10px 30px;
+  .content {
+    padding: 24px 16px 32px;
   }
-
-  .header {
-    align-items: flex-start;
-  }
-
-  .userArea {
-    display: none;
-  }
-
-  .searchForm {
-    grid-template-columns: 1fr;
-  }
-
+ 
+  .searchForm,
   .summaryGrid {
     grid-template-columns: 1fr;
   }
-
-  .tableWrapper {
-    overflow-x: auto;
-  }
-
+ 
   .tableWrapper table {
-    min-width: 700px;
+    min-width: 760px;
   }
 }

@@ -88,27 +88,27 @@ export default function SuportePage() {
       <header className={styles.topbar}>
         <span className={styles.topbarTitle}>Hotel Grand Plaza / Central de Reservas</span>
         <div className={styles.topbarUser}>
-          <span>Admin Panel</span>
+          <span>Admin Painel</span>
           <div className={styles.avatar} />
         </div>
       </header>
  
-      <div className={styles.content}>
-        {/* Cabeçalho */}
-        <div className={styles.pageHeader}>
-          <div>
-            <span className={styles.breadcrumb}>HotelPro Admin / Suporte</span>
-            <h1 className={styles.title}>Central de Suporte</h1>
-            <p className={styles.subtitle}>
-              Encontre respostas rápidas ou fale com a nossa equipe de atendimento.
-            </p>
-          </div>
-          <span className={styles.status}>
-            <i />
-            Atendimento disponível
-          </span>
+      {/* CABEÇALHO */}
+      <section className={styles.banner}>
+        <div>
+          <span className={styles.bannerBreadcrumb}>Suporte &gt; Central de Ajuda</span>
+          <h1 className={styles.bannerTitle}>Central de Suporte</h1>
+          <p className={styles.bannerText}>
+            Encontre respostas rápidas ou fale com a nossa equipe de atendimento.
+          </p>
         </div>
+        <span className={styles.status}>
+          <i />
+          Atendimento disponível
+        </span>
+      </section>
  
+      <div className={styles.content}>
         {/* Busca */}
         <section className={styles.hero}>
           <div>

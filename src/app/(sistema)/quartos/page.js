@@ -43,7 +43,7 @@ export default function QuartosPage() {
       <header className={styles.topbar}>
         <span className={styles.topbarTitle}>Hotel Grand Plaza / Central de Reservas</span>
         <div className={styles.topbarUser}>
-          <span>Admin Panel</span>
+          <span>Admin Painel</span>
           <div className={styles.avatar} />
         </div>
       </header>

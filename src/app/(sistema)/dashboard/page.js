@@ -30,21 +30,23 @@ const reservations = [
 export default function Dashboard() {
   return (
     <div className={styles.dashboard}>
+      {/* BARRA SUPERIOR */}
+      <header className={styles.topbar}>
+        <span className={styles.topbarTitle}>Hotel Grand Plaza / Central de Reservas</span>
+        <div className={styles.topbarUser}>
+          <span>Admin Painel</span>
+          <div className={styles.avatar} />
+        </div>
+      </header>
+ 
+      {/* CABEÇALHO */}
+      <section className={styles.banner}>
+        <span className={styles.breadcrumb}>Dashboard &gt; Visão Geral</span>
+        <h1 className={styles.bannerTitle}>Painel de Controle</h1>
+        <p className={styles.bannerText}>Gerencie e acompanhe o desempenho em tempo real</p>
+      </section>
+ 
       <section className={styles.mainContent}>
- 
-        {/* TOPO */}
-        <header className={styles.topbar}>
-          <div>
-            <h1>Painel de Controle</h1>
-            <p>Gerencie e acompanhe o desempenho em tempo real</p>
-          </div>
- 
-          <button className={styles.userProfile}>
-            <div className={styles.userAvatar}>A</div>
-            <span>Administrador</span>
-            <span className={styles.chevron}>⌄</span>
-          </button>
-        </header>
  
         {/* INDICADORES */}
         <section>

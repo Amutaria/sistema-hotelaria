@@ -98,17 +98,21 @@ export default function ConfiguracoesPage() {
       <header className={styles.topbar}>
         <span className={styles.topbarTitle}>Hotel Grand Plaza / Central de Reservas</span>
         <div className={styles.topbarUser}>
-          <span>Admin Panel</span>
+          <span>Admin Painel</span>
           <div className={styles.avatar} />
         </div>
       </header>
  
-      <div className={styles.content}>
-        <span className={styles.breadcrumb}>Hotel Grand Plaza &gt; Configurações</span>
-        <h1 className={styles.title}>Configurações</h1>
-        <p className={styles.subtitle}>
+      {/* CABEÇALHO */}
+      <section className={styles.banner}>
+        <span className={styles.bannerBreadcrumb}>Configurações &gt; Conta</span>
+        <h1 className={styles.bannerTitle}>Configurações</h1>
+        <p className={styles.bannerText}>
           Gerencie seus dados, preferências de uso e informações da conta.
         </p>
+      </section>
+ 
+      <div className={styles.content}>
  
         <div className={styles.grid}>
           {/* Perfil */}

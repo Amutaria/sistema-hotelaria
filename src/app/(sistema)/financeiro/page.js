@@ -124,46 +124,43 @@ export default function FinanceiroPage() {
  
   return (
     <div className={styles.page}>
-      {/* Topbar */}
+      {/* BARRA SUPERIOR */}
       <header className={styles.topbar}>
-        <span className={styles.breadcrumb}>
-          Hotel Grand Plaza <span className={styles.sep}>/</span>{" "}
-          <strong>Financeiro</strong>
-        </span>
+        <span className={styles.topbarTitle}>Hotel Grand Plaza / Central de Reservas</span>
         <div className={styles.topbarUser}>
-          <span>Admin Panel</span>
+          <span>Admin Painel</span>
           <div className={styles.avatar} />
         </div>
       </header>
  
+      {/* CABEÇALHO */}
+      <section className={styles.banner}>
+        <span className={styles.bannerBreadcrumb}>Financeiro &gt; Visão Geral</span>
+        <h1 className={styles.bannerTitle}>Financeiro</h1>
+        <p className={styles.bannerText}>
+          Acompanhe as receitas, despesas e movimentações do hotel.
+        </p>
+      </section>
+ 
       <div className={styles.content}>
-        {/* Cabeçalho */}
-        <div className={styles.pageHeader}>
-          <div>
-            <h1 className={styles.title}>Financeiro</h1>
-            <p className={styles.subtitle}>
-              Acompanhe as receitas, despesas e movimentações do hotel.
-            </p>
-          </div>
+        {/* Filtros */}
+        <div className={styles.toolbar}>
+          <label className={styles.monthSelect}>
+            {icons.calendar}
+            <select value={mes} onChange={(e) => setMes(e.target.value)}>
+              {meses.map((m) => (
+                <option key={m} value={m}>
+                  {m} de 2026
+                </option>
+              ))}
+            </select>
+            <span className={styles.monthChevron}>{icons.chevronDown}</span>
+          </label>
  
-          <div className={styles.headerActions}>
-            <label className={styles.monthSelect}>
-              {icons.calendar}
-              <select value={mes} onChange={(e) => setMes(e.target.value)}>
-                {meses.map((m) => (
-                  <option key={m} value={m}>
-                    {m} de 2026
-                  </option>
-                ))}
-              </select>
-              <span className={styles.monthChevron}>{icons.chevronDown}</span>
-            </label>
- 
-            <button className={styles.primaryButton}>
-              {icons.plus}
-              Nova movimentação
-            </button>
-          </div>
+          <button type="button" className={styles.primaryButton}>
+            {icons.plus}
+            Nova movimentação
+          </button>
         </div>
  
         {/* Resumo */}
