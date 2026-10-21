@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -39,3 +40,35 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 # sistemahotel
 sistema de gerenciamento hotel
 >>>>>>> 4b7bbfbe95a3734477f462219116bdec1b3ceedd
+=======
+# Sistema de Hotelaria
+
+## Descrição
+
+Sistema web desenvolvido para auxiliar no gerenciamento das operações de um hotel, centralizando informações relacionadas a hóspedes, quartos, reservas e demais processos hoteleiros.
+
+## Projeto
+
+Projeto acadêmico desenvolvido pela equipe Kernel para a disciplina de Programação Web.
+
+## Status
+
+🟡 Em planejamento
+
+### Fases do projeto
+
+- [x] Criação do repositório
+- [ ] Planejamento
+- [ ] Modelagem
+- [ ] Desenvolvimento
+- [ ] Testes e entrega
+
+## Equipe
+
+- Yuri Santana
+- Thalya Hadassa
+- Marcos Amûtaria 
+- João Gabriel
+- Ákilla
+- Débora
+>>>>>>> 40e717404fc5c5ba33bb5dc459098b468dcbc1e7
