@@ -497,3 +497,36 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ===== Botão voltar ===== */
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin:0px;
+  padding: 8px 12px;
+  border: 1px solid #e3e5ea;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #3a3f48;
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.backButton:hover {
+  background: #f4f5f8;
+  border-color: #cfd4db;
+}
+
+.bottomActions {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 28px;
+  padding: 0 24px 70px;
+  box-sizing: border-box;
+}
+
