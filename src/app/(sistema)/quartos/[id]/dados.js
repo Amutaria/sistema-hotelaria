@@ -7,6 +7,7 @@ import { useMemo, useSyncExternalStore } from "react";
  
 export const quartosPadrao = {
   101: {
+    id: 1,
     numero: "101",
     status: "Livre",
     categoria: "Standard",
@@ -19,6 +20,7 @@ export const quartosPadrao = {
     ],
   },
   102: {
+    id: 2,
     numero: "102",
     status: "Ocupado",
     categoria: "Luxo",
@@ -32,6 +34,7 @@ export const quartosPadrao = {
     ],
   },
   103: {
+    id: 3,
     numero: "103",
     status: "Reservado",
     categoria: "Suíte",
@@ -45,6 +48,7 @@ export const quartosPadrao = {
     ],
   },
   104: {
+    id: 4,
     numero: "104",
     status: "Manutenção",
     categoria: "Standard",
@@ -86,6 +90,7 @@ const statusCadastro = {
 };
  
 const converterCadastro = (q) => ({
+  id: q.id,
   numero: String(q.numero),
   status: statusCadastro[q.status] || "Livre",
   categoria: q.tipo || "—",
