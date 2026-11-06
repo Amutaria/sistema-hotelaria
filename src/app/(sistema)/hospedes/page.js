@@ -65,11 +65,7 @@ export default function Hospedes() {
       <header className={styles.topbar}>
         <span className={styles.topbarTitle}>Hotel Grand Plaza / Central de Reservas</span>
         <div className={styles.topbarUser}>
-<<<<<<< HEAD
           <span>Admin Painel</span>
-=======
-          <span>Admin Panel</span>
->>>>>>> 40e717404fc5c5ba33bb5dc459098b468dcbc1e7
           <div className={styles.avatar} />
         </div>
       </header>
