@@ -1,0 +1,97 @@
+.sidebar {
+  width: 224px;
+  flex-shrink: 0;
+  height: 100%;
+  box-sizing: border-box;
+  background: #1f232b;
+  color: #9aa1ad;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 12px;
+  overflow-y: auto;
+}
+ 
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 8px 26px;
+}
+ 
+.brandIcon {
+  color: #ffffff;
+  display: flex;
+}
+ 
+.brandName {
+  display: block;
+  font-size: 19px;
+  font-weight: 500;
+  color: #ffffff;
+  line-height: 1.1;
+}
+ 
+.brandSub {
+  display: block;
+  margin-top: 3px;
+  font-size: 8.5px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #a38a74;
+}
+ 
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+ 
+.navItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: 6px;
+  color: #9aa1ad;
+  text-decoration: none;
+  font-size: 13.5px;
+  transition: background 0.15s, color 0.15s;
+}
+ 
+.navItem:hover {
+  background: #272c35;
+  color: #ffffff;
+}
+ 
+.navItemActive {
+  background: #2b303a;
+  color: #ffffff;
+}
+ 
+.navItemActive::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 16px;
+  border-radius: 2px;
+  background: #a38a74;
+}
+ 
+.sidebarFooter {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #2d323c;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+ 
+@media (max-width: 760px) {
+  .sidebar {
+    display: none;
+  }
+}

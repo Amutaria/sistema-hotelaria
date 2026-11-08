@@ -1,0 +1,47 @@
+### Sistema Hotelaria
+
+## Funcionalidades do Sistema
+
+• Cadastro de clientes.
+• Cadastro de quartos e tipos de quartos.
+• Consulta da disponibilidade dos quartos.
+• Agendamento de diárias dos clientes.
+• Check-in e check-out.
+• Alteração e cancelamento de reservas.
+• Cálculo automático do valor da hospedagem.
+• Registro e processamento de pagamentos pelo sistema.
+• Emissão de comprovante de pagamento.
+• Controle do status dos quartos: disponível, reservado, ocupado, em manutenção.
+• Consulta do histórico de reservas e pagamentos.
+• Geração de relatórios de ocupação e faturamento.
+
+## Requisitos Funcionais
+
+RF 01 – Cadastrar clientes: O sistema deve permitir cadastrar, consultar, alterar e excluir os dados dos clientes.
+RF 02 – Cadastrar quartos: O sistema deve permitir cadastrar quartos, incluindo número, tipo, capacidade, valor da diária e status.
+RF 03 – Consultar disponibilidade: O sistema deve permitir verificar quais quartos estão disponíveis para um determinado período.
+RF 04 – Realizar reserva: O sistema deve permitir ao funcionário realizar o agendamento de diárias para um cliente, informando data de entrada, data de saída e quarto escolhido.
+RF 05 – Calcular hospedagem: O sistema deve calcular automaticamente o valor total da hospedagem com base na quantidade de diárias e no valor do quarto.
+RF 06 – Realizar pagamento: O sistema deve permitir registrar e processar o pagamento da hospedagem.
+RF 07 – Emitir comprovante: O sistema deve disponibilizar um comprovante da reserva e do pagamento realizado.
+RF 08 – Gerenciar reservas: O sistema deve permitir alterar ou cancelar reservas conforme as regras do hotel.
+RF 09 – Realizar check-in e check-out: O sistema deve permitir registrar a entrada e a saída dos hóspedes.
+RF 10 – Gerar relatórios: O sistema deve permitir gerar relatórios de reservas, ocupação dos quartos e pagamentos.
+
+## Requisitos Não Funcionais
+
+RNF 01 – Segurança: O sistema deve proteger os dados dos clientes e permitir acesso somente a usuários autorizados.
+
+RNF 02 – Desempenho: O sistema deve responder às operações realizadas pelos usuários em um tempo adequado, evitando lentidão.
+
+RNF 03 – Disponibilidade: O sistema deve estar disponível para utilização durante o horário de funcionamento do hotel.
+
+RNF 04 – Usabilidade: A interface deve ser simples, intuitiva e fácil de utilizar pelos funcionários.
+
+RNF 05 – Confiabilidade: O sistema deve garantir que as informações de reservas e pagamentos sejam armazenadas corretamente.
+
+RNF 06 – Backup: O sistema deve realizar cópias de segurança periódicas dos dados.
+
+RNF 07 – Privacidade: Os dados pessoais e financeiros dos clientes devem ser tratados de forma segura e conforme a legislação aplicável.
+
+RNF 08 – Manutenibilidade:O sistema deve possuir uma estrutura que facilite futuras correções, atualizações e inclusão de novas funcionalidades.

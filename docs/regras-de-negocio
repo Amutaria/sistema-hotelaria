@@ -1,0 +1,35 @@
+Regras de negócio
+
+RN01- Cadastro de clientes: O cadastro do cliente deve ter o nome completo, CPF, telefone, e-mail e endereço.
+
+RN02- Cadastro de quartos: Somente usuários com perfil de administrador podem cadastrar, alterar ou excluir quartos.
+
+RN03- Tipos de quarto: Cada quarto deve estar associado a um tipo de quarto, como individual, duplo, triplo ou suíte, e possuir um valor de diária.
+
+RN04- Status dos quartos: Cada quarto deve possuir apenas um dos seguintes status: disponível, reservado, ocupado ou em manutenção.
+
+RN05- Quartos em manutenção: Quartos com status em manutenção não podem ser reservados ou utilizados para hospedagem.
+
+RN06- Disponibilidade: Um quarto somente será considerado disponível quando não possuir outra reserva para o período solicitado e seu status não for "em manutenção".
+
+RN07- Reserva: Um mesmo quarto não pode possuir duas reservas que tenham períodos de hospedagem iguais.
+
+RN08- Dados da reserva: Para realizar uma reserva, o cliente deve estar cadastrado e informar a data de entrada e a data de saída.
+
+RN09- Datas da hospedagem: A data de saída deve ser posterior à data de entrada.
+
+RN10- Cancelamento: O cliente poderá cancelar uma reserva gratuitamente até 24 horas antes do horário previsto para o check-in.
+
+RN11- Check-in: O check-in só poderá ser realizado quando haver uma reserva válida ou quando houver um quarto disponível.
+
+RN12- Check-out: O check-out encerra a hospedagem e altera o status do quarto para disponível, desde que o quarto não esteja reservado para outro cliente ou em manutenção.
+
+RN13- Cálculo da hospedagem: O valor total da hospedagem será calculado pela quantidade de diárias multiplicada pelo valor da diária do quarto.
+
+RN14- Pagamento: O pagamento tem que estar vinculado em uma reserva ou hospedagem existente e o status deve ser registrado no sistema.
+
+RN15- Comprovante: O sistema só irá emitir o comprovante de pagamento após o pagamento ser registrado com sucesso.
+
+RN16- Histórico: As reservas e os pagamentos que forem realizados devem ficar registrados no histórico do cliente.
+
+RN17- Relatórios: Os relatórios de ocupação e faturamento devem utilizar exclusivamente os dados registrados no sistema.

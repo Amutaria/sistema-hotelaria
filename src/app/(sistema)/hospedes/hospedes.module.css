@@ -1,0 +1,413 @@
+/* ===== Barra superior ===== */
+.topbar {
+  height: 52px;
+  flex-shrink: 0;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  border-bottom: 1px solid #e3e5ea;
+}
+ 
+.topbarTitle {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #3a3f48;
+}
+ 
+.topbarUser {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12.5px;
+  color: #3a3f48;
+}
+ 
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 38%, #e0b48f 0 28%, #3a2418 30% 100%);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px #d8d8d8;
+}
+ 
+/* ===== Banner ===== */
+.banner {
+  background: linear-gradient(90deg, #8a7160 0%, #a48b76 100%);
+  color: #ffffff;
+  padding: 20px 24px 24px;
+}
+ 
+.breadcrumb {
+  font-size: 10.5px;
+  opacity: 0.9;
+}
+ 
+.bannerTitle {
+  margin: 4px 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+ 
+.bannerText {
+  margin: 0;
+  font-size: 12.5px;
+  opacity: 0.9;
+}
+ 
+/* ===== Conteúdo ===== */
+.content {
+  padding: 24px;
+}
+ 
+.card {
+  background: #ffffff;
+  border: 1px solid #e3e5ea;
+  border-radius: 10px;
+  padding: 16px 14px 14px;
+}
+ 
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+ 
+.cardTitle {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #1f232b;
+}
+ 
+.cardSubtitle {
+  margin: 2px 0 0;
+  font-size: 11px;
+  color: #6b7280;
+}
+ 
+.newButton {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 6px;
+  background: #836957;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+ 
+.newButton:hover {
+  background: #6f5747;
+}
+ 
+/* ===== Busca ===== */
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 240px;
+  height: 34px;
+  padding: 0 12px;
+  background: #f4f5f8;
+  border: 1px solid #e3e5ea;
+  border-radius: 6px;
+  color: #3a3f48;
+  box-sizing: border-box;
+}
+ 
+.searchBox input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 12px;
+  color: #1f232b;
+}
+ 
+.searchBox input::placeholder {
+  color: #6b7280;
+}
+ 
+/* ===== Lista ===== */
+.guestList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #e3e5ea;
+}
+ 
+.guestRow {
+  display: grid;
+  grid-template-columns: 24px 140px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px;
+  background: #f7f8fa;
+  border: 1px solid #e3e5ea;
+  border-radius: 6px;
+}
+ 
+.guestAvatar {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #e5e7eb;
+  color: #4b5563;
+}
+ 
+.guestName {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1f232b;
+}
+ 
+.guestInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  font-size: 10.5px;
+  color: #4b5563;
+}
+ 
+.guestInfo strong {
+  font-weight: 600;
+  color: #1f232b;
+  margin-right: 2px;
+}
+ 
+.viewButton {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid #e3e5ea;
+  border-radius: 5px;
+  background: #ffffff;
+  color: #1f232b;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+ 
+.viewButton:hover {
+  background: #eceef3;
+}
+ 
+.empty {
+  margin: 4px 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* ===== Modal de detalhes ===== */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.modalCard {
+  position: relative;
+  width: min(760px, 100%);
+  max-height: 88vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18);
+}
+
+.closeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: #f3f4f6;
+  color: #374151;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding-right: 38px;
+}
+
+.modalAvatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #ede5df;
+  color: #56463d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalLabel {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7a7d88;
+}
+
+.modalTitle {
+  margin: 4px 0 0;
+  font-size: 24px;
+  color: #1f232b;
+}
+
+.modalSections {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modalSection {
+  background: #f8f9fb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.sectionTitle {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b574a;
+}
+
+.modalGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.infoItem,
+.infoItemStatus {
+  background: #ffffff;
+  border: 1px solid #eceef3;
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.infoItem span,
+.infoItemStatus span,
+.modalObservacoes span,
+.dependentField span {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 11px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.infoItem strong,
+.infoItemStatus strong,
+.dependentField strong {
+  font-size: 13px;
+  color: #111827;
+}
+
+.infoItemStatus {
+  grid-column: 1 / -1;
+}
+
+.dependentList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dependentCard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #ffffff;
+  border: 1px solid #eceef3;
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.dependentField {
+  background: #f8f9fb;
+  border: 1px solid #eceef3;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.modalObservacoes {
+  background: #fff8f1;
+  border: 1px solid #f5d7b4;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.modalObservacoes p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #374151;
+}
+
+/* ===== Responsivo ===== */
+@media (max-width: 760px) {
+  .cardHeader {
+    flex-direction: column;
+  }
+ 
+  .searchBox {
+    width: 100%;
+  }
+ 
+  .guestRow {
+    grid-template-columns: 24px minmax(0, 1fr) auto;
+  }
+
+  .guestInfo {
+    grid-column: 1 / -1;
+    flex-direction: column;
+  }
+
+  .modalGrid,
+  .dependentCard {
+    grid-template-columns: 1fr;
+  }
+}

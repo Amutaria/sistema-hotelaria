@@ -1,0 +1,253 @@
+/* ===== Barra superior ===== */
+.topbar {
+  height: 52px;
+  flex-shrink: 0;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  border-bottom: 1px solid #e3e5ea;
+}
+ 
+.topbarTitle {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #3a3f48;
+}
+ 
+.topbarUser {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12.5px;
+  color: #3a3f48;
+}
+ 
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 38%, #e0b48f 0 28%, #3a2418 30% 100%);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px #d8d8d8;
+}
+ 
+/* ===== Banner ===== */
+.banner {
+  background: linear-gradient(90deg, #8a7160 0%, #a48b76 100%);
+  color: #ffffff;
+  padding: 22px 24px 24px;
+}
+ 
+.breadcrumb {
+  font-size: 10.5px;
+  opacity: 0.9;
+}
+ 
+.bannerTitle {
+  margin: 6px 0 2px;
+  font-size: 22px;
+  font-weight: 700;
+}
+ 
+.bannerText {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.9;
+}
+ 
+/* ===== Card central ===== */
+.content {
+  display: flex;
+  justify-content: center;
+  padding: 36px 24px 40px;
+}
+ 
+.card {
+  width: 100%;
+  max-width: 580px;
+  box-sizing: border-box;
+  padding: 26px 28px 28px;
+  background: #ffffff;
+  border: 1px solid #e3e5ea;
+  border-radius: 10px;
+}
+ 
+.cardTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 18px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f232b;
+}
+ 
+.cardIcon {
+  display: flex;
+  color: #a8907b;
+}
+ 
+/* ===== Status atual ===== */
+.currentStatus {
+  margin-bottom: 20px;
+  padding: 13px 14px;
+  border-radius: 6px;
+  background: #eef0f4;
+  font-size: 12px;
+  color: #3a3f48;
+}
+ 
+.currentStatus strong {
+  font-weight: 700;
+}
+ 
+.badgeLivre { color: #16a34a; }
+.badgeOcupado { color: #dc2626; }
+.badgeReservado { color: #2563eb; }
+.badgeManutencao { color: #d97706; }
+.badgeBloqueado { color: #4b5563; }
+ 
+/* ===== Campos ===== */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+  margin-bottom: 16px;
+}
+ 
+.field label {
+  font-size: 11px;
+  color: #3a3f48;
+}
+ 
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 14px;
+}
+ 
+.field input,
+.field textarea,
+.selectBox select {
+  width: 100%;
+  background: #f4f5f8;
+  border: 1px solid #e3e5ea;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  color: #1f232b;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s, background 0.15s;
+}
+ 
+.field input {
+  height: 38px;
+  padding: 0 12px;
+}
+ 
+.field textarea {
+  min-height: 74px;
+  padding: 10px 12px;
+  line-height: 1.45;
+  resize: vertical;
+}
+ 
+.field textarea::placeholder {
+  color: #9aa1ad;
+}
+ 
+.field input:focus,
+.field textarea:focus,
+.selectBox select:focus {
+  background: #ffffff;
+  border-color: #a38a74;
+}
+ 
+.selectBox {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+ 
+.selectBox select {
+  height: 38px;
+  padding: 0 32px 0 12px;
+  appearance: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+ 
+.selectIcon {
+  position: absolute;
+  right: 12px;
+  display: flex;
+  pointer-events: none;
+  color: #3a3f48;
+}
+ 
+/* ===== Botões ===== */
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 8px;
+}
+ 
+.saveButton,
+.cancelButton {
+  height: 38px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+ 
+.saveButton {
+  width: 100%;
+  border: none;
+  background: #a8907b;
+  color: #ffffff;
+}
+ 
+.saveButton:hover {
+  background: #957c67;
+}
+ 
+.cancelButton {
+  border: 1px solid #e3e5ea;
+  background: #ffffff;
+  color: #1f232b;
+}
+ 
+.cancelButton:hover {
+  background: #f4f5f8;
+}
+ 
+.notFound {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: #4b5563;
+  text-align: center;
+}
+ 
+/* ===== Responsivo ===== */
+@media (max-width: 600px) {
+  .card {
+    padding: 22px 18px;
+  }
+ 
+  .grid,
+  .actions {
+    grid-template-columns: 1fr;
+  }
+ 
+  .actions .cancelButton {
+    order: -1;
+  }
+}

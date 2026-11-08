@@ -1,0 +1,532 @@
+/* ===== Barra superior ===== */
+.topbar {
+  height: 52px;
+  flex-shrink: 0;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  border-bottom: 1px solid #e3e5ea;
+}
+ 
+.topbarTitle {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #3a3f48;
+}
+ 
+.topbarUser {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12.5px;
+  color: #3a3f48;
+}
+ 
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 38%, #e0b48f 0 28%, #3a2418 30% 100%);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px #d8d8d8;
+}
+ 
+/* ===== Banner ===== */
+.banner {
+  background: linear-gradient(90deg, #8a7160 0%, #a48b76 100%);
+  color: #ffffff;
+  padding: 20px 24px 22px;
+}
+ 
+.breadcrumb {
+  font-size: 10.5px;
+  opacity: 0.9;
+}
+ 
+.bannerTitle {
+  margin: 4px 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+ 
+.bannerText {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.9;
+}
+ 
+/* ===== Layout ===== */
+.content {
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(220px, 1fr);
+  gap: 16px;
+  align-items: start;
+  padding: 24px 24px 32px;
+}
+ 
+.formColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+ 
+/* ===== Cards ===== */
+.card {
+  background: #ffffff;
+  border: 1px solid #e3e5ea;
+  border-radius: 8px;
+  padding: 14px 14px 16px;
+}
+ 
+.cardTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1f232b;
+}
+ 
+.cardIcon {
+  display: flex;
+  color: #836957;
+}
+ 
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 14px;
+}
+ 
+/* ===== Campos ===== */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+ 
+.field label,
+.label {
+  font-size: 10.5px;
+  font-weight: 500;
+  color: #3a3f48;
+}
+ 
+.field label span,
+.label span {
+  color: #3a3f48;
+}
+ 
+.field input {
+  height: 32px;
+  padding: 0 10px;
+  background: #f4f5f8;
+  border: 1px solid #e3e5ea;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  color: #1f232b;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s, background 0.15s;
+}
+ 
+.field input::placeholder {
+  color: #9aa1ad;
+}
+ 
+.field input:focus {
+  background: #ffffff;
+  border-color: #a38a74;
+}
+ 
+.selectBox {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+ 
+.selectBox select {
+  width: 100%;
+  height: 32px;
+  padding: 0 30px 0 10px;
+  appearance: none;
+  background: #ffffff;
+  border: 1px solid #e3e5ea;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  color: #1f232b;
+  outline: none;
+  cursor: pointer;
+}
+ 
+.selectBox select:focus {
+  border-color: #a38a74;
+}
+ 
+.selectIcon {
+  position: absolute;
+  right: 10px;
+  display: flex;
+  pointer-events: none;
+  color: #3a3f48;
+}
+ 
+/* ===== Status ===== */
+.statusField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 14px;
+}
+ 
+.statusGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+ 
+.statusButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 12px;
+  border: 1px solid #e3e5ea;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #4b5563;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+ 
+.statusButton:hover {
+  background: #f4f5f8;
+}
+ 
+.statusActive,
+.statusActive:hover {
+  border-color: #22a061;
+  background: #eaf8ef;
+  color: #1f8f55;
+  font-weight: 600;
+}
+ 
+/* ===== Comodidades ===== */
+.amenities {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 14px;
+}
+ 
+.amenity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 11.5px;
+  color: #9aa1ad;
+  text-align: left;
+  cursor: pointer;
+}
+ 
+.amenityOn {
+  color: #1f232b;
+}
+ 
+.amenityCheck {
+  width: 13px;
+  height: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a38a74;
+}
+ 
+.amenity:not(.amenityOn) .amenityCheck {
+  border: 1px solid #cfd4db;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+ 
+/* ===== Resumo ===== */
+.summary {
+  position: sticky;
+  top: 16px;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 14px;
+  border-radius: 8px;
+  background: #1f232b;
+  color: #ffffff;
+}
+ 
+.summaryTitle {
+  margin: 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #353b46;
+  font-size: 13px;
+  font-weight: 500;
+}
+ 
+.summaryList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #353b46;
+}
+ 
+.summaryList div {
+  display: flex;
+  gap: 4px;
+  font-size: 10.5px;
+}
+ 
+.summaryList dt {
+  color: #9aa1ad;
+}
+ 
+.summaryList dd {
+  margin: 0;
+  font-weight: 600;
+  color: #ffffff;
+}
+ 
+.summaryList dd.summaryPrice {
+  color: #c4a68c;
+}
+ 
+.confirmButton,
+.clearButton {
+  height: 34px;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+ 
+.confirmButton {
+  margin-top: 12px;
+  border: none;
+  background: #a8907b;
+  color: #ffffff;
+}
+ 
+.confirmButton:hover {
+  background: #957c67;
+}
+ 
+.clearButton {
+  margin-top: 10px;
+  border: 1px solid #4b5260;
+  background: transparent;
+  color: #ffffff;
+}
+ 
+.clearButton:hover {
+  background: #2b303a;
+}
+ 
+/* ===== Responsivo ===== */
+@media (max-width: 900px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+ 
+  .summary {
+    position: static;
+  }
+}
+ 
+@media (max-width: 600px) {
+  .grid,
+  .amenities {
+    grid-template-columns: 1fr;
+  }
+}
+ 
+/* =========================================
+   TELA DE SUCESSO
+========================================= */
+.successWrapper {
+  display: flex;
+  justify-content: center;
+  padding: 36px 24px 40px;
+}
+ 
+.successCard {
+  width: 100%;
+  max-width: 560px;
+  box-sizing: border-box;
+  padding: 36px 34px 34px;
+  background: #ffffff;
+  border: 1px solid #e3e5ea;
+  border-radius: 10px;
+  text-align: center;
+}
+ 
+.successIcon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #e5f7e9;
+  color: #22a061;
+}
+ 
+.successTitle {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1f232b;
+}
+ 
+.successText {
+  max-width: 480px;
+  margin: 8px auto 26px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #4b5563;
+}
+ 
+.successDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0 0 26px;
+  padding: 16px 18px;
+  border-radius: 6px;
+  background: #eef0f4;
+  text-align: left;
+}
+ 
+.successDetails div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+}
+ 
+.successDetails dt {
+  color: #6b7280;
+}
+ 
+.successDetails dd {
+  margin: 0;
+  font-weight: 600;
+  color: #1f232b;
+}
+ 
+.successDetails dd.successPrice {
+  font-weight: 500;
+  color: #a8907b;
+}
+ 
+.successDetails dd.statusLivre {
+  color: #22a061;
+}
+ 
+.successDetails dd.statusManutencao {
+  color: #d99a12;
+}
+ 
+.successDetails dd.statusBloqueado {
+  color: #d64545;
+}
+ 
+.successActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+ 
+.successPrimary,
+.successSecondary {
+  height: 38px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+ 
+.successPrimary {
+  border: none;
+  background: #a8907b;
+  color: #ffffff;
+}
+ 
+.successPrimary:hover {
+  background: #957c67;
+}
+ 
+.successSecondary {
+  border: 1px solid #e3e5ea;
+  background: #ffffff;
+  color: #1f232b;
+}
+ 
+.successSecondary:hover {
+  background: #f4f5f8;
+}
+ 
+@media (max-width: 600px) {
+  .successCard {
+    padding: 28px 18px;
+  }
+ 
+  .successActions {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Botão voltar ===== */
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin:0px;
+  padding: 8px 12px;
+  border: 1px solid #e3e5ea;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #3a3f48;
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.backButton:hover {
+  background: #f4f5f8;
+  border-color: #cfd4db;
+}
+
+.bottomActions {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 28px;
+  padding: 0 24px 70px;
+  box-sizing: border-box;
+}
+

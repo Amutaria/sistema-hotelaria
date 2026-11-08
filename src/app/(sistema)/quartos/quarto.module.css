@@ -1,0 +1,323 @@
+/* ===== Topbar ===== */
+.topbar {
+  height: 52px;
+  flex-shrink: 0;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 36px;
+  border-bottom: 1px solid #e3e5ea;
+}
+ 
+.topbarTitle {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #3a3f48;
+}
+ 
+.topbarUser {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12.5px;
+  color: #3a3f48;
+}
+ 
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 38%, #e0b48f 0 28%, #3a2418 30% 100%);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px #d8d8d8;
+}
+ 
+/* ===== Banner ===== */
+.banner {
+  background: linear-gradient(90deg, #8a7160 0%, #a48b76 100%);
+  color: #ffffff;
+  padding: 28px 36px 30px;
+}
+ 
+.breadcrumb {
+  font-size: 10.5px;
+  opacity: 0.9;
+}
+ 
+.bannerTitle {
+  margin: 4px 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+ 
+.bannerText {
+  margin: 0;
+  font-size: 12.5px;
+  opacity: 0.9;
+}
+ 
+/* ===== Conteúdo ===== */
+.content {
+  padding: 36px 36px 48px;
+}
+ 
+/* ----- Stats ----- */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  margin-bottom: 28px;
+}
+ 
+.statCard {
+  background: #ffffff;
+  border: 1px solid #e3e5ea;
+  border-radius: 8px;
+  padding: 18px 18px 16px;
+}
+ 
+.statTitle {
+  display: block;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #3a3f48;
+  margin-bottom: 6px;
+}
+ 
+.statRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+}
+ 
+.statValue {
+  font-size: 26px;
+  font-weight: 800;
+  color: #1f232b;
+  line-height: 1;
+}
+ 
+.statNote {
+  font-size: 11px;
+  text-align: right;
+}
+ 
+.muted { color: #3a3f48; }
+.green { color: #16a34a; }
+.red { color: #dc2626; }
+.orange { color: #d97706; }
+.blue { color: #2563eb;}
+ 
+/* ----- Toolbar ----- */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #ffffff;
+  border: 1px solid #e3e5ea;
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 26px;
+}
+ 
+.searchBox,
+.dateBox,
+.selectBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 34px;
+  padding: 0 14px;
+  background: #f4f5f8;
+  border: 1px solid #e3e5ea;
+  border-radius: 6px;
+  color: #3a3f48;
+  box-sizing: border-box;
+}
+ 
+.searchBox { width: 250px; }
+.dateBox { width: 160px; }
+ 
+.searchBox input,
+.dateBox input,
+.selectBox select {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+  font-size: 12.5px;
+  color: #3a3f48;
+  width: 100%;
+}
+ 
+.searchBox input::placeholder { color: #6b7280; }
+ 
+.dateBox input {
+  font-weight: 600;
+  color: #1f232b;
+}
+ 
+.selectBox {
+  position: relative;
+  width: 160px;
+  padding-right: 30px;
+}
+ 
+.selectBox select {
+  appearance: none;
+  cursor: pointer;
+}
+ 
+.selectIcon {
+  position: absolute;
+  right: 12px;
+  display: flex;
+  pointer-events: none;
+}
+ 
+.newButton {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 22px;
+  border: none;
+  border-radius: 6px;
+  background: #a8907b;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+ 
+.newButton:hover { background: #957c67; }
+ 
+/* ----- Quartos ----- */
+.sectionTitle {
+  margin: 0 0 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f232b;
+}
+ 
+.roomsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+ 
+.roomCard {
+  background: #ffffff;
+  border: 1px solid #e3e5ea;
+  border-radius: 8px;
+  padding: 18px;
+}
+ 
+.roomHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+ 
+.roomHeader h3 {
+  margin: 0;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #1f232b;
+}
+ 
+.badge {
+  font-size: 9.5px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+ 
+.badgeLivre { background: #dcfce7; color: #16a34a; }
+.badgeOcupado { background: #fee2e2; color: #dc2626; }
+.badgeReservado { background: #dbeafe; color: #2563eb; }
+.badgeManutencao { background: #fef3c7; color: #d97706; }
+ 
+.roomInfo {
+  margin: 0 0 6px;
+  font-size: 11.5px;
+  color: #6b7280;
+}
+ 
+.roomInfo strong {
+  color: #3a3f48;
+  font-weight: 600;
+}
+ 
+.roomInfo strong.price { color: #a8907b; }
+ 
+.detailsButton {
+  width: 100%;
+  margin-top: 10px;
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+  background: #eceef3;
+  color: #1f232b;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+ 
+.detailsButton:hover { background: #e1e4ea; }
+ 
+/* ===== Responsivo ===== */
+@media (max-width: 1100px) {
+  .statsGrid,
+  .roomsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+ 
+  .toolbar { flex-wrap: wrap; }
+}
+ 
+@media (max-width: 760px) {
+  .statsGrid,
+  .roomsGrid {
+    grid-template-columns: 1fr;
+  }
+ 
+  .searchBox,
+  .dateBox,
+  .selectBox,
+  .newButton {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+.roomId {
+  display: block;
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 2px;
+}
+.locationSection {
+  width: 100%;
+  margin-bottom: 28px;
+}
+
+.locationSection .sectionTitle {
+  margin-bottom: 18px;
+}
+.locationSection {
+  width: 100%;
+  margin-bottom: 28px;
+}
+
+.locationSection .sectionTitle {
+  margin-bottom: 18px;
+}

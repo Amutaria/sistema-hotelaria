@@ -1,0 +1,66 @@
+const quartos = [
+  {
+    id: 1,
+    numero: 101,
+    status: "Livre",
+    tipo: "Standard",
+    andar: "1º Andar",
+    bloco: "Bloco Principal",
+    capacidade: 2,
+    diaria: 250,
+    comodidades: [
+      "Wi-Fi Grátis",
+      "Ar Condicionado",
+      "Frigobar",
+      "TV a Cabo",
+    ],
+  },
+  {
+    id: 2,
+    numero: 102,
+    status: "Ocupado",
+    tipo: "Luxo",
+    andar: "2º Andar",
+    bloco: "Bloco A",
+    capacidade: 4,
+    diaria: 450,
+    comodidades: [
+      "Wi-Fi Grátis",
+      "Ar Condicionado",
+      "Frigobar",
+      "TV a Cabo",
+    ],
+  },
+  {
+    id: 3,
+    numero: 103,
+    status: "Reservado",
+    tipo: "Suíte",
+    andar: "3º Andar",
+    bloco: "Bloco Principal",
+    capacidade: 3,
+    diaria: 600,
+    comodidades: [
+      "Wi-Fi Grátis",
+      "Ar Condicionado",
+      "Frigobar",
+      "TV Cabo 4K",
+    ],
+  },
+  {
+    id: 4,
+    numero: 104,
+    status: "Manutenção",
+    tipo: "Standard",
+    andar: "1º Andar",
+    bloco: "Bloco B",
+    capacidade: 2,
+    diaria: 250,
+    comodidades: [
+      "Wi-Fi Grátis",
+      "Ar Condicionado",
+    ],
+  },
+];
+
+export default quartos;
