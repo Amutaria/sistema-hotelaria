@@ -216,7 +216,177 @@
   font-size: 12px;
   color: #6b7280;
 }
- 
+
+/* ===== Modal de detalhes ===== */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.modalCard {
+  position: relative;
+  width: min(760px, 100%);
+  max-height: 88vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18);
+}
+
+.closeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: #f3f4f6;
+  color: #374151;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding-right: 38px;
+}
+
+.modalAvatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #ede5df;
+  color: #56463d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalLabel {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7a7d88;
+}
+
+.modalTitle {
+  margin: 4px 0 0;
+  font-size: 24px;
+  color: #1f232b;
+}
+
+.modalSections {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modalSection {
+  background: #f8f9fb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.sectionTitle {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b574a;
+}
+
+.modalGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.infoItem,
+.infoItemStatus {
+  background: #ffffff;
+  border: 1px solid #eceef3;
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.infoItem span,
+.infoItemStatus span,
+.modalObservacoes span,
+.dependentField span {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 11px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.infoItem strong,
+.infoItemStatus strong,
+.dependentField strong {
+  font-size: 13px;
+  color: #111827;
+}
+
+.infoItemStatus {
+  grid-column: 1 / -1;
+}
+
+.dependentList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dependentCard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #ffffff;
+  border: 1px solid #eceef3;
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.dependentField {
+  background: #f8f9fb;
+  border: 1px solid #eceef3;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.modalObservacoes {
+  background: #fff8f1;
+  border: 1px solid #f5d7b4;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.modalObservacoes p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #374151;
+}
+
 /* ===== Responsivo ===== */
 @media (max-width: 760px) {
   .cardHeader {
@@ -230,9 +400,14 @@
   .guestRow {
     grid-template-columns: 24px minmax(0, 1fr) auto;
   }
- 
+
   .guestInfo {
     grid-column: 1 / -1;
     flex-direction: column;
+  }
+
+  .modalGrid,
+  .dependentCard {
+    grid-template-columns: 1fr;
   }
 }

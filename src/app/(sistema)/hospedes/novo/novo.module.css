@@ -186,17 +186,47 @@
   background: #ffffff;
   border-color: #a38a74;
 }
- 
-.field select {
-  appearance: none;
+
+.companionList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.companionRow {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 12px;
+  align-items: end;
+  padding: 12px;
+  background: #f8f9fb;
+  border: 1px solid #e3e5ea;
+  border-radius: 8px;
+}
+
+.addCompanionButton {
+  margin-left: auto;
+  border: 1px solid #d1b7a8;
+  background: #f8f1ec;
+  color: #5d473d;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 600;
   cursor: pointer;
 }
- 
-.field select:invalid,
-.field select option[value=""] {
-  color: #9aa1ad;
+
+.removeCompanionButton {
+  height: 34px;
+  align-self: end;
+  border: 1px solid #e3e5ea;
+  border-radius: 6px;
+  background: #fff;
+  color: #6b7280;
+  padding: 0 10px;
+  font-size: 11px;
+  cursor: pointer;
 }
- 
 .field input[type="date"] {
   color: #1f232b;
 }
@@ -292,6 +322,15 @@
   .gridPessoais > .field,
   .gridEndereco > .field {
     grid-column: 1 / -1;
+  }
+ 
+  .companionRow {
+    grid-template-columns: 1fr;
+  }
+
+  .addCompanionButton {
+    width: 100%;
+    margin-left: 0;
   }
  
   .actions {
