@@ -217,103 +217,173 @@
   color: #6b7280;
 }
 
-/* ===== Modal ===== */
+/* ===== Modal de detalhes ===== */
 .modalOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(17, 24, 39, 0.5);
+  background: rgba(15, 23, 42, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 20px;
   z-index: 1000;
 }
 
 .modalCard {
+  position: relative;
   width: min(760px, 100%);
-  max-height: 80vh;
+  max-height: 88vh;
   overflow-y: auto;
   background: #ffffff;
-  border: 1px solid #e3e5ea;
-  border-radius: 12px;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18);
+}
+
+.closeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: #f3f4f6;
+  color: #374151;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
 }
 
 .modalHeader {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  padding: 18px 20px 12px;
-  border-bottom: 1px solid #e3e5ea;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding-right: 38px;
 }
 
-.modalHeader h3 {
+.modalAvatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #ede5df;
+  color: #56463d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalLabel {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7a7d88;
+}
+
+.modalTitle {
   margin: 4px 0 0;
-  font-size: 22px;
+  font-size: 24px;
   color: #1f232b;
 }
 
-.modalEyebrow {
-  font-size: 10.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #8a7160;
-  font-weight: 700;
+.modalSections {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.modalClose {
-  border: none;
-  background: transparent;
-  font-size: 30px;
-  line-height: 1;
-  color: #6b7280;
-  cursor: pointer;
+.modalSection {
+  background: #f8f9fb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.sectionTitle {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b574a;
 }
 
 .modalGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.infoBlock {
-  background: #f7f8fa;
-  border: 1px solid #e3e5ea;
-  border-radius: 8px;
-  padding: 14px;
+.infoItem,
+.infoItemStatus {
+  background: #ffffff;
+  border: 1px solid #eceef3;
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.infoTitle {
+.infoItem span,
+.infoItemStatus span,
+.modalObservacoes span,
+.dependentField span {
   display: block;
-  margin-bottom: 10px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #3a3f48;
+  margin-bottom: 6px;
+  font-size: 11px;
+  color: #6b7280;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
-.infoRow {
-  font-size: 12px;
-  line-height: 1.7;
-  color: #374151;
+.infoItem strong,
+.infoItemStatus strong,
+.dependentField strong {
+  font-size: 13px;
+  color: #111827;
 }
 
-.infoRow strong,
-.acompanhanteLine strong {
-  color: #1f232b;
+.infoItemStatus {
+  grid-column: 1 / -1;
 }
 
-.acompanhanteLine {
+.dependentList {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid #e3e5ea;
-  font-size: 12px;
+  gap: 10px;
+}
+
+.dependentCard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #ffffff;
+  border: 1px solid #eceef3;
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.dependentField {
+  background: #f8f9fb;
+  border: 1px solid #eceef3;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.modalObservacoes {
+  background: #fff8f1;
+  border: 1px solid #f5d7b4;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.modalObservacoes p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
   color: #374151;
 }
 
@@ -330,13 +400,14 @@
   .guestRow {
     grid-template-columns: 24px minmax(0, 1fr) auto;
   }
- 
+
   .guestInfo {
     grid-column: 1 / -1;
     flex-direction: column;
   }
 
-  .modalGrid {
+  .modalGrid,
+  .dependentCard {
     grid-template-columns: 1fr;
   }
 }

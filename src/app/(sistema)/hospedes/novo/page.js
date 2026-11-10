@@ -86,18 +86,19 @@ export default function CadastroHospede() {
   const router = useRouter();
   const [form, setForm] = useState(formularioVazio);
   const [buscandoCep, setBuscandoCep] = useState(false);
-
+ 
   const atualizar = (campo, mascara) => (e) => {
     const valor = mascara ? mascara(e.target.value) : e.target.value;
     setForm((f) => ({ ...f, [campo]: valor }));
   };
 
-  const atualizarAcompanhante = (index, campo) => (e) => {
-    const valor = campo === "cpf" ? mascaraCPF(e.target.value) : e.target.value;
+  const atualizarAcompanhante = (index, campo, mascara) => (e) => {
+    const valor = mascara ? mascara(e.target.value) : e.target.value;
+
     setForm((f) => ({
       ...f,
-      acompanhantes: f.acompanhantes.map((item, idx) =>
-        idx === index ? { ...item, [campo]: valor } : item,
+      acompanhantes: f.acompanhantes.map((item, i) =>
+        i === index ? { ...item, [campo]: valor } : item
       ),
     }));
   };
@@ -112,10 +113,7 @@ export default function CadastroHospede() {
   const removerAcompanhante = (index) => {
     setForm((f) => ({
       ...f,
-      acompanhantes:
-        f.acompanhantes.length > 1
-          ? f.acompanhantes.filter((_, idx) => idx !== index)
-          : [{ nome: "", cpf: "" }],
+      acompanhantes: f.acompanhantes.filter((_, i) => i !== index),
     }));
   };
 
@@ -153,16 +151,20 @@ export default function CadastroHospede() {
   const salvarCadastro = (e) => {
     e.preventDefault();
  
-    const acompanhantesValidos = (form.acompanhantes || [])
-      .filter((item) => item.nome.trim() || item.cpf.trim())
-      .map((item) => ({
-        nome: item.nome.trim(),
-        cpf: mascaraCPF(item.cpf),
-      }));
+    const acompanhantesValidos = (form.acompanhantes || []).filter(
+      (item) => item.nome.trim() || item.cpf.trim()
+    );
 
-    const novoHospede = { id: Date.now(), ...form, acompanhantes: acompanhantesValidos };
+    const novoHospede = {
+      id: Date.now(),
+      ...form,
+      acompanhantes: acompanhantesValidos,
+    };
+
+    const hospedesSalvos = JSON.parse(sessionStorage.getItem("hospedes") || "[]");
+    hospedesSalvos.push(novoHospede);
     sessionStorage.setItem("hospedes", JSON.stringify(hospedesSalvos));
- 
+
     alert("Cadastro salvo com sucesso!");
     router.push("/hospedes");
   };
@@ -307,14 +309,21 @@ export default function CadastroHospede() {
             <span className={styles.sectionIcon}>{icons.user}</span>
             <div>
               <h2 className={styles.cardTitle}>Acompanhantes</h2>
-              <p className={styles.cardSubtitle}>Cadastre nome e CPF dos acompanhantes do hóspede</p>
+              <p className={styles.cardSubtitle}>Informe os demais hóspedes que acompanham a reserva</p>
             </div>
+            <button
+              type="button"
+              className={styles.addCompanionButton}
+              onClick={adicionarAcompanhante}
+            >
+              + Adicionar acompanhante
+            </button>
           </div>
 
-          <div className={styles.acompanhanteList}>
+          <div className={styles.companionList}>
             {form.acompanhantes.map((acompanhante, index) => (
-              <div className={styles.acompanhanteItem} key={`acompanhante-${index}`}>
-                <div className={styles.field}>
+              <div className={styles.companionRow} key={index}>
+                <div className={`${styles.field} ${styles.span4}`}>
                   <label htmlFor={`acompanhante-nome-${index}`}>
                     Nome do acompanhante {index + 1}
                   </label>
@@ -327,7 +336,7 @@ export default function CadastroHospede() {
                   />
                 </div>
 
-                <div className={styles.field}>
+                <div className={`${styles.field} ${styles.span3}`}>
                   <label htmlFor={`acompanhante-cpf-${index}`}>CPF</label>
                   <input
                     id={`acompanhante-cpf-${index}`}
@@ -335,7 +344,7 @@ export default function CadastroHospede() {
                     inputMode="numeric"
                     placeholder="000.000.000-00"
                     value={acompanhante.cpf}
-                    onChange={atualizarAcompanhante(index, "cpf")}
+                    onChange={atualizarAcompanhante(index, "cpf", mascaraCPF)}
                   />
                 </div>
 
@@ -344,20 +353,13 @@ export default function CadastroHospede() {
                     type="button"
                     className={styles.removeCompanionButton}
                     onClick={() => removerAcompanhante(index)}
+                    aria-label={`Remover acompanhante ${index + 1}`}
                   >
                     Remover
                   </button>
                 )}
               </div>
             ))}
-
-            <button
-              type="button"
-              className={styles.addCompanionButton}
-              onClick={adicionarAcompanhante}
-            >
-              + Adicionar acompanhante
-            </button>
           </div>
         </section>
 
