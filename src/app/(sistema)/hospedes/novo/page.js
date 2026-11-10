@@ -78,6 +78,7 @@ const formularioVazio = {
   cidade: "",
   estado: "",
   observacoes: "",
+  acompanhantes: [{ nome: "", cpf: "" }],
 };
  
 /* ---------- Página ---------- */
@@ -85,12 +86,39 @@ export default function CadastroHospede() {
   const router = useRouter();
   const [form, setForm] = useState(formularioVazio);
   const [buscandoCep, setBuscandoCep] = useState(false);
- 
+
   const atualizar = (campo, mascara) => (e) => {
     const valor = mascara ? mascara(e.target.value) : e.target.value;
     setForm((f) => ({ ...f, [campo]: valor }));
   };
- 
+
+  const atualizarAcompanhante = (index, campo) => (e) => {
+    const valor = campo === "cpf" ? mascaraCPF(e.target.value) : e.target.value;
+    setForm((f) => ({
+      ...f,
+      acompanhantes: f.acompanhantes.map((item, idx) =>
+        idx === index ? { ...item, [campo]: valor } : item,
+      ),
+    }));
+  };
+
+  const adicionarAcompanhante = () => {
+    setForm((f) => ({
+      ...f,
+      acompanhantes: [...f.acompanhantes, { nome: "", cpf: "" }],
+    }));
+  };
+
+  const removerAcompanhante = (index) => {
+    setForm((f) => ({
+      ...f,
+      acompanhantes:
+        f.acompanhantes.length > 1
+          ? f.acompanhantes.filter((_, idx) => idx !== index)
+          : [{ nome: "", cpf: "" }],
+    }));
+  };
+
   const buscarCep = async () => {
     const cep = soNumeros(form.cep);
     if (cep.length !== 8) {
@@ -125,10 +153,14 @@ export default function CadastroHospede() {
   const salvarCadastro = (e) => {
     e.preventDefault();
  
-    const novoHospede = { id: Date.now(), ...form };
- 
-    const hospedesSalvos = JSON.parse(sessionStorage.getItem("hospedes")) || [];
-    hospedesSalvos.push(novoHospede);
+    const acompanhantesValidos = (form.acompanhantes || [])
+      .filter((item) => item.nome.trim() || item.cpf.trim())
+      .map((item) => ({
+        nome: item.nome.trim(),
+        cpf: mascaraCPF(item.cpf),
+      }));
+
+    const novoHospede = { id: Date.now(), ...form, acompanhantes: acompanhantesValidos };
     sessionStorage.setItem("hospedes", JSON.stringify(hospedesSalvos));
  
     alert("Cadastro salvo com sucesso!");
@@ -269,6 +301,66 @@ export default function CadastroHospede() {
           </div>
         </section>
  
+        {/* ACOMPANHANTES */}
+        <section className={styles.card}>
+          <div className={styles.cardHeader}>
+            <span className={styles.sectionIcon}>{icons.user}</span>
+            <div>
+              <h2 className={styles.cardTitle}>Acompanhantes</h2>
+              <p className={styles.cardSubtitle}>Cadastre nome e CPF dos acompanhantes do hóspede</p>
+            </div>
+          </div>
+
+          <div className={styles.acompanhanteList}>
+            {form.acompanhantes.map((acompanhante, index) => (
+              <div className={styles.acompanhanteItem} key={`acompanhante-${index}`}>
+                <div className={styles.field}>
+                  <label htmlFor={`acompanhante-nome-${index}`}>
+                    Nome do acompanhante {index + 1}
+                  </label>
+                  <input
+                    id={`acompanhante-nome-${index}`}
+                    type="text"
+                    placeholder="Ex: Maria da Silva"
+                    value={acompanhante.nome}
+                    onChange={atualizarAcompanhante(index, "nome")}
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label htmlFor={`acompanhante-cpf-${index}`}>CPF</label>
+                  <input
+                    id={`acompanhante-cpf-${index}`}
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="000.000.000-00"
+                    value={acompanhante.cpf}
+                    onChange={atualizarAcompanhante(index, "cpf")}
+                  />
+                </div>
+
+                {form.acompanhantes.length > 1 && (
+                  <button
+                    type="button"
+                    className={styles.removeCompanionButton}
+                    onClick={() => removerAcompanhante(index)}
+                  >
+                    Remover
+                  </button>
+                )}
+              </div>
+            ))}
+
+            <button
+              type="button"
+              className={styles.addCompanionButton}
+              onClick={adicionarAcompanhante}
+            >
+              + Adicionar acompanhante
+            </button>
+          </div>
+        </section>
+
         {/* ENDEREÇO */}
         <section className={styles.card}>
           <div className={styles.cardHeader}>

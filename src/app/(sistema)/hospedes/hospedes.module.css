@@ -216,7 +216,107 @@
   font-size: 12px;
   color: #6b7280;
 }
- 
+
+/* ===== Modal ===== */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 1000;
+}
+
+.modalCard {
+  width: min(760px, 100%);
+  max-height: 80vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid #e3e5ea;
+  border-radius: 12px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 20px 12px;
+  border-bottom: 1px solid #e3e5ea;
+}
+
+.modalHeader h3 {
+  margin: 4px 0 0;
+  font-size: 22px;
+  color: #1f232b;
+}
+
+.modalEyebrow {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8a7160;
+  font-weight: 700;
+}
+
+.modalClose {
+  border: none;
+  background: transparent;
+  font-size: 30px;
+  line-height: 1;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.modalGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: 20px;
+}
+
+.infoBlock {
+  background: #f7f8fa;
+  border: 1px solid #e3e5ea;
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.infoTitle {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #3a3f48;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.infoRow {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #374151;
+}
+
+.infoRow strong,
+.acompanhanteLine strong {
+  color: #1f232b;
+}
+
+.acompanhanteLine {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #e3e5ea;
+  font-size: 12px;
+  color: #374151;
+}
+
 /* ===== Responsivo ===== */
 @media (max-width: 760px) {
   .cardHeader {
@@ -234,5 +334,9 @@
   .guestInfo {
     grid-column: 1 / -1;
     flex-direction: column;
+  }
+
+  .modalGrid {
+    grid-template-columns: 1fr;
   }
 }

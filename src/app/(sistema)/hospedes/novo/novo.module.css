@@ -242,7 +242,55 @@
   opacity: 0.6;
   cursor: wait;
 }
- 
+
+/* ===== Acompanhantes ===== */
+.acompanhanteList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.acompanhanteItem {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.5fr) auto;
+  gap: 12px;
+  align-items: end;
+  padding: 12px;
+  background: #f7f7f8;
+  border: 1px solid #e3e5ea;
+  border-radius: 8px;
+}
+
+.addCompanionButton,
+.removeCompanionButton {
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.addCompanionButton {
+  width: fit-content;
+  background: #ede3dc;
+  color: #473b34;
+  padding: 9px 14px;
+}
+
+.removeCompanionButton {
+  height: 34px;
+  padding: 0 12px;
+  background: #f5d9d9;
+  color: #8c2d2d;
+}
+
+.addCompanionButton:hover,
+.removeCompanionButton:hover {
+  opacity: 0.9;
+}
+
 /* ===== Botões ===== */
 .actions {
   display: flex;

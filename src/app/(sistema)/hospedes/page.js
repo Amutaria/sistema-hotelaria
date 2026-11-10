@@ -1,6 +1,6 @@
 "use client";
  
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./hospedes.module.css";
  
@@ -33,43 +33,149 @@ const icons = {
 };
  
 /* ---------- Dados ---------- */
-const hospedes = [
+const hospedesPadrao = [
   {
-    nome: "joao",
+    id: 1,
+    nome: "João Silva",
     cpf: "341.984.561-50",
-    telefone: "3611986021",
+    telefone: "(36) 19860-21",
     email: "joao@email.com",
+    nascimento: "1990-05-18",
+    genero: "Masculino",
+    nacionalidade: "Brasileira",
+    documento: "RG 12.345.678",
+    cep: "30140-010",
+    rua: "Rua das Flores",
+    numero: "120",
+    complemento: "Apto 3",
+    bairro: "Centro",
+    cidade: "Belo Horizonte",
+    estado: "MG",
+    observacoes: "Solicita quarto silencioso.",
+    acompanhantes: [{ nome: "Maria Silva", cpf: "111.222.333-44" }],
+  },
+  {
+    id: 2,
+    nome: "Ana Beatriz Costa",
+    cpf: "456.789.123-55",
+    telefone: "(31) 98888-1122",
+    email: "ana.costa@email.com",
+    nascimento: "1994-08-09",
+    genero: "Feminino",
+    nacionalidade: "Brasileira",
+    documento: "RG 22.334.556",
+    cep: "31270-000",
+    rua: "Avenida Brasil",
+    numero: "450",
+    complemento: "Bloco B",
+    bairro: "Savassi",
+    cidade: "Belo Horizonte",
+    estado: "MG",
+    observacoes: "Prefere andar alto e café da manhã no quarto.",
+    acompanhantes: [{ nome: "Pedro Costa", cpf: "222.333.444-55" }],
+  },
+  {
+    id: 3,
+    nome: "Lucas Martins",
+    cpf: "789.456.123-88",
+    telefone: "(21) 99777-3344",
+    email: "lucas.martins@email.com",
+    nascimento: "1988-12-03",
+    genero: "Masculino",
+    nacionalidade: "Brasileira",
+    documento: "CNH 99887766",
+    cep: "22020-000",
+    rua: "Rua da Lapa",
+    numero: "77",
+    complemento: "Casa 2",
+    bairro: "Lapa",
+    cidade: "Rio de Janeiro",
+    estado: "RJ",
+    observacoes: "Cliente frequente, solicita vista para o mar.",
+    acompanhantes: [{ nome: "Julia Martins", cpf: "333.444.555-66" }],
+  },
+  {
+    id: 4,
+    nome: "Fernanda Souza",
+    cpf: "123.456.789-01",
+    telefone: "(11) 98444-5566",
+    email: "fernanda.souza@email.com",
+    nascimento: "1997-02-14",
+    genero: "Feminino",
+    nacionalidade: "Brasileira",
+    documento: "RG 98.765.432",
+    cep: "04567-890",
+    rua: "Avenida Paulista",
+    numero: "1000",
+    complemento: "Apto 504",
+    bairro: "Bela Vista",
+    cidade: "São Paulo",
+    estado: "SP",
+    observacoes: "Não usa açúcar no café da manhã.",
+    acompanhantes: [{ nome: "Gabriel Souza", cpf: "444.555.666-77" }],
+  },
+  {
+    id: 5,
+    nome: "Rafael Oliveira",
+    cpf: "987.654.321-00",
+    telefone: "(47) 99111-2233",
+    email: "rafael.oliveira@email.com",
+    nascimento: "1985-06-27",
+    genero: "Masculino",
+    nacionalidade: "Brasileira",
+    documento: "RG 11.223.344",
+    cep: "88015-300",
+    rua: "Rua Felipe Schmidt",
+    numero: "210",
+    complemento: "Piso 8",
+    bairro: "Centro",
+    cidade: "Florianópolis",
+    estado: "SC",
+    observacoes: "Solicita quarto com boa iluminação e Wi‑Fi estável.",
+    acompanhantes: [{ nome: "Isabela Oliveira", cpf: "555.666.777-88" }],
   },
 ];
- 
+
 /* ---------- Página ---------- */
 export default function Hospedes() {
   const router = useRouter();
   const [busca, setBusca] = useState("");
- 
+  const [hospedes, setHospedes] = useState(hospedesPadrao);
+  const [hospedeSelecionado, setHospedeSelecionado] = useState(null);
+
+  useEffect(() => {
+    try {
+      const salvos = JSON.parse(sessionStorage.getItem("hospedes") || "[]");
+      const lista = Array.isArray(salvos) ? [...hospedesPadrao, ...salvos] : hospedesPadrao;
+      setHospedes(lista);
+    } catch {
+      setHospedes(hospedesPadrao);
+    }
+  }, []);
+
   const termo = busca.trim().toLowerCase();
   const somenteNumeros = termo.replace(/\D/g, "");
- 
+
   const filtrados = hospedes.filter((h) => {
     if (!termo) return true;
+    const cpfLimpo = (h.cpf || "").replace(/\D/g, "");
+    const nome = (h.nome || "").toLowerCase();
+    const email = (h.email || "").toLowerCase();
+
     return (
-      h.nome.toLowerCase().includes(termo) ||
-      h.email.toLowerCase().includes(termo) ||
-      (somenteNumeros && h.cpf.replace(/\D/g, "").includes(somenteNumeros))
+      nome.includes(termo) ||
+      email.includes(termo) ||
+      (somenteNumeros && cpfLimpo.includes(somenteNumeros))
     );
   });
- 
+
   return (
     <>
       {/* BARRA SUPERIOR */}
       <header className={styles.topbar}>
         <span className={styles.topbarTitle}>Hotel Grand Plaza / Central de Reservas</span>
         <div className={styles.topbarUser}>
-<<<<<<< HEAD
           <span>Admin Painel</span>
-=======
-          <span>Admin Panel</span>
->>>>>>> 40e717404fc5c5ba33bb5dc459098b468dcbc1e7
           <div className={styles.avatar} />
         </div>
       </header>
@@ -135,6 +241,7 @@ export default function Hospedes() {
                   type="button"
                   className={styles.viewButton}
                   aria-label={`Ver detalhes de ${hospede.nome}`}
+                  onClick={() => setHospedeSelecionado(hospede)}
                 >
                   {icons.eye}
                 </button>
@@ -147,6 +254,69 @@ export default function Hospedes() {
           </div>
         </section>
       </div>
+
+      {hospedeSelecionado && (
+        <div className={styles.modalOverlay} onClick={() => setHospedeSelecionado(null)}>
+          <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <div>
+                <span className={styles.modalEyebrow}>Hóspede</span>
+                <h3>{hospedeSelecionado.nome}</h3>
+              </div>
+              <button
+                type="button"
+                className={styles.modalClose}
+                onClick={() => setHospedeSelecionado(null)}
+                aria-label="Fechar detalhes"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className={styles.modalGrid}>
+              <div className={styles.infoBlock}>
+                <span className={styles.infoTitle}>Dados pessoais</span>
+                <div className={styles.infoRow}><strong>CPF:</strong> {hospedeSelecionado.cpf || "-"}</div>
+                <div className={styles.infoRow}><strong>Telefone:</strong> {hospedeSelecionado.telefone || "-"}</div>
+                <div className={styles.infoRow}><strong>E-mail:</strong> {hospedeSelecionado.email || "-"}</div>
+                <div className={styles.infoRow}><strong>Data de nascimento:</strong> {hospedeSelecionado.nascimento || "-"}</div>
+                <div className={styles.infoRow}><strong>Gênero:</strong> {hospedeSelecionado.genero || "-"}</div>
+                <div className={styles.infoRow}><strong>Nacionalidade:</strong> {hospedeSelecionado.nacionalidade || "-"}</div>
+              </div>
+
+              <div className={styles.infoBlock}>
+                <span className={styles.infoTitle}>Endereço</span>
+                <div className={styles.infoRow}><strong>CEP:</strong> {hospedeSelecionado.cep || "-"}</div>
+                <div className={styles.infoRow}><strong>Rua:</strong> {hospedeSelecionado.rua || "-"}</div>
+                <div className={styles.infoRow}><strong>Número:</strong> {hospedeSelecionado.numero || "-"}</div>
+                <div className={styles.infoRow}><strong>Complemento:</strong> {hospedeSelecionado.complemento || "-"}</div>
+                <div className={styles.infoRow}><strong>Bairro:</strong> {hospedeSelecionado.bairro || "-"}</div>
+                <div className={styles.infoRow}><strong>Cidade/UF:</strong> {hospedeSelecionado.cidade || "-"}{hospedeSelecionado.cidade && hospedeSelecionado.estado ? " / " : ""}{hospedeSelecionado.estado || ""}</div>
+              </div>
+
+              <div className={styles.infoBlock}>
+                <span className={styles.infoTitle}>Documentação</span>
+                <div className={styles.infoRow}><strong>Documento:</strong> {hospedeSelecionado.documento || "-"}</div>
+                <div className={styles.infoRow}><strong>Observações:</strong> {hospedeSelecionado.observacoes || "-"}</div>
+              </div>
+
+              <div className={styles.infoBlock}>
+                <span className={styles.infoTitle}>Acompanhantes</span>
+                {Array.isArray(hospedeSelecionado.acompanhantes) && hospedeSelecionado.acompanhantes.length > 0 ? (
+                  hospedeSelecionado.acompanhantes.map((acompanhante, index) => (
+                    <div key={`${acompanhante.nome}-${index}`} className={styles.acompanhanteLine}>
+                      <div><strong>Nome:</strong> {acompanhante.nome || "-"}</div>
+                      <div><strong>CPF:</strong> {acompanhante.cpf || "-"}</div>
+                    </div>
+                  ))
+                ) : (
+                  <div className={styles.infoRow}>Nenhum acompanhante cadastrado.</div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
