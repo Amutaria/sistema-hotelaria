@@ -118,7 +118,7 @@ function DetalhesQuarto({ quarto, id }) {
         </span>
 
         <div className={styles.topbarUser}>
-          <span>Admin Panel</span>
+          <span>Admin Painel</span>
           <div className={styles.avatar} />
         </div>
       </header>

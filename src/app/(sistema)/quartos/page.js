@@ -12,6 +12,13 @@ Reservado: styles.badgeReservado,
 Manutenção: styles.badgeManutencao,
 };
 
+const roomCardStatus = {
+  Livre: styles.roomCardLivre,
+  Ocupado: styles.roomCardOcupado,
+  Reservado: styles.roomCardReservado,
+  Manutenção: styles.roomCardManutencao,
+};
+
 export default function QuartosPage() {
 const router = useRouter();
 
@@ -99,7 +106,7 @@ Hotel Grand Plaza / Central de Reservas
 </span>
 
     <div className={styles.topbarUser}>
-      <span>Admin Panel</span>
+      <span>Admin Painel</span>
       <div className={styles.avatar} />
     </div>
   </header>
@@ -197,7 +204,7 @@ Hotel Grand Plaza / Central de Reservas
             {quartosDoAndar.map((q) => (
               <div
                 key={q.numero}
-                className={styles.roomCard}
+                className={`${styles.roomCard} ${roomCardStatus[q.status] || ""}`}
               >
                 <div className={styles.roomHeader}>
                   <div>
