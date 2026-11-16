@@ -1,14 +1,44 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { createClient } from "../../lib/supabase/client";
 import styles from "./login.module.css";
 
 export default function Login() {
   const router = useRouter();
 
-  const handleLogin = (e) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    router.push("/dashboard");
+    setError("");
+    setLoading(true);
+
+    try {
+      const supabase = createClient();
+
+      const { error: authError } =
+        await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+      if (authError) {
+        setError("E-mail ou senha inválidos.");
+        return;
+      }
+
+      router.replace("/dashboard");
+      router.refresh();
+    } catch {
+      setError("Não foi possível realizar o login.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -58,13 +88,17 @@ export default function Login() {
           >
 
             <label htmlFor="usuario">
-              Usuário ou E-mail
+              E-mail
             </label>
 
             <input
               id="usuario"
-              type="text"
-              placeholder="ex: admin_joao"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="seu@email.com"
+              autoComplete="email"
+              required
             />
 
 
@@ -84,10 +118,14 @@ export default function Login() {
             <div className={styles.passwordInput}>
 
               <input
-                id="senha"
-                type="password"
-                placeholder="••••••••"
-              />
+                  id="senha"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  autoComplete="current-password"
+                  required
+                />
 
               <span className={styles.eye}>
                 ◉
@@ -110,11 +148,14 @@ export default function Login() {
             </label>
 
 
+            {error && <p role="alert">{error}</p>}
+
             <button
               type="submit"
               className={styles.loginButton}
+              disabled={loading}
             >
-              Entrar no Sistema
+              {loading ? "Entrando..." : "Entrar no Sistema"}
             </button>
 
           </form>
