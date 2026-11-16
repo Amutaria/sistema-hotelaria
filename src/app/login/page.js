@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -7,48 +7,39 @@ import styles from "./login.module.css";
 
 export default function Login() {
   const router = useRouter();
-  const supabase = createClient();
 
   const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [erro, setErro] = useState("");
-  const [carregando, setCarregando] = useState(false);
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-const handleLogin = async (e) => {
-  e.preventDefault();
+    try {
+      const supabase = createClient();
 
-  setErro("");
-  setCarregando(true);
+      const { error: authError } =
+        await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
 
-  try {
-    console.log("Iniciando autenticaÃ§Ã£o...");
+      if (authError) {
+        setError("E-mail ou senha inválidos.");
+        return;
+      }
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password: senha,
-    });
-
-    if (error) {
-      console.error("Erro do Supabase:", error);
-      setErro("NÃ£o foi possÃ­vel entrar. Verifique seu e-mail e senha.");
-      setCarregando(false);
-      return;
+      router.replace("/dashboard");
+      router.refresh();
+    } catch {
+      setError("Não foi possível realizar o login.");
+    } finally {
+      setLoading(false);
     }
-
-    console.log("AutenticaÃ§Ã£o concluÃ­da:", data.user?.email);
-    console.log("Redirecionando para o dashboard...");
-
-    router.replace("/dashboard");
-    router.refresh();
-
-   } catch (err) {
-    console.error("Erro inesperado no login:", err);
-    setErro("Ocorreu um erro inesperado. Tente novamente.");
-    setCarregando(false);
-   }
   };
-
 
   return (
     <main className={styles.container}>
@@ -59,7 +50,7 @@ const handleLogin = async (e) => {
         <header className={styles.header}>
 
           <div className={styles.logo}>
-            <div className={styles.logoIcon}>â–¦</div>
+            <div className={styles.logoIcon}>▦</div>
 
             <div>
               <span className={styles.logoTitle}>
@@ -73,7 +64,7 @@ const handleLogin = async (e) => {
           </div>
 
           <span className={styles.language}>
-            â—‰ PortuguÃªs (Brasil)
+            ◉ Português (Brasil)
           </span>
 
         </header>
@@ -87,7 +78,7 @@ const handleLogin = async (e) => {
 
           <p className={styles.description}>
             Acesse sua conta administrativa para gerenciar reservas e
-            operaÃ§Ãµes do hotel.
+            operações do hotel.
           </p>
 
 
@@ -97,15 +88,15 @@ const handleLogin = async (e) => {
           >
 
             <label htmlFor="usuario">
-              UsuÃ¡rio ou E-mail
+              E-mail
             </label>
 
             <input
               id="usuario"
               type="email"
-              placeholder="seuemail@exemplo.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="seu@email.com"
               autoComplete="email"
               required
             />
@@ -127,17 +118,17 @@ const handleLogin = async (e) => {
             <div className={styles.passwordInput}>
 
               <input
-                id="senha"
-                type="password"
-                placeholder="Digite sua senha"
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-                autoComplete="current-password"
-                required
-              />
+                  id="senha"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  autoComplete="current-password"
+                  required
+                />
 
               <span className={styles.eye}>
-                â—‰
+                ◉
               </span>
 
             </div>
@@ -156,18 +147,15 @@ const handleLogin = async (e) => {
 
             </label>
 
-            {erro && (
-              <p role="alert" style={{ color: "#dc2626" }}>
-                {erro}
-              </p>
-            )}
+
+            {error && <p role="alert">{error}</p>}
 
             <button
               type="submit"
               className={styles.loginButton}
-              disabled={carregando}
+              disabled={loading}
             >
-              {carregando ? "Entrando..." : "Entrar no Sistema"}
+              {loading ? "Entrando..." : "Entrar no Sistema"}
             </button>
 
           </form>
@@ -200,12 +188,12 @@ const handleLogin = async (e) => {
         </div>
 
 
-        {/* ================= RODAPÃ‰ ================= */}
+        {/* ================= RODAPÉ ================= */}
 
         <footer className={styles.footer}>
 
           <span>
-            HotelPro Admin Â© 2024
+            HotelPro Admin © 2024
           </span>
 
           <span>
@@ -234,44 +222,44 @@ const handleLogin = async (e) => {
         <div className={styles.presentation}>
 
           <span className={styles.secure}>
-            ðŸ›¡ ACESSO SEGURO & CRIPTOGRAFADO
+            🛡 ACESSO SEGURO & CRIPTOGRAFADO
           </span>
 
 
           <h2>
-            ExcelÃªncia em GestÃ£o
+            Excelência em Gestão
             <br />
             Hoteleira.
           </h2>
 
 
           <p>
-            Potencialize a operaÃ§Ã£o do seu hotel com ferramentas
+            Potencialize a operação do seu hotel com ferramentas
             precisas de check-in, reservas e controle financeiro.
           </p>
 
 
-          {/* ================= BENEFÃCIOS ================= */}
+          {/* ================= BENEFÍCIOS ================= */}
 
           <div className={styles.features}>
 
             <span>
-              <b>âœ“</b>
-              GestÃ£o em tempo real
+              <b>✓</b>
+              Gestão em tempo real
             </span>
 
             <span>
-              <b>âŒ</b>
-              Indicadores de ocupaÃ§Ã£o
+              <b>⌁</b>
+              Indicadores de ocupação
             </span>
 
             <span>
-              <b>â–£</b>
+              <b>▣</b>
               Faturamento integrado
             </span>
 
             <span>
-              <b>â™§</b>
+              <b>♧</b>
               Suporte 24/7
             </span>
 
@@ -283,12 +271,12 @@ const handleLogin = async (e) => {
           <div className={styles.testimonial}>
 
             <div className={styles.stars}>
-              â˜…â˜…â˜…â˜…â˜…
+              ★★★★★
             </div>
 
             <p>
               O HotelPro Admin transformou nossa produtividade na
-              recepÃ§Ã£o do hotel. A interface Ã© rÃ¡pida e extremamente
+              recepção do hotel. A interface é rápida e extremamente
               intuitiva para o dia a dia.
             </p>
 
@@ -306,7 +294,7 @@ const handleLogin = async (e) => {
                 </strong>
 
                 <small>
-                  Gerente de OperaÃ§Ãµes
+                  Gerente de Operações
                 </small>
 
               </div>
