@@ -1,7 +1,7 @@
 "use client";
  
 import { useState, useEffect } from "react";
-import { createClient } from "../../../lib/supabase/client";
+import { createClient } from "../../lib/supabase/client";
 import styles from "./financeiro.module.css";
  
 /* ---------- Ícones (SVG inline) ---------- */
