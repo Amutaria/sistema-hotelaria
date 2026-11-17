@@ -13,6 +13,13 @@ const statusClass = {
   Manutenção: styles.badgeManutencao,
 };
 
+const roomCardStatus = {
+  Livre: styles.roomCardLivre,
+  Ocupado: styles.roomCardOcupado,
+  Reservado: styles.roomCardReservado,
+  ["Manutenção"]: styles.roomCardManutencao,
+};
+
 // Retorna a data atual no formato AAAA-MM-DD
 function obterDataAtual() {
   const hoje = new Date();
@@ -309,8 +316,10 @@ export default function QuartosPage() {
               <div className={styles.roomsGrid}>
                 {quartosDoAndar.map((q) => (
                   <div
-                    key={q.numero}
-                    className={styles.roomCard}
+                   key={q.numero}
+                   className={`${styles.roomCard} ${
+                   roomCardStatus[q.statusExibido] || ""
+                   }`}
                   >
                     <div className={styles.roomHeader}>
                       <div>

@@ -1,6 +1,6 @@
 "use client";
  
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./hospedes.module.css";
  
@@ -33,20 +33,84 @@ const icons = {
 };
  
 /* ---------- Dados ---------- */
-const hospedes = [
+const hospedesBase = [
   {
-    nome: "joao",
+    nome: "João Silva",
     cpf: "341.984.561-50",
-    telefone: "3611986021",
+    telefone: "(11) 3611-9802",
     email: "joao@email.com",
+    checkin: "15/11/2026",
+    checkout: "20/11/2026",
+    quarto: "102",
+    status: "Confirmado",
+    observacoes: "Solicitou cama extra e café da manhã inclusivo.",
+    acompanhantes: [],
+  },
+  {
+    nome: "Maria Souza",
+    cpf: "284.765.912-43",
+    telefone: "(21) 99876-1122",
+    email: "maria@email.com",
+    checkin: "12/11/2026",
+    checkout: "18/11/2026",
+    quarto: "205",
+    status: "Em hospedagem",
+    observacoes: "Viajante frequente, prefere andar alto e quarto silencioso.",
+    acompanhantes: [],
+  },
+  {
+    nome: "Carlos Mendes",
+    cpf: "518.204.761-88",
+    telefone: "(31) 98844-5599",
+    email: "carlos@email.com",
+    checkin: "14/11/2026",
+    checkout: "19/11/2026",
+    quarto: "318",
+    status: "Pré-check-in",
+    observacoes: "Chegada prevista no fim da tarde com veículo próprio.",
+    acompanhantes: [],
+  },
+  {
+    nome: "Ana Paula Rocha",
+    cpf: "712.889.034-90",
+    telefone: "(41) 97653-0088",
+    email: "ana@email.com",
+    checkin: "10/11/2026",
+    checkout: "15/11/2026",
+    quarto: "410",
+    status: "Finalizado",
+    observacoes: "Hóspede repetente, pediu avaliação de limpeza no quarto.",
+    acompanhantes: [],
+  },
+  {
+    nome: "Pedro Almeida",
+    cpf: "125.476.338-55",
+    telefone: "(51) 98421-3677",
+    email: "pedro@email.com",
+    checkin: "16/11/2026",
+    checkout: "22/11/2026",
+    quarto: "507",
+    status: "Confirmado",
+    observacoes: "Solicitou vista para o mar e serviço de quarto no primeiro dia.",
+    acompanhantes: [],
   },
 ];
  
 /* ---------- Página ---------- */
 export default function Hospedes() {
   const router = useRouter();
+  const [hospedes, setHospedes] = useState(hospedesBase);
   const [busca, setBusca] = useState("");
- 
+  const [hospedeSelecionado, setHospedeSelecionado] = useState(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const salvos = JSON.parse(sessionStorage.getItem("hospedes") || "[]");
+    const todos = [...hospedesBase, ...salvos];
+    setHospedes(todos);
+  }, []);
+
   const termo = busca.trim().toLowerCase();
   const somenteNumeros = termo.replace(/\D/g, "");
  
@@ -65,11 +129,7 @@ export default function Hospedes() {
       <header className={styles.topbar}>
         <span className={styles.topbarTitle}>Hotel Grand Plaza / Central de Reservas</span>
         <div className={styles.topbarUser}>
-<<<<<<< HEAD
           <span>Admin Painel</span>
-=======
-          <span>Admin Panel</span>
->>>>>>> 40e717404fc5c5ba33bb5dc459098b468dcbc1e7
           <div className={styles.avatar} />
         </div>
       </header>
@@ -91,7 +151,7 @@ export default function Hospedes() {
                 Visualize as informações dos hóspedes cadastrados
               </p>
             </div>
- 
+
             <button
               type="button"
               className={styles.newButton}
@@ -101,7 +161,7 @@ export default function Hospedes() {
               Novo Cadastro
             </button>
           </div>
- 
+
           <label className={styles.searchBox}>
             {icons.search}
             <input
@@ -111,14 +171,14 @@ export default function Hospedes() {
               onChange={(e) => setBusca(e.target.value)}
             />
           </label>
- 
+
           <div className={styles.guestList}>
             {filtrados.map((hospede) => (
               <div className={styles.guestRow} key={hospede.cpf}>
                 <div className={styles.guestAvatar}>{icons.user}</div>
- 
+
                 <strong className={styles.guestName}>{hospede.nome}</strong>
- 
+
                 <div className={styles.guestInfo}>
                   <span>
                     <strong>CPF:</strong> {hospede.cpf}
@@ -130,23 +190,179 @@ export default function Hospedes() {
                     <strong>E-mail:</strong> {hospede.email}
                   </span>
                 </div>
- 
+
                 <button
                   type="button"
                   className={styles.viewButton}
                   aria-label={`Ver detalhes de ${hospede.nome}`}
+                  onClick={() => setHospedeSelecionado(hospede)}
                 >
                   {icons.eye}
                 </button>
               </div>
             ))}
- 
+
             {filtrados.length === 0 && (
               <p className={styles.empty}>Nenhum hóspede encontrado.</p>
             )}
           </div>
         </section>
       </div>
+
+      {hospedeSelecionado && (
+        <div className={styles.modalOverlay} onClick={() => setHospedeSelecionado(null)}>
+          <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              className={styles.closeButton}
+              onClick={() => setHospedeSelecionado(null)}
+              aria-label="Fechar detalhes do hóspede"
+            >
+              ×
+            </button>
+
+            <div className={styles.modalHeader}>
+              <div className={styles.modalAvatar}>{icons.user}</div>
+              <div>
+                <span className={styles.modalLabel}>Hóspede</span>
+                <h3 className={styles.modalTitle}>{hospedeSelecionado.nome}</h3>
+              </div>
+            </div>
+
+            <div className={styles.modalSections}>
+              <div className={styles.modalSection}>
+                <h4 className={styles.sectionTitle}>Dados pessoais</h4>
+                <div className={styles.modalGrid}>
+                  <div className={styles.infoItem}>
+                    <span>Nome completo</span>
+                    <strong>{hospedeSelecionado.nome || "Não informado"}</strong>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <span>CPF</span>
+                    <strong>{hospedeSelecionado.cpf || "Não informado"}</strong>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <span>Data de nascimento</span>
+                    <strong>{hospedeSelecionado.nascimento || "Não informado"}</strong>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <span>Gênero</span>
+                    <strong>{hospedeSelecionado.genero || "Não informado"}</strong>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <span>Nacionalidade</span>
+                    <strong>{hospedeSelecionado.nacionalidade || "Não informado"}</strong>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <span>Documento</span>
+                    <strong>{hospedeSelecionado.documento || "Não informado"}</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.modalSection}>
+                <h4 className={styles.sectionTitle}>Contato</h4>
+                <div className={styles.modalGrid}>
+                  <div className={styles.infoItem}>
+                    <span>Telefone</span>
+                    <strong>{hospedeSelecionado.telefone || "Não informado"}</strong>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <span>E-mail</span>
+                    <strong>{hospedeSelecionado.email || "Não informado"}</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.modalSection}>
+                <h4 className={styles.sectionTitle}>Endereço</h4>
+                <div className={styles.modalGrid}>
+                  <div className={styles.infoItem}>
+                    <span>CEP</span>
+                    <strong>{hospedeSelecionado.cep || "Não informado"}</strong>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <span>Rua</span>
+                    <strong>{hospedeSelecionado.rua || "Não informado"}</strong>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <span>Número</span>
+                    <strong>{hospedeSelecionado.numero || "Não informado"}</strong>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <span>Complemento</span>
+                    <strong>{hospedeSelecionado.complemento || "Não informado"}</strong>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <span>Bairro</span>
+                    <strong>{hospedeSelecionado.bairro || "Não informado"}</strong>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <span>Cidade</span>
+                    <strong>{hospedeSelecionado.cidade || "Não informado"}</strong>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <span>Estado</span>
+                    <strong>{hospedeSelecionado.estado || "Não informado"}</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.modalSection}>
+                <h4 className={styles.sectionTitle}>Reserva</h4>
+                <div className={styles.modalGrid}>
+                  <div className={styles.infoItem}>
+                    <span>Check-in</span>
+                    <strong>{hospedeSelecionado.checkin || "Não informado"}</strong>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <span>Check-out</span>
+                    <strong>{hospedeSelecionado.checkout || "Não informado"}</strong>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <span>Quarto</span>
+                    <strong>{hospedeSelecionado.quarto || "Não informado"}</strong>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <span>Status</span>
+                    <strong>{hospedeSelecionado.status || "Não informado"}</strong>
+                  </div>
+                </div>
+              </div>
+
+              {(hospedeSelecionado.acompanhantes?.length > 0 || true) && (
+                <div className={styles.modalSection}>
+                  <h4 className={styles.sectionTitle}>Dependentes / acompanhantes</h4>
+                  <div className={styles.dependentList}>
+                    {(hospedeSelecionado.acompanhantes?.length
+                      ? hospedeSelecionado.acompanhantes
+                      : [{ nome: "Nenhum dependente cadastrado", cpf: "-" }]
+                    ).map((dependente, index) => (
+                      <div className={styles.dependentCard} key={`${dependente.nome || "dependente"}-${index}`}>
+                        <div className={styles.dependentField}>
+                          <span>Nome</span>
+                          <strong>{dependente.nome || "Não informado"}</strong>
+                        </div>
+                        <div className={styles.dependentField}>
+                          <span>CPF</span>
+                          <strong>{dependente.cpf || "Não informado"}</strong>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className={styles.modalSection}>
+                <h4 className={styles.sectionTitle}>Observações</h4>
+                <div className={styles.modalObservacoes}>
+                  <p>{hospedeSelecionado.observacoes || "Nenhuma observação informada."}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

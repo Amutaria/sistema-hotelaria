@@ -1,13 +1,16 @@
+
 "use client";
- 
+
+import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Playfair_Display } from "next/font/google";
+import { createClient } from "@/app/lib/supabase/client";
 import { icons } from "./icons";
 import styles from "./Sidebar.module.css";
- 
+
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["500"] });
- 
+
 const menu = [
   { label: "Dashboard", href: "/dashboard", icon: icons.dashboard },
   { label: "Reservas", href: "/reservas", icon: icons.calendar },
@@ -16,17 +19,23 @@ const menu = [
   { label: "Financeiro", href: "/financeiro", icon: icons.wallet },
   { label: "Relatórios", href: "/relatorios", icon: icons.chart },
 ];
- 
+
 const footerMenu = [
   { label: "Configurações", href: "/configuracoes", icon: icons.settings },
   { label: "Suporte", href: "/suporte", icon: icons.help },
 ];
- 
+
 export default function Sidebar() {
   const pathname = usePathname();
- 
+  const router = useRouter();
+
+  const [carregando, setCarregando] = useState(false);
+  const [erro, setErro] = useState("");
+
   const renderItem = (item) => {
-    const ativo = pathname === item.href || pathname.startsWith(item.href + "/");
+    const ativo =
+      pathname === item.href || pathname.startsWith(item.href + "/");
+
     return (
       <Link
         key={item.href}
@@ -38,20 +47,54 @@ export default function Sidebar() {
       </Link>
     );
   };
- 
+
+  const handleLogout = async () => {
+    setCarregando(true);
+    setErro("");
+
+    const supabase = createClient();
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      console.error("Erro ao sair:", error.message);
+      setErro("Não foi possível sair. Tente novamente.");
+      setCarregando(false);
+      return;
+    }
+
+    router.replace("/login");
+    router.refresh();
+  };
+
   return (
     <aside className={styles.sidebar}>
       <div className={styles.brand}>
         <span className={styles.brandIcon}>{icons.building}</span>
         <div>
-          <span className={`${styles.brandName} ${playfair.className}`}>Grand Plaza</span>
+          <span className={`${styles.brandName} ${playfair.className}`}>
+            Grand Plaza
+          </span>
           <span className={styles.brandSub}>Central de Reservas</span>
         </div>
       </div>
- 
+
       <nav className={styles.nav}>{menu.map(renderItem)}</nav>
- 
-      <div className={styles.sidebarFooter}>{footerMenu.map(renderItem)}</div>
+
+      <div className={styles.sidebarFooter}>
+        {footerMenu.map(renderItem)}
+
+        {erro && <p className={styles.logoutError}>{erro}</p>}
+
+        <button
+          type="button"
+          className={`${styles.navItem} ${styles.logoutButton}`}
+          onClick={handleLogout}
+          disabled={carregando}
+        >
+          {icons.logout}
+          <span>{carregando ? "Saindo..." : "Sair"}</span>
+        </button>
+      </div>
     </aside>
   );
 }

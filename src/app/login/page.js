@@ -1,15 +1,54 @@
-"use client";
+﻿"use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { createClient } from "@/app/lib/supabase/client";
 import styles from "./login.module.css";
 
 export default function Login() {
   const router = useRouter();
+  const supabase = createClient();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    router.push("/dashboard");
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [erro, setErro] = useState("");
+  const [carregando, setCarregando] = useState(false);
+
+
+const handleLogin = async (e) => {
+  e.preventDefault();
+
+  setErro("");
+  setCarregando(true);
+
+  try {
+    console.log("Iniciando autenticaÃ§Ã£o...");
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password: senha,
+    });
+
+    if (error) {
+      console.error("Erro do Supabase:", error);
+      setErro("NÃ£o foi possÃ­vel entrar. Verifique seu e-mail e senha.");
+      setCarregando(false);
+      return;
+    }
+
+    console.log("AutenticaÃ§Ã£o concluÃ­da:", data.user?.email);
+    console.log("Redirecionando para o dashboard...");
+
+    router.replace("/dashboard");
+    router.refresh();
+
+   } catch (err) {
+    console.error("Erro inesperado no login:", err);
+    setErro("Ocorreu um erro inesperado. Tente novamente.");
+    setCarregando(false);
+   }
   };
+
 
   return (
     <main className={styles.container}>
@@ -20,7 +59,7 @@ export default function Login() {
         <header className={styles.header}>
 
           <div className={styles.logo}>
-            <div className={styles.logoIcon}>▦</div>
+            <div className={styles.logoIcon}>â–¦</div>
 
             <div>
               <span className={styles.logoTitle}>
@@ -34,7 +73,7 @@ export default function Login() {
           </div>
 
           <span className={styles.language}>
-            ◉ Português (Brasil)
+            â—‰ PortuguÃªs (Brasil)
           </span>
 
         </header>
@@ -48,7 +87,7 @@ export default function Login() {
 
           <p className={styles.description}>
             Acesse sua conta administrativa para gerenciar reservas e
-            operações do hotel.
+            operaÃ§Ãµes do hotel.
           </p>
 
 
@@ -58,13 +97,17 @@ export default function Login() {
           >
 
             <label htmlFor="usuario">
-              Usuário ou E-mail
+              UsuÃ¡rio ou E-mail
             </label>
 
             <input
               id="usuario"
-              type="text"
-              placeholder="ex: admin_joao"
+              type="email"
+              placeholder="seuemail@exemplo.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
+              required
             />
 
 
@@ -86,11 +129,15 @@ export default function Login() {
               <input
                 id="senha"
                 type="password"
-                placeholder="••••••••"
+                placeholder="Digite sua senha"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+                autoComplete="current-password"
+                required
               />
 
               <span className={styles.eye}>
-                ◉
+                â—‰
               </span>
 
             </div>
@@ -109,12 +156,18 @@ export default function Login() {
 
             </label>
 
+            {erro && (
+              <p role="alert" style={{ color: "#dc2626" }}>
+                {erro}
+              </p>
+            )}
 
             <button
               type="submit"
               className={styles.loginButton}
+              disabled={carregando}
             >
-              Entrar no Sistema
+              {carregando ? "Entrando..." : "Entrar no Sistema"}
             </button>
 
           </form>
@@ -147,12 +200,12 @@ export default function Login() {
         </div>
 
 
-        {/* ================= RODAPÉ ================= */}
+        {/* ================= RODAPÃ‰ ================= */}
 
         <footer className={styles.footer}>
 
           <span>
-            HotelPro Admin © 2024
+            HotelPro Admin Â© 2024
           </span>
 
           <span>
@@ -181,44 +234,44 @@ export default function Login() {
         <div className={styles.presentation}>
 
           <span className={styles.secure}>
-            🛡 ACESSO SEGURO & CRIPTOGRAFADO
+            ðŸ›¡ ACESSO SEGURO & CRIPTOGRAFADO
           </span>
 
 
           <h2>
-            Excelência em Gestão
+            ExcelÃªncia em GestÃ£o
             <br />
             Hoteleira.
           </h2>
 
 
           <p>
-            Potencialize a operação do seu hotel com ferramentas
+            Potencialize a operaÃ§Ã£o do seu hotel com ferramentas
             precisas de check-in, reservas e controle financeiro.
           </p>
 
 
-          {/* ================= BENEFÍCIOS ================= */}
+          {/* ================= BENEFÃCIOS ================= */}
 
           <div className={styles.features}>
 
             <span>
-              <b>✓</b>
-              Gestão em tempo real
+              <b>âœ“</b>
+              GestÃ£o em tempo real
             </span>
 
             <span>
-              <b>⌁</b>
-              Indicadores de ocupação
+              <b>âŒ</b>
+              Indicadores de ocupaÃ§Ã£o
             </span>
 
             <span>
-              <b>▣</b>
+              <b>â–£</b>
               Faturamento integrado
             </span>
 
             <span>
-              <b>♧</b>
+              <b>â™§</b>
               Suporte 24/7
             </span>
 
@@ -230,12 +283,12 @@ export default function Login() {
           <div className={styles.testimonial}>
 
             <div className={styles.stars}>
-              ★★★★★
+              â˜…â˜…â˜…â˜…â˜…
             </div>
 
             <p>
               O HotelPro Admin transformou nossa produtividade na
-              recepção do hotel. A interface é rápida e extremamente
+              recepÃ§Ã£o do hotel. A interface Ã© rÃ¡pida e extremamente
               intuitiva para o dia a dia.
             </p>
 
@@ -253,7 +306,7 @@ export default function Login() {
                 </strong>
 
                 <small>
-                  Gerente de Operações
+                  Gerente de OperaÃ§Ãµes
                 </small>
 
               </div>
