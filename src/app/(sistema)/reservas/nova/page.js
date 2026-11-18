@@ -157,7 +157,7 @@ function FormularioHospede({ cadastrados, hospedeInicial }) {
         </div>
  
         <div className={styles.userPill}>
-          <span>Admin Panel</span>
+          <span>Admin Painel</span>
           <div className={styles.avatar} />
         </div>
       </header>
@@ -294,7 +294,7 @@ function FormularioHospede({ cadastrados, hospedeInicial }) {
           <button
             type="button"
             className={styles.backButton}
-            onClick={() => router.push("/disponibilidade")}
+            onClick={() => router.push("/reservas")}
           >
             Voltar para Disponibilidade
           </button>

@@ -1,0 +1,382 @@
+
+.page {
+  min-height: 100vh;
+  background-color: #f3f5f7;
+  padding: 40px 24px;
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.loading {
+  text-align: center;
+  padding: 80px 20px;
+  color: #777;
+  font-size: 16px;
+}
+
+/* CONFIRMAÇÃO */
+
+.successCard {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 40px 30px;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 24px;
+}
+
+.successIcon {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background-color: #e8f3ec;
+  color: #398456;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.successLabel {
+  display: inline-block;
+  color: #398456;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  margin-bottom: 12px;
+}
+
+.successCard h1 {
+  font-family: Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: #3c332d;
+  margin: 0 0 12px;
+}
+
+.successCard p {
+  color: #777;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 550px;
+}
+
+.codeBox {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: #f8f6f4;
+  border: 1px dashed #b9a18e;
+  border-radius: 8px;
+  padding: 16px 24px;
+  width: fit-content;
+  min-width: 220px;
+  margin: 24px auto 0;
+}
+
+.codeBox span {
+  color: #897969;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.codeBox strong {
+  color: #967965;
+  font-size: 20px;
+  letter-spacing: 1px;
+}
+
+/* DETALHES DA RESERVA */
+
+.detailsCard {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 30px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #eee;
+}
+
+.sectionHeader h2 {
+  font-family: Arial, sans-serif;
+  color: #3c332d;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+
+.sectionHeader p {
+  color: #888;
+  font-size: 13px;
+  margin: 0;
+}
+
+.status {
+  background-color: #e8f3ec;
+  color: #398456;
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* SEÇÕES DE INFORMAÇÕES */
+
+.infoSection {
+  padding: 24px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.infoSection h3 {
+  font-size: 15px;
+  color: #967965;
+  font-weight: 700;
+  margin: 0 0 18px;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 30px;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.infoItem span {
+  color: #929292;
+  font-size: 12px;
+}
+
+.infoItem strong {
+  color: #3f3f3f;
+  font-size: 14px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* RESUMO FINANCEIRO */
+
+.financeList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.financeList > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  color: #777;
+  font-size: 14px;
+}
+
+.financeList strong {
+  color: #444;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.total {
+  border-top: 1px solid #e8e8e8;
+  padding-top: 18px;
+  margin-top: 5px;
+}
+
+.total span {
+  color: #3c332d;
+  font-weight: 700;
+}
+
+.total strong {
+  color: #967965;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* OBSERVAÇÕES */
+
+.observations {
+  background-color: #f8f6f4;
+  border-radius: 8px;
+  padding: 15px;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+/* BOTÕES */
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 25px;
+}
+
+.primaryButton,
+.secondaryButton {
+  min-height: 42px;
+  padding: 11px 20px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.primaryButton {
+  background-color: #967965;
+  color: #fff;
+  border: 1px solid #967965;
+}
+
+.primaryButton:hover {
+  background-color: #806550;
+  border-color: #806550;
+}
+
+.secondaryButton {
+  background-color: #fff;
+  color: #806f60;
+  border: 1px solid #cfc5bc;
+}
+
+.secondaryButton:hover {
+  background-color: #f8f6f4;
+  border-color: #967965;
+}
+
+/* RESERVA NÃO ENCONTRADA */
+
+.emptyCard {
+  max-width: 550px;
+  margin: 100px auto;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 40px 30px;
+  text-align: center;
+}
+
+.emptyCard h1 {
+  font-family: Arial, sans-serif;
+  color: #3c332d;
+  font-size: 24px;
+  margin: 0 0 15px;
+}
+
+.emptyCard p {
+  color: #777;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+/* RODAPÉ */
+
+.footer {
+  text-align: center;
+  color: #999;
+  font-size: 12px;
+  margin-top: 24px;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 650px) {
+  .page {
+    padding: 20px 12px;
+  }
+
+  .successCard {
+    padding: 30px 18px;
+  }
+
+  .successCard h1 {
+    font-size: 23px;
+  }
+
+  .detailsCard {
+    padding: 22px 18px;
+  }
+
+  .sectionHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .infoGrid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+
+  .financeList > div {
+    font-size: 13px;
+  }
+
+  .total strong {
+    font-size: 17px;
+  }
+}
+
+/* IMPRESSÃO */
+
+@media print {
+  .page {
+    background-color: #fff;
+    padding: 0;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .successCard,
+  .detailsCard {
+    border: 1px solid #ddd;
+    box-shadow: none;
+    break-inside: avoid;
+  }
+
+  .actions {
+    display: none;
+  }
+
+  .footer {
+    margin-top: 15px;
+  }
+}
