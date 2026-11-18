@@ -73,7 +73,7 @@ export default function Login() {
         <div className={styles.loginContent}>
 
           <h1>
-            Bem-vindo ao HotelPro
+            Bem-vindo ao Hotel Grand Plaza
           </h1>
 
           <p className={styles.description}>
@@ -178,7 +178,7 @@ export default function Login() {
               <p>
                 Caso tenha problemas com seu acesso, entre em contato
                 com o suporte de T.I. da unidade ou ligue para{" "}
-                <strong>0800-HOTELPRO</strong>.
+                <strong>0800 000 0800</strong>.
               </p>
 
             </div>
@@ -193,7 +193,7 @@ export default function Login() {
         <footer className={styles.footer}>
 
           <span>
-            HotelPro Admin © 2024
+            Hotel Grand Plaza Admin © 2026
           </span>
 
           <span>
@@ -275,7 +275,7 @@ export default function Login() {
             </div>
 
             <p>
-              O HotelPro Admin transformou nossa produtividade na
+              O Hotel Grand Plaza transformou nossa produtividade na
               recepção do hotel. A interface é rápida e extremamente
               intuitiva para o dia a dia.
             </p>
