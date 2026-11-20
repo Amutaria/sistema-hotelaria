@@ -7,8 +7,9 @@ import { useParams, useRouter } from "next/navigation";
 import QuartoForm from "../../_components/QuartoForm";
 import { icons } from "../../../_components/icons";
 import styles from "../../novo/novo.module.css";
+import { useToast } from "../../_components/ToastProvider";
 
-const tipos = ["Standard", "Luxo", "Suíte"];
+const tipos = ["Standard", "Luxo", "Suíte", "Executivo"];
 
 const andares = [
   "Térreo",
@@ -77,9 +78,11 @@ function formatarMoeda(valor) {
 export default function EditarQuartoPage() {
   const { id } = useParams();
   const router = useRouter();
+  const { showToast } = useToast();
 
   const [form, setForm] = useState(formularioVazio);
   const [carregando, setCarregando] = useState(true);
+  const [salvando, setSalvando] = useState(false);
 
   useEffect(() => {
     async function carregarQuarto() {
@@ -87,10 +90,15 @@ export default function EditarQuartoPage() {
         const resposta = await fetch(`/api/quartos/${id}`);
 
         if (!resposta.ok) {
-          alert("Quarto não encontrado.");
-          router.push("/quartos");
-          return;
-        }
+  showToast({
+    type: "error",
+    title: "Quarto não encontrado",
+    message: "O quarto solicitado não existe ou não está disponível.",
+  });
+
+  router.push("/quartos");
+  return;
+}
 
         const quarto = await resposta.json();
 
@@ -107,15 +115,20 @@ export default function EditarQuartoPage() {
             : [],
         });
       } catch (erro) {
-        console.error("Erro ao carregar quarto:", erro);
-        alert("Erro ao carregar o quarto.");
-      } finally {
-        setCarregando(false);
-      }
+  console.error("Erro ao carregar quarto:", erro);
+
+  showToast({
+    type: "error",
+    title: "Erro ao carregar quarto",
+    message: "Não foi possível buscar os dados do quarto. Tente novamente.",
+  });
+} finally {
+  setCarregando(false);
+}
     }
 
     carregarQuarto();
-  }, [id, router]);
+  }, [id, router, showToast]);
 
   function atualizar(campo) {
     return (e) => {
@@ -144,43 +157,65 @@ export default function EditarQuartoPage() {
       ? `${form.andar} - ${form.bloco}`
       : form.andar || form.bloco || "—";
 
-  async function salvarAlteracoes(e) {
-    e.preventDefault();
 
-    const dadosQuarto = {
-      numero: Number(form.numero),
-      tipo: form.tipo,
-      andar: form.andar,
-      bloco: form.bloco,
-      capacidade: Number(form.capacidade.replace(/\D/g, "")),
-      diaria: Number(form.diaria.replace(/\D/g, "")) / 100,
-      status: form.status,
-      comodidades: form.comodidades,
-    };
+async function salvarAlteracoes(e) {
+  e.preventDefault();
 
-    try {
-      const resposta = await fetch(`/api/quartos/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dadosQuarto),
+  if (salvando) return;
+
+  setSalvando(true);
+
+  const dadosQuarto = {
+    numero: Number(form.numero),
+    tipo: form.tipo,
+    andar: form.andar,
+    bloco: form.bloco,
+    capacidade: Number(form.capacidade.replace(/\D/g, "")),
+    diaria: Number(form.diaria.replace(/\D/g, "")) / 100,
+    status: form.status,
+    comodidades: form.comodidades,
+  };
+
+  try {
+    const resposta = await fetch(`/api/quartos/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dadosQuarto),
+    });
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok) {
+      showToast({
+        type: "error",
+        title: "Não foi possível atualizar o quarto",
+        message: dados.erro || "Verifique os dados e tente novamente.",
       });
-
-      const dados = await resposta.json();
-
-      if (!resposta.ok) {
-        alert(dados.erro);
-        return;
-      }
-
-      alert("Quarto atualizado com sucesso!");
-      router.push(`/quartos/${id}`);
-    } catch (erro) {
-      console.error("Erro ao atualizar quarto:", erro);
-      alert("Erro ao atualizar o quarto.");
+      return;
     }
+
+    showToast({
+      type: "success",
+      title: "Quarto atualizado com sucesso!",
+      message: `As alterações do quarto ${dados.quarto.numero} foram salvas.`,
+    });
+
+    router.push(`/quartos/${id}`);
+  } catch (erro) {
+    console.error("Erro ao atualizar quarto:", erro);
+
+    showToast({
+      type: "error",
+      title: "Erro de conexão",
+      message: "Não foi possível salvar as alterações. Verifique sua conexão e tente novamente.",
+    });
+  } finally {
+    setSalvando(false);
   }
+}
+
 
   if (carregando) {
     return <p>Carregando quarto...</p>;
@@ -205,6 +240,9 @@ export default function EditarQuartoPage() {
       icons={icons}
       onSubmit={salvarAlteracoes}
       mostrarStatus={false}
+      salvando={salvando}
+      textoSalvando="Salvando..."
+      textoConfirmar="Salvar Alterações"
     />
 
     <div className={styles.bottomActions}>
