@@ -86,6 +86,7 @@ export default function CadastroHospede() {
   const router = useRouter();
   const [form, setForm] = useState(formularioVazio);
   const [buscandoCep, setBuscandoCep] = useState(false);
+  const [salvando, setSalvando] = useState(false);
  
   const atualizar = (campo, mascara) => (e) => {
     const valor = mascara ? mascara(e.target.value) : e.target.value;
@@ -148,25 +149,27 @@ export default function CadastroHospede() {
     }
   };
  
-  const salvarCadastro = (e) => {
+  const salvarCadastro = async (e) => {
     e.preventDefault();
- 
-    const acompanhantesValidos = (form.acompanhantes || []).filter(
-      (item) => item.nome.trim() || item.cpf.trim()
-    );
-
-    const novoHospede = {
-      id: Date.now(),
-      ...form,
-      acompanhantes: acompanhantesValidos,
-    };
-
-    const hospedesSalvos = JSON.parse(sessionStorage.getItem("hospedes") || "[]");
-    hospedesSalvos.push(novoHospede);
-    sessionStorage.setItem("hospedes", JSON.stringify(hospedesSalvos));
-
-    alert("Cadastro salvo com sucesso!");
-    router.push("/hospedes");
+    if (salvando) return;
+    setSalvando(true);
+    try {
+      const response = await fetch("/api/hospedes", {
+        method: "POST",
+        body: JSON.stringify({
+          ...form,
+          acompanhantes: (form.acompanhantes || []).filter((item) => item.nome.trim() || item.cpf.trim()),
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Não foi possível salvar o cadastro.");
+      alert("Hóspede e acompanhantes salvos no Supabase com sucesso!");
+      router.push("/hospedes");
+    } catch (error) {
+      alert(error.message || "Erro ao salvar cadastro.");
+    } finally {
+      setSalvando(false);
+    }
   };
  
   return (

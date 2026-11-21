@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -9,14 +10,15 @@ export default function Login() {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [senha, setSenha] = useState("");
+  const [erro, setErro] = useState("");
+  const [carregando, setCarregando] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError("");
-    setLoading(true);
+
+    setErro("");
+    setCarregando(true);
 
     try {
       const supabase = createClient();
@@ -24,31 +26,29 @@ export default function Login() {
       const { error: authError } =
         await supabase.auth.signInWithPassword({
           email,
-          password,
+          password: senha,
         });
 
       if (authError) {
-        setError("E-mail ou senha inválidos.");
+        setErro("E-mail ou senha inválidos.");
         return;
       }
 
       router.replace("/dashboard");
       router.refresh();
-    } catch {
-      setError("Não foi possível realizar o login.");
+    } catch (error) {
+      console.error("Erro ao realizar login:", error);
+      setErro("Não foi possível realizar o login. Tente novamente.");
     } finally {
-      setLoading(false);
+      setCarregando(false);
     }
   };
 
   return (
     <main className={styles.container}>
-
-      {/* ================= LADO ESQUERDO ================= */}
+      {/* LADO ESQUERDO */}
       <section className={styles.loginSide}>
-
         <header className={styles.header}>
-
           <div className={styles.logo}>
             <div className={styles.logoIcon}>▦</div>
 
@@ -57,53 +57,42 @@ export default function Login() {
                 Grand Plaza
               </span>
 
-              <small>
-                CENTRAL DE RESERVAS
-              </small>
+              <small>CENTRAL DE RESERVAS</small>
             </div>
           </div>
 
           <span className={styles.language}>
             ◉ Português (Brasil)
           </span>
-
         </header>
 
-
         <div className={styles.loginContent}>
-
-          <h1>
-            Bem-vindo ao Hotel Grand Plaza
-          </h1>
+          <h1>Bem-vindo ao Hotel Grand Plaza</h1>
 
           <p className={styles.description}>
             Acesse sua conta administrativa para gerenciar reservas e
             operações do hotel.
           </p>
 
-
           <form
             className={styles.form}
             onSubmit={handleLogin}
           >
-
             <label htmlFor="usuario">
-              E-mail
+              E-mail cadastrado
             </label>
 
             <input
               id="usuario"
               type="email"
+              placeholder="seu@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="seu@email.com"
-              autoComplete="email"
               required
+              autoComplete="email"
             />
 
-
             <div className={styles.passwordLabel}>
-
               <label htmlFor="senha">
                 Senha
               </label>
@@ -111,31 +100,23 @@ export default function Login() {
               <a href="#">
                 Esqueci minha senha
               </a>
-
             </div>
-
 
             <div className={styles.passwordInput}>
-
               <input
-                  id="senha"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  autoComplete="current-password"
-                  required
-                />
+                id="senha"
+                type="password"
+                placeholder="••••••••"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+                required
+                autoComplete="current-password"
+              />
 
-              <span className={styles.eye}>
-                ◉
-              </span>
-
+              <span className={styles.eye}>◉</span>
             </div>
 
-
             <label className={styles.checkbox}>
-
               <input
                 type="checkbox"
                 defaultChecked
@@ -144,33 +125,32 @@ export default function Login() {
               <span>
                 Manter conectado neste dispositivo
               </span>
-
             </label>
 
-
-            {error && <p role="alert">{error}</p>}
+            {erro && (
+              <p role="alert">
+                {erro}
+              </p>
+            )}
 
             <button
               type="submit"
               className={styles.loginButton}
-              disabled={loading}
+              disabled={carregando}
             >
-              {loading ? "Entrando..." : "Entrar no Sistema"}
+              {carregando
+                ? "Entrando..."
+                : "Entrar no Sistema"}
             </button>
-
           </form>
 
-
-          {/* ================= AJUDA ================= */}
-
+          {/* AJUDA */}
           <div className={styles.helpBox}>
-
             <div className={styles.helpIcon}>
               i
             </div>
 
             <div>
-
               <strong>
                 Precisa de ajuda?
               </strong>
@@ -180,51 +160,30 @@ export default function Login() {
                 com o suporte de T.I. da unidade ou ligue para{" "}
                 <strong>0800 000 0800</strong>.
               </p>
-
             </div>
-
           </div>
-
         </div>
 
-
-        {/* ================= RODAPÉ ================= */}
-
+        {/* RODAPÉ */}
         <footer className={styles.footer}>
-
           <span>
             Hotel Grand Plaza Admin © 2026
           </span>
 
-          <span>
-            Privacidade
-          </span>
-
-          <span>
-            Termos de Uso
-          </span>
-
-          <span>
-            Suporte
-          </span>
-
+          <span>Privacidade</span>
+          <span>Termos de Uso</span>
+          <span>Suporte</span>
         </footer>
-
       </section>
 
-
-      {/* ================= LADO DIREITO ================= */}
-
+      {/* LADO DIREITO */}
       <section className={styles.imageSide}>
-
         <div className={styles.overlay}></div>
 
         <div className={styles.presentation}>
-
           <span className={styles.secure}>
             🛡 ACESSO SEGURO & CRIPTOGRAFADO
           </span>
-
 
           <h2>
             Excelência em Gestão
@@ -232,17 +191,13 @@ export default function Login() {
             Hoteleira.
           </h2>
 
-
           <p>
             Potencialize a operação do seu hotel com ferramentas
             precisas de check-in, reservas e controle financeiro.
           </p>
 
-
-          {/* ================= BENEFÍCIOS ================= */}
-
+          {/* BENEFÍCIOS */}
           <div className={styles.features}>
-
             <span>
               <b>✓</b>
               Gestão em tempo real
@@ -262,14 +217,10 @@ export default function Login() {
               <b>♧</b>
               Suporte 24/7
             </span>
-
           </div>
 
-
-          {/* ================= DEPOIMENTO ================= */}
-
+          {/* DEPOIMENTO */}
           <div className={styles.testimonial}>
-
             <div className={styles.stars}>
               ★★★★★
             </div>
@@ -280,15 +231,12 @@ export default function Login() {
               intuitiva para o dia a dia.
             </p>
 
-
             <div className={styles.testimonialUser}>
-
               <div className={styles.avatar}>
                 DP
               </div>
 
               <div>
-
                 <strong>
                   Daniel Pinto Silva
                 </strong>
@@ -296,17 +244,11 @@ export default function Login() {
                 <small>
                   Gerente de Operações
                 </small>
-
               </div>
-
             </div>
-
           </div>
-
         </div>
-
       </section>
-
     </main>
   );
 }
