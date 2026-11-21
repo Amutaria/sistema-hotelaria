@@ -1,7 +1,6 @@
 "use client";
  
 import { useEffect, useState } from "react";
-import { apiFetch } from "@/lib/supabase-client";
 import { useRouter } from "next/navigation";
 import styles from "./hospedes.module.css";
  
@@ -70,7 +69,7 @@ export default function Hospedes() {
     const carregarHospedes = async () => {
       try {
         setErro("");
-        const response = await apiFetch("/api/hospedes");
+        const response = await fetch("/api/hospedes");
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || "Não foi possível carregar os hóspedes.");
         setHospedes(data.map((item) => ({
@@ -99,7 +98,7 @@ export default function Hospedes() {
     const hospede = hospedes.find((item) => item.id === id);
     if (!window.confirm(`Deseja realmente excluir o hóspede ${hospede?.nome || "selecionado"}?`)) return;
     try {
-      const response = await apiFetch(`/api/hospedes/${id}`, { method: "DELETE" });
+      const response = await fetch(`/api/hospedes/${id}`, { method: "DELETE" });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Não foi possível excluir o hóspede.");
       setHospedes((atual) => atual.filter((item) => item.id !== id));
@@ -153,7 +152,7 @@ export default function Hospedes() {
         ...hospedeEmEdicao,
         acompanhantes: (hospedeEmEdicao.acompanhantes || []).filter((item) => item?.nome?.trim() || item?.cpf?.trim()),
       };
-      const response = await apiFetch(`/api/hospedes/${hospedeEmEdicao.id}`, {
+      const response = await fetch(`/api/hospedes/${hospedeEmEdicao.id}`, {
         method: "PUT",
         body: JSON.stringify(payload),
       });
