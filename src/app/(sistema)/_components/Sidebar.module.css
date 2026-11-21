@@ -95,3 +95,23 @@
     display: none;
   }
 }
+.logoutButton {
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font: inherit;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+
+.logoutButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.logoutError {
+  color: #e57373;
+  font-size: 11px;
+  padding: 0 12px;
+}

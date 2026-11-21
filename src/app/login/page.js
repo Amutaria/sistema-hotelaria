@@ -1,12 +1,14 @@
+
 "use client";
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { signInWithPassword } from "@/lib/supabase-client";
+import { createClient } from "@/app/lib/supabase/client";
 import styles from "./login.module.css";
 
 export default function Login() {
   const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
@@ -14,13 +16,29 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     setErro("");
     setCarregando(true);
+
     try {
-      await signInWithPassword(email, senha);
-      router.push("/dashboard");
+      const supabase = createClient();
+
+      const { error: authError } =
+        await supabase.auth.signInWithPassword({
+          email,
+          password: senha,
+        });
+
+      if (authError) {
+        setErro("E-mail ou senha inválidos.");
+        return;
+      }
+
+      router.replace("/dashboard");
+      router.refresh();
     } catch (error) {
-      setErro(error.message || "Não foi possível entrar.");
+      console.error("Erro ao realizar login:", error);
+      setErro("Não foi possível realizar o login. Tente novamente.");
     } finally {
       setCarregando(false);
     }
@@ -28,12 +46,9 @@ export default function Login() {
 
   return (
     <main className={styles.container}>
-
-      {/* ================= LADO ESQUERDO ================= */}
+      {/* LADO ESQUERDO */}
       <section className={styles.loginSide}>
-
         <header className={styles.header}>
-
           <div className={styles.logo}>
             <div className={styles.logoIcon}>▦</div>
 
@@ -42,36 +57,27 @@ export default function Login() {
                 Grand Plaza
               </span>
 
-              <small>
-                CENTRAL DE RESERVAS
-              </small>
+              <small>CENTRAL DE RESERVAS</small>
             </div>
           </div>
 
           <span className={styles.language}>
             ◉ Português (Brasil)
           </span>
-
         </header>
 
-
         <div className={styles.loginContent}>
-
-          <h1>
-            Bem-vindo ao HotelPro
-          </h1>
+          <h1>Bem-vindo ao Hotel Grand Plaza</h1>
 
           <p className={styles.description}>
             Acesse sua conta administrativa para gerenciar reservas e
             operações do hotel.
           </p>
 
-
           <form
             className={styles.form}
             onSubmit={handleLogin}
           >
-
             <label htmlFor="usuario">
               E-mail cadastrado
             </label>
@@ -83,12 +89,10 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              autoComplete="username"
+              autoComplete="email"
             />
 
-
             <div className={styles.passwordLabel}>
-
               <label htmlFor="senha">
                 Senha
               </label>
@@ -96,12 +100,9 @@ export default function Login() {
               <a href="#">
                 Esqueci minha senha
               </a>
-
             </div>
 
-
             <div className={styles.passwordInput}>
-
               <input
                 id="senha"
                 type="password"
@@ -112,15 +113,10 @@ export default function Login() {
                 autoComplete="current-password"
               />
 
-              <span className={styles.eye}>
-                ◉
-              </span>
-
+              <span className={styles.eye}>◉</span>
             </div>
 
-
             <label className={styles.checkbox}>
-
               <input
                 type="checkbox"
                 defaultChecked
@@ -129,33 +125,32 @@ export default function Login() {
               <span>
                 Manter conectado neste dispositivo
               </span>
-
             </label>
 
-
-            {erro && <p role="alert">{erro}</p>}
+            {erro && (
+              <p role="alert">
+                {erro}
+              </p>
+            )}
 
             <button
               type="submit"
               className={styles.loginButton}
               disabled={carregando}
             >
-              {carregando ? "Entrando..." : "Entrar no Sistema"}
+              {carregando
+                ? "Entrando..."
+                : "Entrar no Sistema"}
             </button>
-
           </form>
 
-
-          {/* ================= AJUDA ================= */}
-
+          {/* AJUDA */}
           <div className={styles.helpBox}>
-
             <div className={styles.helpIcon}>
               i
             </div>
 
             <div>
-
               <strong>
                 Precisa de ajuda?
               </strong>
@@ -163,53 +158,32 @@ export default function Login() {
               <p>
                 Caso tenha problemas com seu acesso, entre em contato
                 com o suporte de T.I. da unidade ou ligue para{" "}
-                <strong>0800-HOTELPRO</strong>.
+                <strong>0800 000 0800</strong>.
               </p>
-
             </div>
-
           </div>
-
         </div>
 
-
-        {/* ================= RODAPÉ ================= */}
-
+        {/* RODAPÉ */}
         <footer className={styles.footer}>
-
           <span>
-            HotelPro Admin © 2024
+            Hotel Grand Plaza Admin © 2026
           </span>
 
-          <span>
-            Privacidade
-          </span>
-
-          <span>
-            Termos de Uso
-          </span>
-
-          <span>
-            Suporte
-          </span>
-
+          <span>Privacidade</span>
+          <span>Termos de Uso</span>
+          <span>Suporte</span>
         </footer>
-
       </section>
 
-
-      {/* ================= LADO DIREITO ================= */}
-
+      {/* LADO DIREITO */}
       <section className={styles.imageSide}>
-
         <div className={styles.overlay}></div>
 
         <div className={styles.presentation}>
-
           <span className={styles.secure}>
             🛡 ACESSO SEGURO & CRIPTOGRAFADO
           </span>
-
 
           <h2>
             Excelência em Gestão
@@ -217,17 +191,13 @@ export default function Login() {
             Hoteleira.
           </h2>
 
-
           <p>
             Potencialize a operação do seu hotel com ferramentas
             precisas de check-in, reservas e controle financeiro.
           </p>
 
-
-          {/* ================= BENEFÍCIOS ================= */}
-
+          {/* BENEFÍCIOS */}
           <div className={styles.features}>
-
             <span>
               <b>✓</b>
               Gestão em tempo real
@@ -247,33 +217,26 @@ export default function Login() {
               <b>♧</b>
               Suporte 24/7
             </span>
-
           </div>
 
-
-          {/* ================= DEPOIMENTO ================= */}
-
+          {/* DEPOIMENTO */}
           <div className={styles.testimonial}>
-
             <div className={styles.stars}>
               ★★★★★
             </div>
 
             <p>
-              O HotelPro Admin transformou nossa produtividade na
+              O Hotel Grand Plaza transformou nossa produtividade na
               recepção do hotel. A interface é rápida e extremamente
               intuitiva para o dia a dia.
             </p>
 
-
             <div className={styles.testimonialUser}>
-
               <div className={styles.avatar}>
                 DP
               </div>
 
               <div>
-
                 <strong>
                   Daniel Pinto Silva
                 </strong>
@@ -281,17 +244,11 @@ export default function Login() {
                 <small>
                   Gerente de Operações
                 </small>
-
               </div>
-
             </div>
-
           </div>
-
         </div>
-
       </section>
-
     </main>
   );
 }

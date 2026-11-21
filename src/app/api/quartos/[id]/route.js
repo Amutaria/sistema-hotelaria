@@ -1,7 +1,18 @@
 import { NextResponse } from "next/server";
+import { getAuthenticatedUser } from "@/app/lib/supabase/auth";
 import quartos from "../../../../../data/quartos";
 
 export async function GET(request, { params }) {
+
+  const user = await getAuthenticatedUser();
+
+  if (!user) {
+    return NextResponse.json(
+      { erro: "Não autenticado" },
+      { status: 401 }
+    );
+  }
+
   const { id } = await params;
 
   const quarto = quartos.find((q) => q.id === Number(id));
@@ -17,6 +28,16 @@ export async function GET(request, { params }) {
 }
 
 export async function PUT(request, { params }) {
+
+  const user = await getAuthenticatedUser();
+
+  if (!user) {
+    return NextResponse.json(
+      { erro: "Não autenticado" },
+      { status: 401 }
+    );
+  }
+
   const { id } = await params;
 
   const quarto = quartos.find((q) => q.id === Number(id));
@@ -104,9 +125,21 @@ export async function PUT(request, { params }) {
 }
 
 export async function DELETE(request, { params }) {
+
+  const user = await getAuthenticatedUser();
+
+  if (!user) {
+    return NextResponse.json(
+      { erro: "Não autenticado" },
+      { status: 401 }
+    );
+  }
+
   const { id } = await params;
 
-  const indice = quartos.findIndex((q) => q.id === Number(id));
+  const indice = quartos.findIndex(
+    (q) => q.id === Number(id)
+  );
 
   if (indice === -1) {
     return NextResponse.json(

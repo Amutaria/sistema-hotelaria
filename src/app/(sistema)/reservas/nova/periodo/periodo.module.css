@@ -427,3 +427,49 @@ button.step {
     flex-direction: column-reverse;
   }
 }
+
+
+/* Destaque da forma de pagamento */
+.paymentField {
+  padding: 18px;
+  margin-top: 22px;
+  background-color: #faf7f3;
+  border: 1px solid #e5d8cc;
+  border-radius: 12px;
+  gap: 12px;
+}
+
+.paymentHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.paymentHeader label {
+  color: #594638;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.paymentHeader p {
+  margin: 0;
+  color: #81766d;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.paymentSelectBox {
+  background-color: #ffffff;
+  border: 1px solid #bda58f;
+  border-radius: 8px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.paymentSelectBox:focus-within {
+  border-color: #967965;
+  box-shadow: 0 0 0 3px rgba(150, 121, 101, 0.12);
+}
+
+.paymentField select {
+  font-family: inherit;
+}

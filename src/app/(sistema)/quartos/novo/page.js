@@ -233,7 +233,7 @@ export default function NovoQuartoPage() {
         </span>
 
         <div className={styles.topbarUser}>
-          <span>Admin Panel</span>
+          <span>Admin Painel</span>
           <div className={styles.avatar} />
         </div>
       </header>

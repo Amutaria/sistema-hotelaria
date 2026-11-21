@@ -1,29 +1,41 @@
 import { NextResponse } from "next/server";
+import { getAuthenticatedUser } from "@/app/lib/supabase/auth";
 import quartos from "../../../../data/quartos";
 
 export async function GET() {
+  const user = await getAuthenticatedUser();
+
+  if (!user) {
+    return NextResponse.json(
+      { erro: "Não autenticado" },
+      { status: 401 }
+    );
+  }
+
   return NextResponse.json(quartos);
 }
 
 export async function POST(request) {
- 
-  const {
-  numero,
-  tipo,
-  andar,
-  bloco,
-  capacidade,
-  diaria,
-  status,
-  comodidades,
-} = await request.json();
 
-  if (!numero || !tipo || !capacidade || !diaria) {
+  const user = await getAuthenticatedUser();
+
+  if (!user) {
     return NextResponse.json(
-      { erro: "Número, tipo, capacidade e diária são obrigatórios" },
-      { status: 400 }
+      { erro: "Não autenticado" },
+      { status: 401 }
     );
   }
+
+  const {
+    numero,
+    tipo,
+    andar,
+    bloco,
+    capacidade,
+    diaria,
+    status,
+    comodidades,
+  } = await request.json();
 
  const tiposPermitidos = ["Standard", "Luxo", "Suíte"];
 
