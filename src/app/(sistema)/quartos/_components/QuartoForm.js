@@ -18,6 +18,9 @@ export default function QuartoForm({
   formularioVazio,
   icons,
   onSubmit,
+  salvando,
+  textoSalvando = "Cadastrando...",
+  textoConfirmar = "Confirmar Cadastro",
   mostrarStatus = true,
 }) {
   return (
@@ -29,23 +32,28 @@ export default function QuartoForm({
               <span className={styles.cardIcon}>{icons.building}</span>
               Identificação do Quarto
             </h2>
- 
+
             <div className={styles.grid}>
               <div className={styles.field}>
                 <label htmlFor="numero">
                   Número do Quarto <span>*</span>
                 </label>
                 <input
-                  id="numero"
-                  type="text"
-                  inputMode="numeric"
-                  placeholder="Ex: 105"
-                  value={form.numero}
-                  onChange={atualizar("numero")}
-                  required
+            id="numero"
+            type="text"
+            inputMode="numeric"
+            placeholder="Ex: 105"
+            value={form.numero}
+            onChange={(e) =>
+            setForm((f) => ({
+            ...f,
+        numero: e.target.value.replace(/\D/g, ""),
+           }))
+             }
+             required
                 />
               </div>
- 
+
               <div className={styles.field}>
                 <label htmlFor="tipo">
                   Tipo de Quarto <span>*</span>
@@ -60,7 +68,7 @@ export default function QuartoForm({
                   <span className={styles.selectIcon}>{icons.chevronDown}</span>
                 </div>
               </div>
- 
+
               <div className={styles.field}>
                 <label htmlFor="andar">Andar</label>
                 <div className={styles.selectBox}>
@@ -73,7 +81,7 @@ export default function QuartoForm({
                   <span className={styles.selectIcon}>{icons.chevronDown}</span>
                 </div>
               </div>
- 
+
               <div className={styles.field}>
                 <label htmlFor="bloco">Bloco / Ala</label>
                 <div className={styles.selectBox}>
@@ -88,14 +96,14 @@ export default function QuartoForm({
               </div>
             </div>
           </section>
- 
+
           {/* CAPACIDADE E TARIFAS */}
           <section className={styles.card}>
             <h2 className={styles.cardTitle}>
               <span className={styles.cardIcon}>{icons.users}</span>
               Capacidade e Tarifas
             </h2>
- 
+
             <div className={styles.grid}>
               <div className={styles.field}>
                 <label htmlFor="capacidade">
@@ -116,7 +124,7 @@ export default function QuartoForm({
                   <span className={styles.selectIcon}>{icons.chevronDown}</span>
                 </div>
               </div>
- 
+
               <div className={styles.field}>
                 <label htmlFor="diaria">
                   Valor da Diária (Base) <span>*</span>
@@ -137,7 +145,7 @@ export default function QuartoForm({
                 />
               </div>
             </div>
- 
+
             {mostrarStatus && (
       <div className={styles.statusField}>
             <span className={styles.label}>
@@ -172,14 +180,14 @@ export default function QuartoForm({
           </div>
             )}
           </section>
- 
+
           {/* COMODIDADES */}
           <section className={styles.card}>
             <h2 className={styles.cardTitle}>
               <span className={styles.cardIcon}>{icons.star}</span>
               Comodidades e Recursos
             </h2>
- 
+
             <div className={styles.amenities}>
               {comodidadesOpcoes.map((item) => {
                 const marcado = form.comodidades.includes(item);
@@ -200,15 +208,18 @@ export default function QuartoForm({
             </div>
           </section>
         </div>
- 
+
         {/* RESUMO */}
         <aside className={styles.summary}>
           <h2 className={styles.summaryTitle}>Resumo do Registro</h2>
- 
+
           <dl className={styles.summaryList}>
             <div>
               <dt>Identificação:</dt>
-              <dd>{form.numero ? `Quarto ${form.numero}` : "—"}</dd>
+              <dd>
+             {form.numero && Number(form.numero) > 0
+               ? `Quarto ${Number(form.numero)}` : "—"}
+              </dd>
             </div>
             <div>
               <dt>Categoria:</dt>
@@ -223,10 +234,16 @@ export default function QuartoForm({
               <dd className={styles.summaryPrice}>{form.diaria || "—"}</dd>
             </div>
           </dl>
- 
-          <button type="submit" className={styles.confirmButton}>
-            Confirmar Cadastro
-          </button>
+
+
+            <button
+             type="submit"
+              className={styles.confirmButton}
+              disabled={salvando}
+            >
+            {salvando ? textoSalvando : textoConfirmar}
+            </button>
+
           <button
             type="button"
             className={styles.clearButton}

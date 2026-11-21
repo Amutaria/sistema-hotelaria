@@ -17,7 +17,7 @@ const roomCardStatus = {
   Livre: styles.roomCardLivre,
   Ocupado: styles.roomCardOcupado,
   Reservado: styles.roomCardReservado,
-  ["Manutenção"]: styles.roomCardManutencao,
+  Manutenção: styles.roomCardManutencao,
 };
 
 // Retorna a data atual no formato AAAA-MM-DD
@@ -213,7 +213,7 @@ export default function QuartosPage() {
         </span>
 
         <div className={styles.topbarUser}>
-          <span>Admin Panel</span>
+          <span>Admin Painel</span>
           <div className={styles.avatar} />
         </div>
       </header>
@@ -316,10 +316,10 @@ export default function QuartosPage() {
               <div className={styles.roomsGrid}>
                 {quartosDoAndar.map((q) => (
                   <div
-                   key={q.numero}
-                   className={`${styles.roomCard} ${
-                   roomCardStatus[q.statusExibido] || ""
-                   }`}
+                    key={q.id}
+                    className={`${styles.roomCard} ${
+                      roomCardStatus[q.statusExibido] || ""
+                    }`}
                   >
                     <div className={styles.roomHeader}>
                       <div>

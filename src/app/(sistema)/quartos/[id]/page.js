@@ -74,36 +74,33 @@ export default function DetalhesQuartoPage() {
 function DetalhesQuarto({ quarto, id }) {
   const router = useRouter();
   const [semFoto, setSemFoto] = useState(false);
+  const [modalExclusaoAberto, setModalExclusaoAberto] = useState(false);
+  const [excluindo, setExcluindo] = useState(false);
+
 
   async function excluirQuarto() {
-    const confirmar = window.confirm(
-      `Tem certeza que deseja excluir o Quarto ${quarto.numero}?`
-    );
+  setExcluindo(true);
 
-    if (!confirmar) {
+  try {
+    const resposta = await fetch(`/api/quartos/${quarto.id}`, {
+      method: "DELETE",
+    });
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok) {
+      alert(dados.erro);
       return;
     }
 
-    try {
-      const resposta = await fetch(`/api/quartos/${quarto.id}`, {
-        method: "DELETE",
-      });
-
-      const dados = await resposta.json();
-
-      if (!resposta.ok) {
-        alert(dados.erro);
-        return;
-      }
-
-      alert("Quarto excluído com sucesso!");
-
-      router.push("/quartos");
-    } catch (erro) {
-      console.error("Erro ao excluir quarto:", erro);
-      alert("Erro ao excluir o quarto.");
-    }
+    router.push("/quartos");
+  } catch (erro) {
+    console.error("Erro ao excluir quarto:", erro);
+    alert("Erro ao excluir o quarto.");
+  } finally {
+    setExcluindo(false);
   }
+}
 
   const titulo = quarto
     ? `Detalhes do Quarto ${quarto.numero}`
@@ -154,7 +151,7 @@ function DetalhesQuarto({ quarto, id }) {
         </div>
       ) : (
         <>
-          
+
           <div className={styles.content}>
             {/* CARD DO QUARTO */}
             <section className={styles.card}>
@@ -245,11 +242,11 @@ function DetalhesQuarto({ quarto, id }) {
               </button>
 
               <button
-                type="button"
-                className={styles.deleteButton}
-                onClick={excluirQuarto}
-              >
-                Excluir Cadastro
+           type="button"
+             className={styles.deleteButton}
+          onClick={() => setModalExclusaoAberto(true)}
+            >
+              Excluir Cadastro
               </button>
             </section>
 
@@ -337,7 +334,7 @@ function DetalhesQuarto({ quarto, id }) {
               </section>
             </div>
           </div>
-          
+
         <div className={styles.bottomActions}>
         <button
             type="button"
@@ -349,6 +346,64 @@ function DetalhesQuarto({ quarto, id }) {
 </div>
         </>
       )}
+
+      {modalExclusaoAberto && (
+  <div
+    className={styles.modalOverlay}
+    onClick={() => {
+      if (!excluindo) setModalExclusaoAberto(false);
+    }}
+  >
+    <div
+      className={styles.modal}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="tituloModalExclusao"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className={styles.modalIcon}>
+        <Icon size={22}>
+          <path d="M12 9v4" />
+          <path d="M12 17h.01" />
+          <path d="M10.3 3.9 2.6 17.2A2 2 0 0 0 4.3 20h15.4a2 2 0 0 0 1.7-2.8L13.7 3.9a2 2 0 0 0-3.4 0Z" />
+        </Icon>
+      </div>
+
+      <h2 id="tituloModalExclusao">
+        Confirmar exclusão
+      </h2>
+
+      <p>
+        Tem certeza de que deseja excluir o quarto{" "}
+        <strong>{quarto.numero}</strong>?
+      </p>
+
+      <span className={styles.modalAviso}>
+        Essa ação não poderá ser desfeita.
+      </span>
+
+      <div className={styles.modalActions}>
+        <button
+          type="button"
+          className={styles.cancelButton}
+          onClick={() => setModalExclusaoAberto(false)}
+          disabled={excluindo}
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="button"
+          className={styles.confirmDeleteButton}
+          onClick={excluirQuarto}
+          disabled={excluindo}
+        >
+          {excluindo ? "Excluindo..." : "Sim, excluir"}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </>
   );
 }

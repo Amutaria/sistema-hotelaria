@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./novo.module.css";
 import QuartoForm from "../_components/QuartoForm";
+import { useToast } from "../_components/ToastProvider";
 
 /* ---------- Ícones (SVG inline) ---------- */
 const Icon = ({ children, size = 15 }) => (
@@ -146,9 +147,11 @@ const formularioVazio = {
 /* ---------- Página ---------- */
 export default function NovoQuartoPage() {
   const router = useRouter();
+  const { showToast } = useToast();
 
   const [form, setForm] = useState(formularioInicial);
   const [cadastrado, setCadastrado] = useState(null);
+  const [salvando, setSalvando] = useState(false);
 
   const atualizar = (campo) => (e) =>
     setForm((f) => ({
@@ -173,6 +176,20 @@ export default function NovoQuartoPage() {
 
   const confirmarCadastro = async (e) => {
     e.preventDefault();
+
+     // Validação do número do quarto
+  if (!form.numero || Number(form.numero) <= 0) {
+    showToast({
+      type: "warning",
+      title: "Número de quarto inválido",
+      message: "Informe um número de quarto maior que zero.",
+    });
+    return;
+  }
+
+     if (salvando) return;
+
+    setSalvando(true);
 
     const dadosQuarto = {
   numero: Number(form.numero),
@@ -202,15 +219,33 @@ export default function NovoQuartoPage() {
       const dados = await resposta.json();
 
       if (!resposta.ok) {
-        alert(dados.erro);
-        return;
-      }
+  showToast({
+    type: "error",
+    title: "Não foi possível cadastrar",
+    message: dados.erro || "Verifique os dados e tente novamente.",
+  });
+
+  return;
+}
 
       setCadastrado(dados);
-    } catch (erro) {
-      console.error(erro);
-      alert("Erro ao cadastrar o quarto.");
-    }
+
+showToast({
+  type: "success",
+  title: "Quarto cadastrado com sucesso!",
+  message: `O quarto ${dados.numero} foi salvo no sistema.`,
+});
+   } catch (erro) {
+  console.error(erro);
+
+  showToast({
+    type: "error",
+    title: "Erro de conexão",
+    message: "Não foi possível comunicar com o servidor. Tente novamente.",
+  });
+} finally {
+  setSalvando(false);
+}
   };
 
   const cadastrarOutro = () => {
@@ -331,7 +366,7 @@ export default function NovoQuartoPage() {
       ) : (
         /* FORMULÁRIO */
         <>
-         
+
 
           <QuartoForm
             form={form}
@@ -349,6 +384,7 @@ export default function NovoQuartoPage() {
             formularioVazio={formularioVazio}
             icons={icons}
             onSubmit={confirmarCadastro}
+            salvando={salvando}
           />
           <div className={styles.bottomActions}>
             <button
