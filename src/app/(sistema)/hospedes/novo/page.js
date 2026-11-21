@@ -1,7 +1,6 @@
 "use client";
  
 import { useState } from "react";
-import { apiFetch } from "@/lib/supabase-client";
 import { useRouter } from "next/navigation";
 import styles from "./novo.module.css";
  
@@ -155,7 +154,7 @@ export default function CadastroHospede() {
     if (salvando) return;
     setSalvando(true);
     try {
-      const response = await apiFetch("/api/hospedes", {
+      const response = await fetch("/api/hospedes", {
         method: "POST",
         body: JSON.stringify({
           ...form,
