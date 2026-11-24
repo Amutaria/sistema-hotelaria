@@ -854,6 +854,21 @@ useEffect(() => {
             </label>
 
             <label>
+              Categoria
+              <select
+                value={filtroCategoria}
+                onChange={(e) => setFiltroCategoria(e.target.value)}
+              >
+                <option value="todas">Todas as categorias</option>
+                {categorias.map((categoria) => (
+                  <option key={categoria.id} value={String(categoria.id)}>
+                    {categoria.nome}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label>
               Status
               <select
                 value={filtroStatus}
@@ -884,6 +899,16 @@ useEffect(() => {
               />
             </label>
 
+            <label>
+              Buscar descrição
+              <input
+                type="text"
+                placeholder="Digite uma descrição..."
+                value={buscaDescricao}
+                onChange={(e) => setBuscaDescricao(e.target.value)}
+              />
+            </label>
+
             <button
               type="button"
               onClick={() => {
@@ -891,6 +916,8 @@ useEffect(() => {
                 setFiltroStatus("todos");
                 setFiltroDataInicio("");
                 setFiltroDataFim("");
+                setFiltroCategoria("todas");
+                setBuscaDescricao("");
               }}
             >
               Limpar filtros
