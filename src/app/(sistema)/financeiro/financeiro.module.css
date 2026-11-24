@@ -634,7 +634,7 @@
 
 .filtrosMovimentacoes {
   display: grid;
-  grid-template-columns: repeat(4, minmax(140px, 1fr)) auto;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
   align-items: end;
   margin: 18px 0;
@@ -650,6 +650,8 @@
 
 .filtrosMovimentacoes input,
 .filtrosMovimentacoes select {
+  box-sizing: border-box;
+  min-width: 0;
   width: 100%;
   padding: 9px 10px;
   border: 1px solid #d1d5db;
