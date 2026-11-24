@@ -110,6 +110,8 @@ export default function FinanceiroPage() {
   const [filtroStatus, setFiltroStatus] = useState("todos");
   const [filtroDataInicio, setFiltroDataInicio] = useState("");
   const [filtroDataFim, setFiltroDataFim] = useState("");
+  const [filtroCategoria, setFiltroCategoria] = useState("todas");
+  const [buscaDescricao, setBuscaDescricao] = useState("");
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [movimentacaoEditando, setMovimentacaoEditando] = useState(null);
   const [salvando, setSalvando] = useState(false);
@@ -369,6 +371,7 @@ useEffect(() => {
       .from("movimentacoes_financeiras")
       .select(`
         id,
+        categoria_id,
         data_movimento,
         descricao,
         tipo,
@@ -390,6 +393,7 @@ useEffect(() => {
       setMovimentacoes(
         (data || []).map((item) => ({
           id: item.id,
+          categoria_id: item.categoria_id,
           data: new Date(`${item.data_movimento}T00:00:00`).toLocaleDateString("pt-BR"),
           dataOriginal: item.data_movimento,
           descricao: item.descricao,
@@ -427,11 +431,20 @@ const movimentacoesFiltradas = movimentacoes.filter((m) => {
   const correspondeDataFim =
     !filtroDataFim || m.dataOriginal <= filtroDataFim;
 
+  const correspondeCategoria =
+    filtroCategoria === "todas" ||
+    String(m.categoria_id) === filtroCategoria;
+
+  const correspondeDescricao =
+    m.descricao.toLowerCase().includes(buscaDescricao.toLowerCase());
+
   return (
     correspondeTipo &&
     correspondeStatus &&
     correspondeDataInicio &&
-    correspondeDataFim
+    correspondeDataFim &&
+    correspondeCategoria &&
+    correspondeDescricao
   );
 });
 
