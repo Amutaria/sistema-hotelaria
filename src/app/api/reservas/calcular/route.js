@@ -1,10 +1,21 @@
-
 import { NextResponse } from "next/server";
-import quartos from "../../../../../data/quartos";
+import { getAuthenticatedUser } from "@/app/lib/supabase/auth";
+import { createClient } from "@/app/lib/supabase/server";
 
 const TAXA_SERVICO = 45;
 
 export async function POST(request) {
+  const user = await getAuthenticatedUser();
+
+  if (!user) {
+    return NextResponse.json(
+      { erro: "Não autenticado" },
+      { status: 401 }
+    );
+  }
+
+  const supabase = await createClient();
+
   const { quartoId, dataEntrada, dataSaida } =
     await request.json();
 
@@ -29,9 +40,20 @@ export async function POST(request) {
     );
   }
 
-  const quarto = quartos.find(
-    (q) => q.id === Number(quartoId)
-  );
+  const { data: quarto, error } = await supabase
+    .from("quartos")
+    .select("id, numero, diaria")
+    .eq("id", Number(quartoId))
+    .maybeSingle();
+
+  if (error) {
+    console.error("Erro ao buscar quarto:", error);
+
+    return NextResponse.json(
+      { erro: "Erro ao buscar quarto no banco de dados" },
+      { status: 500 }
+    );
+  }
 
   if (!quarto) {
     return NextResponse.json(
