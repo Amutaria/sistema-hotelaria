@@ -11,6 +11,7 @@ export default function Login() {
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [mostrarSenha, setMostrarSenha] = useState(false);
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
 
@@ -105,7 +106,7 @@ export default function Login() {
             <div className={styles.passwordInput}>
               <input
                 id="senha"
-                type="password"
+                type={mostrarSenha ? "text" : "password"}
                 placeholder="••••••••"
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
@@ -113,7 +114,14 @@ export default function Login() {
                 autoComplete="current-password"
               />
 
-              <span className={styles.eye}>◉</span>
+              <button
+                type="button"
+                className={styles.eye}
+                onClick={() => setMostrarSenha((visivel) => !visivel)}
+                aria-label={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
+              >
+                {mostrarSenha ? "◉" : "◎"}
+              </button>
             </div>
 
             <label className={styles.checkbox}>
