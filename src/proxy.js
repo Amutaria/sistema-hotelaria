@@ -47,6 +47,58 @@ export async function proxy(request) {
     return redirectResponse;
   }
 
+  const { data: perfilUsuario, error: erroPerfil } = await supabase
+    .from("perfis")
+    .select("perfil")
+    .eq("user_id", data.claims.sub)
+    .maybeSingle();
+
+  if (erroPerfil || !perfilUsuario) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    url.searchParams.set("erro", "perfil");
+
+    const redirectResponse = NextResponse.redirect(url);
+
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie);
+    });
+
+    return redirectResponse;
+  }
+
+  const perfil = perfilUsuario.perfil;
+
+  const caminhosPermitidosColaborador = [
+    "/reservas",
+    "/hospedes",
+    "/quartos",
+    "/financeiro",
+    "/suporte",
+  ];
+
+  const acessoPermitido =
+    perfil === "admin" ||
+    caminhosPermitidosColaborador.some(
+      (caminho) =>
+        request.nextUrl.pathname === caminho ||
+        request.nextUrl.pathname.startsWith(caminho + "/")
+    );
+
+  if (!acessoPermitido) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/suporte";
+    url.search = "";
+
+    const redirectResponse = NextResponse.redirect(url);
+
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie);
+    });
+
+    return redirectResponse;
+  }
+
   return supabaseResponse;
 }
 
