@@ -56,6 +56,13 @@ const formularioVazio = {
   email: "",
   telefone: "",
   documento: "",
+  cep: "",
+  rua: "",
+  numero: "",
+  complemento: "",
+  bairro: "",
+  cidade: "",
+  estado: "",
   observacoes: "",
   acompanhantes: [{ nome: "", cpf: "" }],
 };
@@ -103,6 +110,7 @@ export default function CadastroHospede() {
     try {
       const response = await fetch("/api/hospedes", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
           acompanhantes: (form.acompanhantes || []).filter((item) => item.nome.trim() || item.cpf.trim()),
@@ -249,6 +257,34 @@ export default function CadastroHospede() {
                 value={form.documento}
                 onChange={atualizar("documento")}
               />
+            </div>
+            <div className={styles.field}>
+              <label htmlFor="cep">CEP</label>
+              <input id="cep" value={form.cep} onChange={atualizar("cep")} maxLength={9} placeholder="00000-000" />
+            </div>
+            <div className={styles.field}>
+              <label htmlFor="rua">Rua / Logradouro</label>
+              <input id="rua" value={form.rua} onChange={atualizar("rua")} />
+            </div>
+            <div className={styles.field}>
+              <label htmlFor="numero">Número</label>
+              <input id="numero" value={form.numero} onChange={atualizar("numero")} />
+            </div>
+            <div className={styles.field}>
+              <label htmlFor="complemento">Complemento</label>
+              <input id="complemento" value={form.complemento} onChange={atualizar("complemento")} />
+            </div>
+            <div className={styles.field}>
+              <label htmlFor="bairro">Bairro</label>
+              <input id="bairro" value={form.bairro} onChange={atualizar("bairro")} />
+            </div>
+            <div className={styles.field}>
+              <label htmlFor="cidade">Cidade</label>
+              <input id="cidade" value={form.cidade} onChange={atualizar("cidade")} />
+            </div>
+            <div className={styles.field}>
+              <label htmlFor="estado">UF</label>
+              <input id="estado" value={form.estado} onChange={atualizar("estado", (v) => v.toUpperCase().slice(0, 2))} maxLength={2} />
             </div>
           </div>
         </section>
