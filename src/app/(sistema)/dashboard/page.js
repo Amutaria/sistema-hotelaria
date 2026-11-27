@@ -435,9 +435,7 @@ export default function Dashboard() {
                         const x =
                           dadosOcupacao.length === 1
                             ? 300
-                            : 30 +
-                              (index / (dadosOcupacao.length - 1)) *
-                                largura;
+                            : 5 + (index / (dadosOcupacao.length - 1)) * 565;
 
                         const y =
                           margemVertical +
@@ -453,7 +451,7 @@ export default function Dashboard() {
                         .join(" ");
 
                       const baseGrafico = margemVertical + altura;
-                      const area = `30,${baseGrafico} ${linha} ${
+                      const area = `5,${baseGrafico} ${linha} ${
                         pontos[pontos.length - 1].x
                       },${baseGrafico}`;
 
@@ -527,10 +525,7 @@ export default function Dashboard() {
                       </strong>
                       <span>Ocupação: {pontoSelecionado.dados.ocupacao}%</span>
                       <span>
-                        {pontoSelecionado.dados.data === pontoSelecionado.dados.dataFim
-                          ? "Quartos ocupados:"
-                          : "Média de quartos ocupados:"}{" "}
-                        {pontoSelecionado.dados.quartosOcupados}
+                        Quartos ocupados: {pontoSelecionado.dados.quartosOcupados}
                       </span>
                       <span>
                         Total de quartos: {pontoSelecionado.dados.totalQuartos}
@@ -552,8 +547,7 @@ export default function Dashboard() {
                       const x =
                         dadosOcupacao.length === 1
                           ? 300
-                          : 30 +
-                            (index / (dadosOcupacao.length - 1)) * 540;
+                          : 5 + (index / (dadosOcupacao.length - 1)) * 565;
                       const y =
                         5 +
                         ((100 - Math.max(0, Math.min(100, ponto.ocupacao))) /
@@ -591,20 +585,14 @@ export default function Dashboard() {
                     const x =
                       dadosOcupacao.length === 1
                         ? 300
-                        : 30 +
-                          (index / (dadosOcupacao.length - 1)) * 540;
+                        : 5 + (index / (dadosOcupacao.length - 1)) * 565;
 
                     return (
                       <span
                         key={`${ponto.label}-${index}`}
                         style={{
                           left: `${(x / 600) * 100}%`,
-                          transform:
-                            index === 0
-                              ? "translateX(0)"
-                              : index === dadosOcupacao.length - 1
-                                ? "translateX(-100%)"
-                                : "translateX(-50%)",
+                          transform: "translateX(-50%)",
                         }}
                       >
                         {ponto.label}
