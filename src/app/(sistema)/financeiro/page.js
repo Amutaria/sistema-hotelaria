@@ -592,7 +592,13 @@ useEffect(() => {
       <header className={styles.topbar}>
         <span className={styles.topbarTitle}>Hotel Grand Plaza / Central de Reservas</span>
         <div className={styles.topbarUser}>
-          <span>Admin Painel</span>
+          <span>
+            {perfil === "admin"
+              ? "Administrador"
+              : perfil === "colaborador"
+                ? "Colaborador"
+                : "Usuário"}
+          </span>
           <div className={styles.avatar} />
         </div>
       </header>
