@@ -18,6 +18,7 @@ const STATUS_PERMITIDOS = [
 ];
 
 // GET - Buscar um quarto específico
+// GET - Buscar um quarto específico com histórico de ocupação
 export async function GET(request, { params }) {
   try {
     const user = await getAuthenticatedUser();
@@ -41,14 +42,15 @@ export async function GET(request, { params }) {
 
     const supabase = await createClient();
 
-    const { data, error } = await supabase
+    // Buscar os dados do quarto
+    const { data: quarto, error: erroQuarto } = await supabase
       .from("quartos")
       .select("*")
       .eq("id", idNumerico)
       .maybeSingle();
 
-    if (error) {
-      console.error("Erro ao buscar quarto:", error);
+    if (erroQuarto) {
+      console.error("Erro ao buscar quarto:", erroQuarto);
 
       return NextResponse.json(
         { erro: "Erro ao buscar quarto" },
@@ -56,14 +58,64 @@ export async function GET(request, { params }) {
       );
     }
 
-    if (!data) {
+    if (!quarto) {
       return NextResponse.json(
         { erro: "Quarto não encontrado" },
         { status: 404 }
       );
     }
 
-    return NextResponse.json(data);
+    // Buscar as reservas relacionadas ao quarto
+    const { data: reservas, error: erroReservas } = await supabase
+      .from("reservas")
+      .select(`
+        id,
+        data_entrada,
+        data_saida,
+        status,
+        valor_diaria,
+        hospedes (
+          nome
+        )
+      `)
+      .eq("id_quarto", idNumerico)
+      .neq("status", "Cancelada")
+      .order("data_entrada", { ascending: false });
+
+    if (erroReservas) {
+      console.error("Erro ao buscar histórico do quarto:", erroReservas);
+
+      return NextResponse.json(
+        { erro: "Erro ao buscar histórico de ocupação" },
+        { status: 500 }
+      );
+    }
+
+    // Formatar data para DD/MM/AAAA
+    function formatarData(valor) {
+      if (!valor) return "Não informada";
+
+      const [ano, mes, dia] = valor.split("-");
+
+      return `${dia}/${mes}/${ano}`;
+    }
+
+    // Organizar os dados para a tabela da página
+    const historico = (reservas || []).map((reserva) => ({
+      periodo: `${formatarData(reserva.data_entrada)} - ${formatarData(reserva.data_saida)}`,
+      hospede: reserva.hospedes?.nome || "Não informado",
+      status: reserva.status,
+      tarifa: Number(reserva.valor_diaria).toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }),
+    }));
+
+    return NextResponse.json({
+      ...quarto,
+      historico,
+    });
+
   } catch (error) {
     console.error("Erro inesperado ao buscar quarto:", error);
 
