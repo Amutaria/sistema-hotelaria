@@ -50,3 +50,15 @@ Abra http://localhost:3000, entre com o usuário criado e acesse **Hóspedes →
 - A API exige um access token válido. Sem login, as rotas respondem HTTP 401.
 - A edição substitui a lista de acompanhantes em chamadas separadas; se a gravação dos acompanhantes falhar depois da atualização do hóspede, confira os dados antes de repetir a operação.
 - Antes de publicar em produção, configure URLs de redirecionamento, política de senha, proteção contra abuso e um modelo de autorização por perfil/unidade.
+
+
+## Atualizações de integridade (novembro de 2026)
+
+- A API valida os dígitos verificadores do CPF no cadastro e na edição.
+- A edição chama a RPC `atualizar_hospede_com_acompanhantes`, que altera o hóspede e substitui os acompanhantes na mesma transação. Em caso de erro, o PostgreSQL desfaz todas as alterações dessa operação.
+- O trigger `trg_hospedes_updated_at` atualiza `updated_at` automaticamente.
+- O formulário de cadastro e o modal de edição agora incluem endereço.
+- O acesso à RPC é restrito ao papel `authenticated`; a função usa `SECURITY INVOKER` e respeita as políticas RLS.
+- O arquivo SQL para reproduzir as alterações está em `supabase/sql/atualizacoes_hospedes.sql`.
+
+A política RLS atual continua permitindo que qualquer conta autenticada da equipe faça CRUD em todos os hóspedes. Para separar permissões por funcionário, será necessário criar perfis/roles e ajustar as policies antes de produção.

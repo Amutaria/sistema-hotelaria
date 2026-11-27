@@ -106,6 +106,22 @@ export function normalizeGuestPayload(input = {}) {
   return guest;
 }
 
+export function isValidCpf(value) {
+  const cpf = String(value || "").replace(/\D/g, "");
+  if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
+
+  const calculateDigit = (base, factor) => {
+    let total = 0;
+    for (const digit of base) total += Number(digit) * factor--;
+    const remainder = (total * 10) % 11;
+    return remainder === 10 ? 0 : remainder;
+  };
+
+  const first = calculateDigit(cpf.slice(0, 9), 10);
+  const second = calculateDigit(cpf.slice(0, 10), 11);
+  return first === Number(cpf[9]) && second === Number(cpf[10]);
+}
+
 export function normalizeCompanions(input) {
   if (!Array.isArray(input)) return [];
 

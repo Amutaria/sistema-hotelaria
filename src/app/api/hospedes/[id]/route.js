@@ -1,4 +1,4 @@
-import { getAuthenticatedSupabase, jsonError, normalizeGuestPayload, normalizeCompanions } from "@/lib/supabase-server";
+import { getAuthenticatedSupabase, jsonError, normalizeGuestPayload, normalizeCompanions, isValidCpf } from "@/lib/supabase-server";
 
 export const dynamic = "force-dynamic";
 
@@ -31,36 +31,29 @@ export async function PUT(request, context) {
   if (!guest.nome || !guest.cpf || !guest.email || !guest.telefone) {
     return jsonError("Preencha nome, CPF, e-mail e telefone.");
   }
+  if (!isValidCpf(guest.cpf)) return jsonError("Informe um CPF válido.");
   if (guest.estado && guest.estado.length !== 2) return jsonError("O estado deve conter a sigla de 2 letras.");
 
-  const updated = await db.request(`hospedes?id=eq.${id}&select=id`, {
-    method: "PATCH",
-    headers: { Prefer: "return=representation" },
-    body: JSON.stringify(guest),
+  const companions = normalizeCompanions(input.acompanhantes);
+  const saved = await db.request("rpc/atualizar_hospede_com_acompanhantes", {
+    method: "POST",
+    body: JSON.stringify({
+      p_hospede_id: id,
+      p_hospede: guest,
+      p_acompanhantes: companions,
+    }),
   });
-  if (!updated.response.ok) {
-    const message = updated.data?.code === "23505"
+
+  if (!saved.response.ok) {
+    const message = saved.data?.code === "23505"
       ? "Já existe outro hóspede cadastrado com este CPF."
-      : updated.data?.message || "Não foi possível atualizar o hóspede.";
-    return jsonError(message, updated.response.status);
-  }
-  if (!updated.data?.length) return jsonError("Hóspede não encontrado.", 404);
-
-  const removed = await db.request(`acompanhantes?hospede_id=eq.${id}`, { method: "DELETE" });
-  if (!removed.response.ok) return jsonError(removed.data?.message || "Os dados foram atualizados, mas não foi possível substituir os acompanhantes.", removed.response.status);
-
-  const companions = normalizeCompanions(input.acompanhantes).map((item) => ({ ...item, hospede_id: id }));
-  if (companions.length) {
-    const inserted = await db.request("acompanhantes", {
-      method: "POST",
-      headers: { Prefer: "return=minimal" },
-      body: JSON.stringify(companions),
-    });
-    if (!inserted.response.ok) return jsonError(inserted.data?.message || "Hóspede atualizado, mas houve falha ao salvar os acompanhantes.", inserted.response.status);
+      : saved.data?.code === "P0002"
+        ? "Hóspede não encontrado."
+        : saved.data?.message || "Não foi possível atualizar o hóspede e seus acompanhantes.";
+    return jsonError(message, saved.data?.code === "P0002" ? 404 : saved.response.status);
   }
 
-  const complete = await db.request(`hospedes?id=eq.${id}&select=*,acompanhantes(*)`);
-  return Response.json(complete.data?.[0] || { id, ...guest, acompanhantes: companions });
+  return Response.json(saved.data);
 }
 
 export async function DELETE(request, context) {
