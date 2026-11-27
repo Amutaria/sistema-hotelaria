@@ -99,7 +99,10 @@ export async function POST(request, { params }) {
     const { data: reservaAtualizada, error: erroAtualizarReserva } =
       await supabase
         .from("reservas")
-        .update({ status: "Em hospedagem" })
+        .update({
+          status: "Em hospedagem",
+          checkin_em: new Date().toISOString()
+        })
         .eq("id", reserva.id)
         .select("*")
         .single();
