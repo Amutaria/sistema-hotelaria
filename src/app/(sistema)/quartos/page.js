@@ -104,7 +104,7 @@ export default function QuartosPage() {
       .filter((reserva) => {
         return (
           Number(reserva.quartoId) === Number(quarto.id) &&
-          reserva.status !== "Cancelada"
+          ["Confirmada", "Em hospedagem"].includes(reserva.satatus)
         );
       })
       .sort((a, b) => {
