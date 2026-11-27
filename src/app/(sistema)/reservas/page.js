@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
@@ -624,11 +625,24 @@ export default function ReservasPage() {
 
               </div>
 
-              <span className={styles.historicoTotal}>
+              <div className={styles.historicoHeaderAcoes}>
 
-                {reservas.length} reserva(s)
+                <span className={styles.historicoTotal}>
 
-              </span>
+                  {reservas.length} reserva(s)
+
+                </span>
+
+                <button
+                  type="button"
+                  className={styles.newButton}
+                  onClick={() => router.push("/hospedes/novo")}
+                >
+                  {icons.plus}
+                  Novo Cadastro
+                </button>
+
+              </div>
 
             </div>
 
