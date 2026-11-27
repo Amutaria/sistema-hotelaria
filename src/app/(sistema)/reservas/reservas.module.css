@@ -431,6 +431,13 @@
   box-shadow: 0 0 0 2px rgba(165, 139, 120, 0.12);
 }
 
+.historicoHeaderAcoes {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-direction: row;
+}
+
 /* ÍCONE ORIGINAL DA PESQUISA */
 
 .historicoBusca svg {
