@@ -14,11 +14,55 @@ export default function Dashboard() {
   const [carregandoReservas, setCarregandoReservas] = useState(true);
   const [erroReservas, setErroReservas] = useState("");
 
-  const router = useRouter();
+  // Indicadores de desempenho
+  const [indicadores, setIndicadores] = useState(null);
+  const [carregandoIndicadores, setCarregandoIndicadores] = useState(true);
+  const [erroIndicadores, setErroIndicadores] = useState("");
 
+  const router = useRouter();
+  // NOVO: buscar indicadores do dashboard
   useEffect(() => {
     let ativo = true;
 
+    async function buscarIndicadores() {
+      try {
+        const response = await fetch("/api/dashboard", {
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          throw new Error("Não foi possível carregar os indicadores.");
+        }
+
+        const dados = await response.json();
+
+        if (ativo) {
+          setIndicadores(dados);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar indicadores:", error);
+
+        if (ativo) {
+          setErroIndicadores("Não foi possível carregar os indicadores.");
+        }
+      } finally {
+        if (ativo) {
+          setCarregandoIndicadores(false);
+        }
+      }
+    }
+
+    buscarIndicadores();
+
+    return () => {
+      ativo = false;
+    };
+  }, []);
+
+  // PRIMEIRO useEffect que já existia (buscar quartos)
+  useEffect(() => {
+    let ativo = true;
+    
     async function buscarQuartos() {
       try {
         const response = await fetch("/api/quartos", {
@@ -175,50 +219,67 @@ export default function Dashboard() {
           <h2 className={styles.sectionTitle}>Indicadores de Desempenho</h2>
 
           <div className={styles.statsGrid}>
-            <div className={styles.statCard}>
-              <div className={styles.statTop}>
-                <div className={`${styles.statIcon} ${styles.blue}`}>▣</div>
-                <span className={styles.positive}>+4%</span>
-              </div>
-              <span className={styles.statLabel}>Taxa de Ocupação</span>
-              <strong className={styles.statValue}>78%</strong>
-            </div>
+            {indicadores && (
+              <>
+                <div className={styles.statCard}>
+                  <div className={styles.statTop}>
+                    <div className={`${styles.statIcon} ${styles.blue}`}>%</div>
+                    <span className={styles.normal}>Agora</span>
+                  </div>
+                  <span className={styles.statLabel}>Taxa de Ocupação</span>
+                  <strong className={styles.statValue}>
+                    {indicadores.taxaOcupacao}%
+                  </strong>
+                </div>
 
-            <div className={styles.statCard}>
-              <div className={styles.statTop}>
-                <div className={`${styles.statIcon} ${styles.green}`}>✓</div>
-                <span className={styles.negative}>-2</span>
-              </div>
-              <span className={styles.statLabel}>Quartos Disponíveis</span>
-              <strong className={styles.statValue}>14</strong>
-            </div>
+                <div className={styles.statCard}>
+                  <div className={styles.statTop}>
+                    <div className={`${styles.statIcon} ${styles.green}`}>✓</div>
+                    <span className={styles.normal}>Agora</span>
+                  </div>
+                  <span className={styles.statLabel}>Quartos Disponíveis</span>
+                  <strong className={styles.statValue}>
+                    {indicadores.quartosDisponiveis}
+                  </strong>
+                </div>
 
-            <div className={styles.statCard}>
-              <div className={styles.statTop}>
-                <div className={`${styles.statIcon} ${styles.orange}`}>▣</div>
-                <span className={styles.positive}>+3</span>
-              </div>
-              <span className={styles.statLabel}>Reservas Hoje</span>
-              <strong className={styles.statValue}>08</strong>
-            </div>
+                <div className={styles.statCard}>
+                  <div className={styles.statTop}>
+                    <div className={`${styles.statIcon} ${styles.orange}`}>▣</div>
+                    <span className={styles.normal}>Hoje</span>
+                  </div>
+                  <span className={styles.statLabel}>Reservas Hoje</span>
+                  <strong className={styles.statValue}>
+                    {indicadores.reservasHoje}
+                  </strong>
+                </div>
 
-            <div className={styles.statCard}>
-              <div className={styles.statTop}>
-                <div className={`${styles.statIcon} ${styles.purple}`}>♧</div>
-                <span className={styles.normal}>Normal</span>
-              </div>
-              <span className={styles.statLabel}>Check-in / Out</span>
-              <strong className={styles.statValue}>12 / 09</strong>
-            </div>
+                <div className={styles.statCard}>
+                  <div className={styles.statTop}>
+                    <div className={`${styles.statIcon} ${styles.purple}`}>♧</div>
+                    <span className={styles.normal}>Hoje</span>
+                  </div>
+                  <span className={styles.statLabel}>Check-in / Out</span>
+                  <strong className={styles.statValue}>
+                    {indicadores.checkinsHoje} / {indicadores.checkoutsHoje}
+                  </strong>
+                </div>
 
-            <div className={styles.statCard}>
-              <div className={styles.statTop}>
-                <div className={`${styles.statIcon} ${styles.green}`}>↗</div>
-                <span className={styles.positive}>+12%</span>
-              </div>
-              <span className={styles.statLabel}>Receita Diária</span>
-              <strong className={styles.statValue}>R$ 4.250</strong>
-            </div>
+                <div className={styles.statCard}>
+                  <div className={styles.statTop}>
+                    <div className={`${styles.statIcon} ${styles.green}`}>↗</div>
+                    <span className={styles.normal}>Hoje</span>
+                  </div>
+                  <span className={styles.statLabel}>Receita Diária</span>
+                  <strong className={styles.statValue}>
+                    {Number(indicadores.receitaDiaria).toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </strong>
+                </div>
+              </>
+            )}
           </div>
         </section>
 
