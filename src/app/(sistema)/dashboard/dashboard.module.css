@@ -246,7 +246,7 @@
   left: 0;
   width: 32px;
   height: 170px;
-  color: #475569;;
+  color: #475569;
   font-size: 10.5px;
 }
 
@@ -259,6 +259,9 @@
 .chartArea {
   position: relative;
   height: 170px;
+  outline: 1px solid #dfe5ec;
+  outline-offset: -1px;
+  border-radius: 4px;
 }
 
 .chartSvg {

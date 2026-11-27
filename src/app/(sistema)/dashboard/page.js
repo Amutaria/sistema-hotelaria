@@ -390,13 +390,8 @@ export default function Dashboard() {
                     <span
                       key={valor}
                       style={{
-                        top: `${100 - valor}%`,
-                        transform:
-                          valor === 100
-                            ? "translateY(0)"
-                            : valor === 0
-                              ? "translateY(-100%)"
-                              : "translateY(-50%)",
+                        top: `${5 + ((100 - valor) / 100) * 160}px`,
+                        transform: "translateY(-50%)",
                       }}
                     >
                       {valor}%
@@ -572,9 +567,7 @@ export default function Dashboard() {
                           style={{
                             left: `${(x / 600) * 100}%`,
                             top: `${(y / 170) * 100}%`,
-                            transform: pertoDaBordaDireita
-                              ? "translate(calc(-100% - 8px), -50%)"
-                              : "translate(8px, -50%)",
+                            transform: "translate(-50%, calc(-100% - 7px))",
                           }}
                         >
                           {ponto.ocupacao}%
