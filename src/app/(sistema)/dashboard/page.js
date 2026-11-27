@@ -23,6 +23,7 @@ export default function Dashboard() {
   const [dadosOcupacao, setDadosOcupacao] = useState([]);
   const [carregandoOcupacao, setCarregandoOcupacao] = useState(true);
   const [erroOcupacao, setErroOcupacao] = useState("");
+  const [pontoSelecionado, setPontoSelecionado] = useState(null);
 
   const router = useRouter();
   // NOVO: buscar indicadores do dashboard
@@ -71,6 +72,7 @@ export default function Dashboard() {
     async function buscarOcupacao() {
       setCarregandoOcupacao(true);
       setErroOcupacao("");
+      setPontoSelecionado(null);
 
       try {
         const response = await fetch(
@@ -222,6 +224,12 @@ export default function Dashboard() {
   const formatarData = (data) => {
     if (!data) return "";
 
+    const [ano, mes, dia] = data.split("-");
+    return `${dia}/${mes}/${ano}`;
+  };
+
+  const formatarDataTooltip = (data) => {
+    if (!data) return "";
     const [ano, mes, dia] = data.split("-");
     return `${dia}/${mes}/${ano}`;
   };
@@ -378,15 +386,22 @@ export default function Dashboard() {
             ) : (
               <div className={styles.chart}>
                 <div className={styles.chartGrid}>
-                  <span>100%</span>
-                  <span>75%</span>
-                  <span>50%</span>
-                  <span>25%</span>
+                  {[100, 75, 50, 25, 0].map((valor) => (
+                    <span
+                      key={valor}
+                      style={{
+                        top: `${5 + ((100 - valor) / 100) * 160}px`,
+                        transform: "translateY(-50%)",
+                      }}
+                    >
+                      {valor}%
+                    </span>
+                  ))}
                 </div>
 
                 <div className={styles.chartArea}>
                   <svg
-                    viewBox="0 0 600 180"
+                    viewBox="0 0 600 170"
                     preserveAspectRatio="none"
                     className={styles.chartSvg}
                   >
@@ -413,35 +428,48 @@ export default function Dashboard() {
 
                     {(() => {
                       const largura = 540;
-                      const altura = 150;
+                      const altura = 160;
+                      const margemVertical = 5;
 
                       const pontos = dadosOcupacao.map((ponto, index) => {
                         const x =
                           dadosOcupacao.length === 1
                             ? 300
-                            : 30 +
-                              (index / (dadosOcupacao.length - 1)) *
-                                largura;
+                            : 5 + (index / (dadosOcupacao.length - 1)) * 565;
 
                         const y =
-                          altura -
-                          (Math.max(0, Math.min(100, ponto.ocupacao)) /
+                          margemVertical +
+                          ((100 - Math.max(0, Math.min(100, ponto.ocupacao))) /
                             100) *
                             altura;
 
-                        return { x, y };
+                        return { x, y, dados: ponto };
                       });
 
                       const linha = pontos
                         .map((ponto) => `${ponto.x},${ponto.y}`)
                         .join(" ");
 
-                      const area = `30,${altura + 10} ${linha} ${
+                      const baseGrafico = margemVertical + altura;
+                      const area = `5,${baseGrafico} ${linha} ${
                         pontos[pontos.length - 1].x
-                      },${altura + 10}`;
+                      },${baseGrafico}`;
 
                       return (
                         <>
+                          {[5, 45, 85, 125, 165].map((y) => (
+                            <line
+                              key={y}
+                              x1="0"
+                              y1={y}
+                              x2="600"
+                              y2={y}
+                              stroke="#dfe5ec"
+                              strokeWidth="1"
+                              strokeDasharray="4 4"
+                            />
+                          ))}
+
                           <polygon
                             points={area}
                             fill="url(#occupancyGradient)"
@@ -461,14 +489,49 @@ export default function Dashboard() {
                               key={index}
                               cx={ponto.x}
                               cy={ponto.y}
-                              r="3.5"
+                              r={pontoSelecionado?.index === index ? "5.5" : "3.5"}
                               fill="#3b8ff3"
+                              tabIndex="0"
+                              role="img"
+                              aria-label={`Ocupação de ${ponto.dados.label}: ${ponto.dados.ocupacao}%`}
+                              onMouseEnter={() =>
+                                setPontoSelecionado({ index, ...ponto })
+                              }
+                              onMouseLeave={() => setPontoSelecionado(null)}
+                              onFocus={() =>
+                                setPontoSelecionado({ index, ...ponto })
+                              }
+                              onBlur={() => setPontoSelecionado(null)}
                             />
                           ))}
                         </>
                       );
                     })()}
                   </svg>
+
+                  {pontoSelecionado && (
+                    <div
+                      className={styles.chartTooltip}
+                      style={{
+                        left: `${Math.min(85, Math.max(15, (pontoSelecionado.x / 600) * 100))}%`,
+                        top: `${(pontoSelecionado.y / 170) * 100}%`,
+                      }}
+                      role="status"
+                    >
+                      <strong>
+                        {pontoSelecionado.dados.data === pontoSelecionado.dados.dataFim
+                          ? formatarDataTooltip(pontoSelecionado.dados.data)
+                          : `${formatarDataTooltip(pontoSelecionado.dados.data)} – ${formatarDataTooltip(pontoSelecionado.dados.dataFim)}`}
+                      </strong>
+                      <span>Ocupação: {pontoSelecionado.dados.ocupacao}%</span>
+                      <span>
+                        Quartos ocupados: {pontoSelecionado.dados.quartosOcupados}
+                      </span>
+                      <span>
+                        Total de quartos: {pontoSelecionado.dados.totalQuartos}
+                      </span>
+                    </div>
+                  )}
 
                   <div className={styles.chartValues}>
                     {dadosOcupacao.map((ponto, index) => {
@@ -481,15 +544,25 @@ export default function Dashboard() {
 
                       if (!mostrarValor) return null;
 
-                      const posicao =
+                      const x =
                         dadosOcupacao.length === 1
-                          ? 50
-                          : (index / (dadosOcupacao.length - 1)) * 96 + 2;
+                          ? 300
+                          : 5 + (index / (dadosOcupacao.length - 1)) * 565;
+                      const y =
+                        5 +
+                        ((100 - Math.max(0, Math.min(100, ponto.ocupacao))) /
+                          100) *
+                          160;
+                      const pertoDaBordaDireita = x > 500;
 
                       return (
                         <span
                           key={`${ponto.label}-${index}`}
-                          style={{ left: `${posicao}%` }}
+                          style={{
+                            left: `${(x / 600) * 100}%`,
+                            top: `${(y / 170) * 100}%`,
+                            transform: "translate(-50%, calc(-100% - 7px))",
+                          }}
                         >
                           {ponto.ocupacao}%
                         </span>
@@ -507,9 +580,22 @@ export default function Dashboard() {
                       index === dadosOcupacao.length - 1 ||
                       index % intervalo === 0;
 
+                    if (!mostrarData) return null;
+
+                    const x =
+                      dadosOcupacao.length === 1
+                        ? 300
+                        : 5 + (index / (dadosOcupacao.length - 1)) * 565;
+
                     return (
-                      <span key={`${ponto.label}-${index}`}>
-                        {mostrarData ? ponto.label : ""}
+                      <span
+                        key={`${ponto.label}-${index}`}
+                        style={{
+                          left: `${(x / 600) * 100}%`,
+                          transform: "translateX(-50%)",
+                        }}
+                      >
+                        {ponto.label}
                       </span>
                     );
                   })}

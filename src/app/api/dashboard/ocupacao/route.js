@@ -49,11 +49,27 @@ function obterInicioPeriodo(hoje, periodo) {
   }
 }
 
-function agruparPontos(pontos, periodo) {
+function contarQuartosOcupadosNoPeriodo(reservas, dataInicio, dataFim) {
+  return new Set(
+    (reservas ?? [])
+      .filter(
+        (reserva) =>
+          reserva.data_entrada <= dataFim &&
+          reserva.data_saida > dataInicio
+      )
+      .map((reserva) => reserva.id_quarto)
+  ).size;
+}
+
+function agruparPontos(pontos, periodo, reservas) {
   if (periodo === "7d" || periodo === "1m") {
     return pontos.map((ponto) => ({
       label: formatarData(ponto.data),
+      data: ponto.data,
+      dataFim: ponto.data,
       ocupacao: ponto.ocupacao,
+      quartosOcupados: ponto.quartosOcupados,
+      totalQuartos: ponto.totalQuartos,
     }));
   }
 
@@ -73,7 +89,15 @@ function agruparPontos(pontos, periodo) {
         label: `${formatarData(grupo[0].data)}–${formatarData(
           grupo[grupo.length - 1].data
         )}`,
+        data: grupo[0].data,
+        dataFim: grupo[grupo.length - 1].data,
         ocupacao: Number(media.toFixed(1)),
+        quartosOcupados: contarQuartosOcupadosNoPeriodo(
+          reservas,
+          grupo[0].data,
+          grupo[grupo.length - 1].data
+        ),
+        totalQuartos: grupo[0].totalQuartos,
       });
     }
 
@@ -100,9 +124,18 @@ function agruparPontos(pontos, periodo) {
 
     const [ano, numeroMes] = mes.split("-");
 
+    const pontosDoMes = pontos.filter((ponto) => ponto.data.slice(0, 7) === mes);
     grupos.push({
       label: `${numeroMes}/${ano.slice(2)}`,
+      data: pontosDoMes[0].data,
+      dataFim: pontosDoMes[pontosDoMes.length - 1].data,
       ocupacao: Number(media.toFixed(1)),
+      quartosOcupados: contarQuartosOcupadosNoPeriodo(
+        reservas,
+        pontosDoMes[0].data,
+        pontosDoMes[pontosDoMes.length - 1].data
+      ),
+      totalQuartos: pontosDoMes[0].totalQuartos,
     });
   }
 
@@ -186,10 +219,12 @@ export async function GET(request) {
       pontosDiarios.push({
         data,
         ocupacao,
+        quartosOcupados: quartosOcupados.size,
+        totalQuartos,
       });
     }
 
-    const pontos = agruparPontos(pontosDiarios, periodo);
+    const pontos = agruparPontos(pontosDiarios, periodo, reservas);
 
     return NextResponse.json({
       periodo,

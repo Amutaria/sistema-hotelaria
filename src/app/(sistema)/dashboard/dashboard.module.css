@@ -242,33 +242,28 @@
  
 .chartGrid {
   position: absolute;
-  top: 10px;
+  top: 0;
   left: 0;
-  bottom: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  color: #9aa1ad;
+  width: 32px;
+  height: 170px;
+  color: #475569;
   font-size: 10.5px;
+}
+
+.chartGrid span {
+  position: absolute;
+  right: 0;
+  white-space: nowrap;
 }
  
 .chartArea {
   position: relative;
   height: 170px;
+  outline: 1px solid #dfe5ec;
+  outline-offset: -1px;
+  border-radius: 4px;
 }
- 
-.chartArea::before,
-.chartArea::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  border-top: 1px dashed #e4e9ed;
-}
- 
-.chartArea::before { top: 30%; }
-.chartArea::after { top: 65%; }
- 
+
 .chartSvg {
   display: block;
   width: 100%;
@@ -280,23 +275,32 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 140px;
-  color: #3989e9;
+  height: 170px;
+  color: #1e4f82;
   font-size: 10.5px;
-  font-weight: 500;
+  font-weight: 700;
+  pointer-events: none;
 }
- 
+
 .chartValues span {
   position: absolute;
-  transform: translateX(-50%);
+  padding: 1px 3px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.92);
+  white-space: nowrap;
 }
- 
+
 .days {
-  display: flex;
-  justify-content: space-between;
+  position: relative;
+  height: 18px;
   margin-top: 8px;
-  color: #6b7280;
+  color: #475569;
   font-size: 10.5px;
+}
+
+.days span {
+  position: absolute;
+  white-space: nowrap;
 }
  
 /* =========================
@@ -563,4 +567,36 @@
 .occupancyFilterActive:disabled {
   cursor: not-allowed;
   opacity: 0.65;
+}
+
+
+/* Tooltip do gráfico de ocupação */
+.chartTooltip {
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 165px;
+  max-width: 220px;
+  padding: 10px 12px;
+  border: 1px solid #dce5ef;
+  border-radius: 7px;
+  background: #ffffff;
+  box-shadow: 0 5px 18px rgba(31, 35, 43, 0.14);
+  color: #3a3f48;
+  font-size: 11px;
+  line-height: 1.35;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 12px));
+}
+
+.chartTooltip strong {
+  margin-bottom: 2px;
+  color: #1f232b;
+  font-size: 12px;
+}
+
+.chartTooltip span {
+  white-space: nowrap;
 }
