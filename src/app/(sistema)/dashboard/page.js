@@ -23,6 +23,7 @@ export default function Dashboard() {
   const [dadosOcupacao, setDadosOcupacao] = useState([]);
   const [carregandoOcupacao, setCarregandoOcupacao] = useState(true);
   const [erroOcupacao, setErroOcupacao] = useState("");
+  const [pontoSelecionado, setPontoSelecionado] = useState(null);
 
   const router = useRouter();
   // NOVO: buscar indicadores do dashboard
@@ -71,6 +72,7 @@ export default function Dashboard() {
     async function buscarOcupacao() {
       setCarregandoOcupacao(true);
       setErroOcupacao("");
+      setPontoSelecionado(null);
 
       try {
         const response = await fetch(
@@ -222,6 +224,12 @@ export default function Dashboard() {
   const formatarData = (data) => {
     if (!data) return "";
 
+    const [ano, mes, dia] = data.split("-");
+    return `${dia}/${mes}/${ano}`;
+  };
+
+  const formatarDataTooltip = (data) => {
+    if (!data) return "";
     const [ano, mes, dia] = data.split("-");
     return `${dia}/${mes}/${ano}`;
   };
@@ -429,7 +437,7 @@ export default function Dashboard() {
                             100) *
                             altura;
 
-                        return { x, y };
+                        return { x, y, dados: ponto };
                       });
 
                       const linha = pontos
@@ -461,14 +469,52 @@ export default function Dashboard() {
                               key={index}
                               cx={ponto.x}
                               cy={ponto.y}
-                              r="3.5"
+                              r={pontoSelecionado?.index === index ? "5.5" : "3.5"}
                               fill="#3b8ff3"
+                              tabIndex="0"
+                              role="img"
+                              aria-label={`Ocupação de ${ponto.dados.label}: ${ponto.dados.ocupacao}%`}
+                              onMouseEnter={() =>
+                                setPontoSelecionado({ index, ...ponto })
+                              }
+                              onMouseLeave={() => setPontoSelecionado(null)}
+                              onFocus={() =>
+                                setPontoSelecionado({ index, ...ponto })
+                              }
+                              onBlur={() => setPontoSelecionado(null)}
                             />
                           ))}
                         </>
                       );
                     })()}
                   </svg>
+
+                  {pontoSelecionado && (
+                    <div
+                      className={styles.chartTooltip}
+                      style={{
+                        left: `${Math.min(85, Math.max(15, (pontoSelecionado.x / 600) * 100))}%`,
+                        top: `${(pontoSelecionado.y / 180) * 100}%`,
+                      }}
+                      role="status"
+                    >
+                      <strong>
+                        {pontoSelecionado.dados.data === pontoSelecionado.dados.dataFim
+                          ? formatarDataTooltip(pontoSelecionado.dados.data)
+                          : `${formatarDataTooltip(pontoSelecionado.dados.data)} – ${formatarDataTooltip(pontoSelecionado.dados.dataFim)}`}
+                      </strong>
+                      <span>Ocupação: {pontoSelecionado.dados.ocupacao}%</span>
+                      <span>
+                        {pontoSelecionado.dados.data === pontoSelecionado.dados.dataFim
+                          ? "Quartos ocupados:"
+                          : "Média de quartos ocupados:"}{" "}
+                        {pontoSelecionado.dados.quartosOcupados}
+                      </span>
+                      <span>
+                        Total de quartos: {pontoSelecionado.dados.totalQuartos}
+                      </span>
+                    </div>
+                  )}
 
                   <div className={styles.chartValues}>
                     {dadosOcupacao.map((ponto, index) => {
