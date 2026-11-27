@@ -22,44 +22,30 @@ const Icon = ({ children, size = 15 }) => (
  
 const icons = {
   user: <Icon><circle cx="12" cy="8" r="4" /><path d="M4 21v-1a7 7 0 0 1 14 0v1" /></Icon>,
-  pin: (
-    <Icon>
-      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-      <circle cx="12" cy="10" r="3" />
-    </Icon>
-  ),
   file: (
     <Icon>
       <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
       <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
     </Icon>
   ),
-  search: <Icon size={14}><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></Icon>,
 };
- 
-const estados = [
-  "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA",
-  "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO",
-];
- 
+
 /* ---------- Máscaras ---------- */
 const soNumeros = (v) => v.replace(/\D/g, "");
- 
+
 const mascaraCPF = (v) =>
   soNumeros(v)
     .slice(0, 11)
     .replace(/(\d{3})(\d)/, "$1.$2")
     .replace(/(\d{3})(\d)/, "$1.$2")
     .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
- 
+
 const mascaraTelefone = (v) => {
   const n = soNumeros(v).slice(0, 11);
   if (n.length <= 10) return n.replace(/(\d{2})(\d)/, "($1) $2").replace(/(\d{4})(\d)/, "$1-$2");
   return n.replace(/(\d{2})(\d)/, "($1) $2").replace(/(\d{5})(\d)/, "$1-$2");
 };
- 
-const mascaraCEP = (v) => soNumeros(v).slice(0, 8).replace(/(\d{5})(\d)/, "$1-$2");
- 
+
 /* ---------- Estado inicial ---------- */
 const formularioVazio = {
   nome: "",
@@ -70,22 +56,14 @@ const formularioVazio = {
   email: "",
   telefone: "",
   documento: "",
-  cep: "",
-  rua: "",
-  numero: "",
-  complemento: "",
-  bairro: "",
-  cidade: "",
-  estado: "",
   observacoes: "",
   acompanhantes: [{ nome: "", cpf: "" }],
 };
- 
+
 /* ---------- Página ---------- */
 export default function CadastroHospede() {
   const router = useRouter();
   const [form, setForm] = useState(formularioVazio);
-  const [buscandoCep, setBuscandoCep] = useState(false);
   const [salvando, setSalvando] = useState(false);
  
   const atualizar = (campo, mascara) => (e) => {
@@ -118,37 +96,6 @@ export default function CadastroHospede() {
     }));
   };
 
-  const buscarCep = async () => {
-    const cep = soNumeros(form.cep);
-    if (cep.length !== 8) {
-      alert("Digite um CEP com 8 números.");
-      return;
-    }
- 
-    setBuscandoCep(true);
-    try {
-      const resposta = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-      const dados = await resposta.json();
- 
-      if (dados.erro) {
-        alert("CEP não encontrado.");
-        return;
-      }
- 
-      setForm((f) => ({
-        ...f,
-        rua: dados.logradouro || f.rua,
-        bairro: dados.bairro || f.bairro,
-        cidade: dados.localidade || f.cidade,
-        estado: dados.uf || f.estado,
-      }));
-    } catch {
-      alert("Não foi possível consultar o CEP agora.");
-    } finally {
-      setBuscandoCep(false);
-    }
-  };
- 
   const salvarCadastro = async (e) => {
     e.preventDefault();
     if (salvando) return;
@@ -366,109 +313,6 @@ export default function CadastroHospede() {
           </div>
         </section>
 
-        {/* ENDEREÇO */}
-        <section className={styles.card}>
-          <div className={styles.cardHeader}>
-            <span className={styles.sectionIcon}>{icons.pin}</span>
-            <div>
-              <h2 className={styles.cardTitle}>Endereço</h2>
-              <p className={styles.cardSubtitle}>Localização da residência do hóspede</p>
-            </div>
-          </div>
- 
-          <div className={styles.gridEndereco}>
-            <div className={`${styles.field} ${styles.col3}`}>
-              <label htmlFor="cep">CEP</label>
-              <div className={styles.cepGroup}>
-                <input
-                  id="cep"
-                  type="text"
-                  inputMode="numeric"
-                  placeholder="00000-000"
-                  value={form.cep}
-                  onChange={atualizar("cep", mascaraCEP)}
-                />
-                <button
-                  type="button"
-                  className={styles.cepButton}
-                  onClick={buscarCep}
-                  disabled={buscandoCep}
-                  aria-label="Buscar CEP"
-                >
-                  {icons.search}
-                </button>
-              </div>
-            </div>
- 
-            <div className={`${styles.field} ${styles.col9}`}>
-              <label htmlFor="rua">Rua/Avenida</label>
-              <input
-                id="rua"
-                type="text"
-                placeholder="Logradouro"
-                value={form.rua}
-                onChange={atualizar("rua")}
-              />
-            </div>
- 
-            <div className={`${styles.field} ${styles.col2}`}>
-              <label htmlFor="numero">Número</label>
-              <input
-                id="numero"
-                type="text"
-                placeholder="123"
-                value={form.numero}
-                onChange={atualizar("numero")}
-              />
-            </div>
- 
-            <div className={`${styles.field} ${styles.col4}`}>
-              <label htmlFor="complemento">Complemento</label>
-              <input
-                id="complemento"
-                type="text"
-                placeholder="Apto, Bloco, etc."
-                value={form.complemento}
-                onChange={atualizar("complemento")}
-              />
-            </div>
- 
-            <div className={`${styles.field} ${styles.col6}`}>
-              <label htmlFor="bairro">Bairro</label>
-              <input
-                id="bairro"
-                type="text"
-                placeholder="Nome do bairro"
-                value={form.bairro}
-                onChange={atualizar("bairro")}
-              />
-            </div>
- 
-            <div className={`${styles.field} ${styles.col5}`}>
-              <label htmlFor="cidade">Cidade</label>
-              <input
-                id="cidade"
-                type="text"
-                placeholder="Cidade"
-                value={form.cidade}
-                onChange={atualizar("cidade")}
-              />
-            </div>
- 
-            <div className={`${styles.field} ${styles.col2}`}>
-              <label htmlFor="estado">Estado</label>
-              <select id="estado" value={form.estado} onChange={atualizar("estado")}>
-                <option value="">UF</option>
-                {estados.map((uf) => (
-                  <option key={uf} value={uf}>
-                    {uf}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </section>
- 
         {/* OBSERVAÇÕES */}
         <section className={styles.card}>
           <div className={styles.cardHeader}>
