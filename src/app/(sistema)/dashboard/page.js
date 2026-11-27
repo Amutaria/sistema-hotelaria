@@ -18,6 +18,11 @@ export default function Dashboard() {
   const [indicadores, setIndicadores] = useState(null);
   const [carregandoIndicadores, setCarregandoIndicadores] = useState(true);
   const [erroIndicadores, setErroIndicadores] = useState("");
+  // Gráfico de ocupação histórica
+  const [periodoOcupacao, setPeriodoOcupacao] = useState("7d");
+  const [dadosOcupacao, setDadosOcupacao] = useState([]);
+  const [carregandoOcupacao, setCarregandoOcupacao] = useState(true);
+  const [erroOcupacao, setErroOcupacao] = useState("");
 
   const router = useRouter();
   // NOVO: buscar indicadores do dashboard
@@ -58,6 +63,50 @@ export default function Dashboard() {
       ativo = false;
     };
   }, []);
+
+    // Buscar dados históricos de ocupação
+  useEffect(() => {
+    let ativo = true;
+
+    async function buscarOcupacao() {
+      setCarregandoOcupacao(true);
+      setErroOcupacao("");
+
+      try {
+        const response = await fetch(
+          `/api/dashboard/ocupacao?periodo=${periodoOcupacao}`,
+          { cache: "no-store" }
+        );
+
+        if (!response.ok) {
+          throw new Error("Não foi possível carregar a ocupação.");
+        }
+
+        const dados = await response.json();
+
+        if (ativo) {
+          setDadosOcupacao(dados.pontos || []);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar ocupação:", error);
+
+        if (ativo) {
+          setErroOcupacao("Não foi possível carregar o gráfico.");
+          setDadosOcupacao([]);
+        }
+      } finally {
+        if (ativo) {
+          setCarregandoOcupacao(false);
+        }
+      }
+    }
+
+    buscarOcupacao();
+
+    return () => {
+      ativo = false;
+    };
+  }, [periodoOcupacao]);
 
   // PRIMEIRO useEffect que já existia (buscar quartos)
   useEffect(() => {
@@ -286,74 +335,187 @@ export default function Dashboard() {
         {/* GRÁFICOS */}
         <section className={styles.middleGrid}>
 
+
           {/* OCUPAÇÃO */}
           <div className={styles.panel}>
             <div className={styles.panelHeader}>
               <div>
-                <h2>Ocupação Semanal</h2>
-                <p>Percentual de ocupação dos últimos 7 dias</p>
+                <h2>Histórico de Ocupação</h2>
+                <p>Percentual de ocupação dos quartos</p>
               </div>
-              <span className={styles.period}>Semana Atual</span>
             </div>
 
-            <div className={styles.chart}>
-              <div className={styles.chartGrid}>
-                <span>100%</span>
-                <span>75%</span>
-                <span>50%</span>
-                <span>25%</span>
-              </div>
+            <div className={styles.occupancyFilters}>
+              {[
+                { valor: "7d", texto: "7 dias" },
+                { valor: "1m", texto: "1 mês" },
+                { valor: "3m", texto: "3 meses" },
+                { valor: "6m", texto: "6 meses" },
+                { valor: "1a", texto: "1 ano" },
+              ].map((filtro) => (
+                <button
+                  key={filtro.valor}
+                  type="button"
+                  className={
+                    periodoOcupacao === filtro.valor
+                      ? styles.occupancyFilterActive
+                      : styles.occupancyFilter
+                  }
+                  onClick={() => setPeriodoOcupacao(filtro.valor)}
+                  disabled={carregandoOcupacao}
+                >
+                  {filtro.texto}
+                </button>
+              ))}
+            </div>
 
-              <div className={styles.chartArea}>
-                <svg viewBox="0 0 600 180" preserveAspectRatio="none" className={styles.chartSvg}>
-                  <defs>
-                    <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#3b8ff3" stopOpacity="0.20" />
-                      <stop offset="100%" stopColor="#3b8ff3" stopOpacity="0.02" />
-                    </linearGradient>
-                  </defs>
+            {carregandoOcupacao ? (
+              <p>Carregando histórico de ocupação...</p>
+            ) : erroOcupacao ? (
+              <p>{erroOcupacao}</p>
+            ) : dadosOcupacao.length === 0 ? (
+              <p>Não existem dados de ocupação para este período.</p>
+            ) : (
+              <div className={styles.chart}>
+                <div className={styles.chartGrid}>
+                  <span>100%</span>
+                  <span>75%</span>
+                  <span>50%</span>
+                  <span>25%</span>
+                </div>
 
-                  <polygon
-                    points="20,105 110,118 200,82 290,65 380,54 470,45 560,93 560,170 20,170"
-                    fill="url(#areaGradient)"
-                  />
-                  <polyline
-                    points="20,105 110,118 200,82 290,65 380,54 470,45 560,93"
-                    fill="none"
-                    stroke="#3b8ff3"
-                    strokeWidth="2.5"
-                  />
+                <div className={styles.chartArea}>
+                  <svg
+                    viewBox="0 0 600 180"
+                    preserveAspectRatio="none"
+                    className={styles.chartSvg}
+                  >
+                    <defs>
+                      <linearGradient
+                        id="occupancyGradient"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="0%"
+                          stopColor="#3b8ff3"
+                          stopOpacity="0.20"
+                        />
+                        <stop
+                          offset="100%"
+                          stopColor="#3b8ff3"
+                          stopOpacity="0.02"
+                        />
+                      </linearGradient>
+                    </defs>
 
-                  <circle cx="20" cy="105" r="3" fill="#3b8ff3" />
-                  <circle cx="110" cy="118" r="3" fill="#3b8ff3" />
-                  <circle cx="200" cy="82" r="3" fill="#3b8ff3" />
-                  <circle cx="290" cy="65" r="3" fill="#3b8ff3" />
-                  <circle cx="380" cy="54" r="3" fill="#3b8ff3" />
-                  <circle cx="470" cy="45" r="3" fill="#3b8ff3" />
-                  <circle cx="560" cy="93" r="3" fill="#3b8ff3" />
-                </svg>
+                    {(() => {
+                      const largura = 540;
+                      const altura = 150;
 
-                <div className={styles.chartValues}>
-                  <span style={{ left: "2%" }}>62%</span>
-                  <span style={{ left: "18%" }}>58%</span>
-                  <span style={{ left: "34%" }}>72%</span>
-                  <span style={{ left: "50%" }}>84%</span>
-                  <span style={{ left: "65%" }}>90%</span>
-                  <span style={{ left: "81%" }}>93%</span>
-                  <span style={{ left: "96%" }}>70%</span>
+                      const pontos = dadosOcupacao.map((ponto, index) => {
+                        const x =
+                          dadosOcupacao.length === 1
+                            ? 300
+                            : 30 +
+                              (index / (dadosOcupacao.length - 1)) *
+                                largura;
+
+                        const y =
+                          altura -
+                          (Math.max(0, Math.min(100, ponto.ocupacao)) /
+                            100) *
+                            altura;
+
+                        return { x, y };
+                      });
+
+                      const linha = pontos
+                        .map((ponto) => `${ponto.x},${ponto.y}`)
+                        .join(" ");
+
+                      const area = `30,${altura + 10} ${linha} ${
+                        pontos[pontos.length - 1].x
+                      },${altura + 10}`;
+
+                      return (
+                        <>
+                          <polygon
+                            points={area}
+                            fill="url(#occupancyGradient)"
+                          />
+
+                          <polyline
+                            points={linha}
+                            fill="none"
+                            stroke="#3b8ff3"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+
+                          {pontos.map((ponto, index) => (
+                            <circle
+                              key={index}
+                              cx={ponto.x}
+                              cy={ponto.y}
+                              r="3.5"
+                              fill="#3b8ff3"
+                            />
+                          ))}
+                        </>
+                      );
+                    })()}
+                  </svg>
+
+                  <div className={styles.chartValues}>
+                    {dadosOcupacao.map((ponto, index) => {
+                      const intervalo = Math.ceil(dadosOcupacao.length / 6);
+
+                      const mostrarValor =
+                        index === 0 ||
+                        index === dadosOcupacao.length - 1 ||
+                        index % intervalo === 0;
+
+                      if (!mostrarValor) return null;
+
+                      const posicao =
+                        dadosOcupacao.length === 1
+                          ? 50
+                          : (index / (dadosOcupacao.length - 1)) * 96 + 2;
+
+                      return (
+                        <span
+                          key={`${ponto.label}-${index}`}
+                          style={{ left: `${posicao}%` }}
+                        >
+                          {ponto.ocupacao}%
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className={styles.days}>
+                  {dadosOcupacao.map((ponto, index) => {
+                    const intervalo = Math.ceil(dadosOcupacao.length / 6);
+
+                    const mostrarData =
+                      index === 0 ||
+                      index === dadosOcupacao.length - 1 ||
+                      index % intervalo === 0;
+
+                    return (
+                      <span key={`${ponto.label}-${index}`}>
+                        {mostrarData ? ponto.label : ""}
+                      </span>
+                    );
+                  })}
                 </div>
               </div>
-
-              <div className={styles.days}>
-                <span>SEG</span>
-                <span>TER</span>
-                <span>QUA</span>
-                <span>QUI</span>
-                <span>SEX</span>
-                <span>SÁB</span>
-                <span>DOM</span>
-              </div>
-            </div>
+            )}
           </div>
 
           {/* STATUS */}

@@ -525,3 +525,42 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Filtros do histórico de ocupação */
+.occupancyFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 20px;
+}
+
+.occupancyFilter,
+.occupancyFilterActive {
+  padding: 7px 12px;
+  border: 1px solid #dce3ec;
+  border-radius: 6px;
+  background: #fff;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.occupancyFilter:hover {
+  background: #f1f5f9;
+  border-color: #3b8ff3;
+}
+
+.occupancyFilterActive {
+  background: #3b8ff3;
+  border-color: #3b8ff3;
+  color: #fff;
+}
+
+.occupancyFilter:disabled,
+.occupancyFilterActive:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
