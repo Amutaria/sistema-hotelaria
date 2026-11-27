@@ -107,8 +107,8 @@ export function normalizeGuestPayload(input = {}) {
 }
 
 export function isValidCpf(value) {
-  const cpf = String(value || "").replace(/\\D/g, "");
-  if (cpf.length !== 11 || /^(\\d)\\1{10}$/.test(cpf)) return false;
+  const cpf = String(value || "").replace(/\D/g, "");
+  if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
 
   const calculateDigit = (base, factor) => {
     let total = 0;
