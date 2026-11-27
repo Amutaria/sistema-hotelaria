@@ -1,33 +1,155 @@
+
+"use client";
+
+import { useEffect, useState } from "react";
 import styles from "./dashboard.module.css";
- 
-const reservations = [
-  {
-    name: "Amanda Silveira",
-    code: "#RES-4432",
-    room: "Suíte 102",
-    type: "Standard",
-    checkin: "24/05/2024",
-    status: "Confirmado",
-  },
-  {
-    name: "Roberto Mendes",
-    code: "#RES-3321",
-    room: "Master 205",
-    type: "Cobertura",
-    checkin: "24/05/2024",
-    status: "Aguardando",
-  },
-  {
-    name: "Lucas Ferreira",
-    code: "#RES-1234",
-    room: "Standard 110",
-    type: "Single",
-    checkin: "25/05/2024",
-    status: "Confirmado",
-  },
-];
- 
+import { useRouter } from "next/navigation";
+
 export default function Dashboard() {
+  const [quartos, setQuartos] = useState([]);
+  const [carregandoQuartos, setCarregandoQuartos] = useState(true);
+  const [erroQuartos, setErroQuartos] = useState("");
+
+  const [reservations, setReservations] = useState([]);
+  const [carregandoReservas, setCarregandoReservas] = useState(true);
+  const [erroReservas, setErroReservas] = useState("");
+
+  const router = useRouter();
+
+  useEffect(() => {
+    let ativo = true;
+
+    async function buscarQuartos() {
+      try {
+        const response = await fetch("/api/quartos", {
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          throw new Error("Não foi possível carregar os quartos.");
+        }
+
+        const dados = await response.json();
+
+        if (!Array.isArray(dados)) {
+          throw new Error("Os dados dos quartos são inválidos.");
+        }
+
+        if (ativo) {
+          setQuartos(dados);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar quartos:", error);
+
+        if (ativo) {
+          setErroQuartos("Não foi possível carregar os status dos quartos.");
+        }
+      } finally {
+        if (ativo) {
+          setCarregandoQuartos(false);
+        }
+      }
+    }
+
+    buscarQuartos();
+
+    return () => {
+      ativo = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let ativo = true;
+
+    async function buscarReservas() {
+      try {
+        const response = await fetch("/api/reservas", {
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          throw new Error("Não foi possível carregar as reservas.");
+        }
+
+        const dados = await response.json();
+
+        if (!Array.isArray(dados)) {
+          throw new Error("Os dados das reservas são inválidos.");
+        }
+
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+
+        const proximasReservas = dados
+          .filter((reserva) => {
+            if (!reserva.dataEntrada || reserva.status === "Cancelada") {
+              return false;
+            }
+
+            const dataEntrada = new Date(
+              `${reserva.dataEntrada}T00:00:00`
+            );
+
+            return (
+              !Number.isNaN(dataEntrada.getTime()) &&
+              dataEntrada >= hoje
+            );
+          })
+          .sort((a, b) => {
+            return (
+              new Date(`${a.dataEntrada}T00:00:00`) -
+              new Date(`${b.dataEntrada}T00:00:00`)
+            );
+          })
+          .slice(0, 3);
+
+        if (ativo) {
+          setReservations(proximasReservas);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar reservas:", error);
+
+        if (ativo) {
+          setErroReservas("Não foi possível carregar as próximas reservas.");
+        }
+      } finally {
+        if (ativo) {
+          setCarregandoReservas(false);
+        }
+      }
+    }
+
+    buscarReservas();
+
+    return () => {
+      ativo = false;
+    };
+  }, []);
+
+  const formatarData = (data) => {
+    if (!data) return "";
+
+    const [ano, mes, dia] = data.split("-");
+    return `${dia}/${mes}/${ano}`;
+  };
+
+  const totalQuartos = quartos.length;
+
+  const contarStatus = (status) => {
+    return quartos.filter((quarto) => quarto.status === status).length;
+  };
+
+  const porcentagem = (quantidade) => {
+    return totalQuartos > 0
+      ? (quantidade / totalQuartos) * 100
+      : 0;
+  };
+
+  const quartosLivres = contarStatus("Livre");
+  const quartosOcupados = contarStatus("Ocupado");
+  const quartosReservados = contarStatus("Reservado");
+  const quartosManutencao = contarStatus("Manutenção");
+
   return (
     <div className={styles.dashboard}>
       {/* BARRA SUPERIOR */}
@@ -38,20 +160,20 @@ export default function Dashboard() {
           <div className={styles.avatar} />
         </div>
       </header>
- 
+
       {/* CABEÇALHO */}
       <section className={styles.banner}>
         <span className={styles.breadcrumb}>Dashboard &gt; Visão Geral</span>
         <h1 className={styles.bannerTitle}>Painel de Controle</h1>
         <p className={styles.bannerText}>Gerencie e acompanhe o desempenho em tempo real</p>
       </section>
- 
+
       <section className={styles.mainContent}>
- 
+
         {/* INDICADORES */}
         <section>
           <h2 className={styles.sectionTitle}>Indicadores de Desempenho</h2>
- 
+
           <div className={styles.statsGrid}>
             <div className={styles.statCard}>
               <div className={styles.statTop}>
@@ -61,7 +183,7 @@ export default function Dashboard() {
               <span className={styles.statLabel}>Taxa de Ocupação</span>
               <strong className={styles.statValue}>78%</strong>
             </div>
- 
+
             <div className={styles.statCard}>
               <div className={styles.statTop}>
                 <div className={`${styles.statIcon} ${styles.green}`}>✓</div>
@@ -70,7 +192,7 @@ export default function Dashboard() {
               <span className={styles.statLabel}>Quartos Disponíveis</span>
               <strong className={styles.statValue}>14</strong>
             </div>
- 
+
             <div className={styles.statCard}>
               <div className={styles.statTop}>
                 <div className={`${styles.statIcon} ${styles.orange}`}>▣</div>
@@ -79,7 +201,7 @@ export default function Dashboard() {
               <span className={styles.statLabel}>Reservas Hoje</span>
               <strong className={styles.statValue}>08</strong>
             </div>
- 
+
             <div className={styles.statCard}>
               <div className={styles.statTop}>
                 <div className={`${styles.statIcon} ${styles.purple}`}>♧</div>
@@ -88,7 +210,7 @@ export default function Dashboard() {
               <span className={styles.statLabel}>Check-in / Out</span>
               <strong className={styles.statValue}>12 / 09</strong>
             </div>
- 
+
             <div className={styles.statCard}>
               <div className={styles.statTop}>
                 <div className={`${styles.statIcon} ${styles.green}`}>↗</div>
@@ -99,10 +221,10 @@ export default function Dashboard() {
             </div>
           </div>
         </section>
- 
+
         {/* GRÁFICOS */}
         <section className={styles.middleGrid}>
- 
+
           {/* OCUPAÇÃO */}
           <div className={styles.panel}>
             <div className={styles.panelHeader}>
@@ -112,7 +234,7 @@ export default function Dashboard() {
               </div>
               <span className={styles.period}>Semana Atual</span>
             </div>
- 
+
             <div className={styles.chart}>
               <div className={styles.chartGrid}>
                 <span>100%</span>
@@ -120,7 +242,7 @@ export default function Dashboard() {
                 <span>50%</span>
                 <span>25%</span>
               </div>
- 
+
               <div className={styles.chartArea}>
                 <svg viewBox="0 0 600 180" preserveAspectRatio="none" className={styles.chartSvg}>
                   <defs>
@@ -129,7 +251,7 @@ export default function Dashboard() {
                       <stop offset="100%" stopColor="#3b8ff3" stopOpacity="0.02" />
                     </linearGradient>
                   </defs>
- 
+
                   <polygon
                     points="20,105 110,118 200,82 290,65 380,54 470,45 560,93 560,170 20,170"
                     fill="url(#areaGradient)"
@@ -140,7 +262,7 @@ export default function Dashboard() {
                     stroke="#3b8ff3"
                     strokeWidth="2.5"
                   />
- 
+
                   <circle cx="20" cy="105" r="3" fill="#3b8ff3" />
                   <circle cx="110" cy="118" r="3" fill="#3b8ff3" />
                   <circle cx="200" cy="82" r="3" fill="#3b8ff3" />
@@ -149,7 +271,7 @@ export default function Dashboard() {
                   <circle cx="470" cy="45" r="3" fill="#3b8ff3" />
                   <circle cx="560" cy="93" r="3" fill="#3b8ff3" />
                 </svg>
- 
+
                 <div className={styles.chartValues}>
                   <span style={{ left: "2%" }}>62%</span>
                   <span style={{ left: "18%" }}>58%</span>
@@ -160,7 +282,7 @@ export default function Dashboard() {
                   <span style={{ left: "96%" }}>70%</span>
                 </div>
               </div>
- 
+
               <div className={styles.days}>
                 <span>SEG</span>
                 <span>TER</span>
@@ -172,65 +294,77 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
- 
+
           {/* STATUS */}
           <div className={styles.panel}>
             <div className={styles.panelHeader}>
               <div>
                 <h2>Status dos Quartos</h2>
-                <p>Distribuição atual por categorias de limpeza/uso</p>
+                <p>Distribuição atual dos quartos por status</p>
               </div>
             </div>
- 
-            <div className={styles.roomStatus}>
-              <div className={styles.statusRow}>
-                <span><i className={styles.dotGreen}></i>Disponível</span>
-                <div className={styles.statusBar}>
-                  <div className={styles.barGreen} style={{ width: "44%" }} />
+
+            {carregandoQuartos ? (
+              <p>Carregando status dos quartos...</p>
+            ) : erroQuartos ? (
+              <p>{erroQuartos}</p>
+            ) : (
+              <>
+                <div className={styles.roomStatus}>
+                  <div className={styles.statusRow}>
+                    <span><i className={styles.dotGreen}></i>Livre</span>
+                    <div className={styles.statusBar}>
+                      <div
+                        className={styles.barGreen}
+                        style={{ width: `${porcentagem(quartosLivres)}%` }}
+                      />
+                    </div>
+                    <strong>{quartosLivres}</strong>
+                  </div>
+
+                  <div className={styles.statusRow}>
+                    <span><i className={styles.dotRed}></i>Ocupado</span>
+                    <div className={styles.statusBar}>
+                      <div
+                        className={styles.barRed}
+                        style={{ width: `${porcentagem(quartosOcupados)}%` }}
+                      />
+                    </div>
+                    <strong>{quartosOcupados}</strong>
+                  </div>
+
+                  <div className={styles.statusRow}>
+                    <span><i className={styles.dotBlue}></i>Reservado</span>
+                    <div className={styles.statusBar}>
+                      <div
+                        className={styles.barBlue}
+                        style={{ width: `${porcentagem(quartosReservados)}%` }}
+                      />
+                    </div>
+                    <strong>{quartosReservados}</strong>
+                  </div>
+
+                  <div className={styles.statusRow}>
+                    <span><i className={styles.dotOrange}></i>Manutenção</span>
+                    <div className={styles.statusBar}>
+                      <div
+                        className={styles.barOrange}
+                        style={{ width: `${porcentagem(quartosManutencao)}%` }}
+                      />
+                    </div>
+                    <strong>{quartosManutencao}</strong>
+                  </div>
                 </div>
-                <strong>14</strong>
-              </div>
- 
-              <div className={styles.statusRow}>
-                <span><i className={styles.dotBlue}></i>Ocupado</span>
-                <div className={styles.statusBar}>
-                  <div className={styles.barBlue} style={{ width: "82%" }} />
+
+                <div className={styles.totalRooms}>
+                  <span>Total de Quartos</span>
+                  <strong>{totalQuartos}</strong>
                 </div>
-                <strong>32</strong>
-              </div>
- 
-              <div className={styles.statusRow}>
-                <span><i className={styles.dotOrange}></i>Limpeza</span>
-                <div className={styles.statusBar}>
-                  <div className={styles.barOrange} style={{ width: "11%" }} />
-                </div>
-                <strong>4</strong>
-              </div>
- 
-              <div className={styles.statusRow}>
-                <span><i className={styles.dotRed}></i>Manutenção</span>
-                <div className={styles.statusBar}>
-                  <div className={styles.barRed} style={{ width: "7%" }} />
-                </div>
-                <strong>2</strong>
-              </div>
- 
-              <div className={styles.statusRow}>
-                <span><i className={styles.dotGray}></i>Bloqueado</span>
-                <div className={styles.statusBar}>
-                  <div className={styles.barGray} style={{ width: "4%" }} />
-                </div>
-                <strong>1</strong>
-              </div>
-            </div>
- 
-            <div className={styles.totalRooms}>
-              <span>Total de Quartos</span>
-              <strong>53</strong>
-            </div>
+              </>
+            )}
           </div>
         </section>
- 
+
         {/* RESERVAS + ALERTAS */}
         <section className={styles.bottomGrid}>
           <div className={styles.panel}>
@@ -239,9 +373,14 @@ export default function Dashboard() {
                 <h2>Próximas Reservas</h2>
                 <p>Hóspedes aguardados para os próximos dias</p>
               </div>
-              <button className={styles.viewAll}>Ver todas</button>
+              <button 
+              className={styles.viewAll}
+              onClick={() => router.push("/reservas")}
+              >
+                Ver todas
+              </button>
             </div>
- 
+
             <div className={styles.reservationTable}>
               <div className={styles.tableHeader}>
                 <span>Hóspede</span>
@@ -250,30 +389,45 @@ export default function Dashboard() {
                 <span>Check-in</span>
                 <span>Status</span>
               </div>
- 
-              {reservations.map((reservation) => (
-                <div className={styles.tableRow} key={reservation.code}>
-                  <div className={styles.guest}>
-                    <strong>{reservation.name}</strong>
-                    <small>{reservation.code}</small>
+
+              {carregandoReservas ? (
+                <p>Carregando próximas reservas...</p>
+              ) : erroReservas ? (
+                <p>{erroReservas}</p>
+              ) : reservations.length === 0 ? (
+                <p>Não existem próximas reservas.</p>
+              ) : (
+                reservations.map((reservation) => (
+                  <div className={styles.tableRow} key={reservation.id}>
+                    <div className={styles.guest}>
+                      <strong>{reservation.hospede?.nome || "Hóspede"}</strong>
+                      <small>{reservation.codigo || `Reserva ${reservation.id}`}</small>
+                    </div>
+
+                    <span>{reservation.quartoNumero}</span>
+
+                    <span>{reservation.quartoTipo}</span>
+
+                    <span>{formatarData(reservation.dataEntrada)}</span>
+
+                    <span>
+                      <b
+                        className={
+                          reservation.status === "Confirmada" ||
+                          reservation.status === "Confirmado"
+                            ? styles.confirmed
+                            : styles.waiting
+                        }
+                      >
+                        {reservation.status}
+                      </b>
+                    </span>
                   </div>
-                  <span>{reservation.room}</span>
-                  <span>{reservation.type}</span>
-                  <span>{reservation.checkin}</span>
-                  <span>
-                    <b
-                      className={
-                        reservation.status === "Confirmado" ? styles.confirmed : styles.waiting
-                      }
-                    >
-                      {reservation.status}
-                    </b>
-                  </span>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
- 
+
           {/* ALERTAS */}
           <div className={styles.panel}>
             <div className={styles.panelHeader}>
@@ -282,7 +436,7 @@ export default function Dashboard() {
                 <p>Notificações operacionais em tempo real</p>
               </div>
             </div>
- 
+
             <div className={styles.alerts}>
               <div className={`${styles.alert} ${styles.warning}`}>
                 <div className={styles.alertIcon}>!</div>
@@ -292,7 +446,7 @@ export default function Dashboard() {
                   <small>há 15 minutos</small>
                 </div>
               </div>
- 
+
               <div className={`${styles.alert} ${styles.info}`}>
                 <div className={styles.alertIcon}>♧</div>
                 <div>
@@ -303,7 +457,7 @@ export default function Dashboard() {
             </div>
           </div>
         </section>
- 
+
       </section>
     </div>
   );
