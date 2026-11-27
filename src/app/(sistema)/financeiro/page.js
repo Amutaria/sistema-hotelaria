@@ -178,6 +178,29 @@ export default function FinanceiroPage() {
   const [carregandoMovimentacoes, setCarregandoMovimentacoes] = useState(true);
   const [erroMovimentacoes, setErroMovimentacoes] = useState("");
   const [atualizarDados, setAtualizarDados] = useState(0);
+  const [perfil, setPerfil] = useState(null);
+
+  useEffect(() => {
+    async function carregarPerfil() {
+      const supabase = createClient();
+
+      const { data, error } = await supabase
+        .from("perfis")
+        .select("perfil")
+        .single();
+
+      if (error) {
+        console.error("Erro ao carregar perfil:", error.message);
+        return;
+      }
+
+      setPerfil(data?.perfil ?? null);
+    }
+
+    carregarPerfil();
+  }, []);
+
+  const isAdmin = perfil === "admin";
 
   function editarMovimentacao(m) {
     setMovimentacaoEditando(m);
@@ -569,7 +592,13 @@ useEffect(() => {
       <header className={styles.topbar}>
         <span className={styles.topbarTitle}>Hotel Grand Plaza / Central de Reservas</span>
         <div className={styles.topbarUser}>
-          <span>Admin Painel</span>
+          <span>
+            {perfil === "admin"
+              ? "Administrador"
+              : perfil === "colaborador"
+                ? "Colaborador"
+                : "Usuário"}
+          </span>
           <div className={styles.avatar} />
         </div>
       </header>
@@ -935,7 +964,7 @@ useEffect(() => {
                   <th>Forma de pagamento</th>
                   <th>Valor</th>
                   <th>Status</th>
-                  <th>Ações</th>
+                  {isAdmin && <th>Ações</th>}
                 </tr>
               </thead>
               <tbody>
@@ -994,6 +1023,7 @@ useEffect(() => {
                             : "Cancelado"}
                         </span>
                       </td>
+                    {isAdmin && (
                       <td>
                         <div className={styles.acoes}>
                           <button
@@ -1010,6 +1040,7 @@ useEffect(() => {
                           </button>
                         </div>
                       </td>
+                    )}
                     </tr>
                   ))
                 )}

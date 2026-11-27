@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Playfair_Display } from "next/font/google";
@@ -31,6 +31,41 @@ export default function Sidebar() {
 
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState("");
+  const [perfil, setPerfil] = useState(null);
+
+  useEffect(() => {
+    const carregarPerfil = async () => {
+      const supabase = createClient();
+
+      const { data, error } = await supabase
+        .from("perfis")
+        .select("perfil")
+        .single();
+
+      if (error) {
+        console.error("Erro ao carregar perfil:", error.message);
+        return;
+      }
+
+      setPerfil(data?.perfil ?? null);
+    };
+
+    carregarPerfil();
+  }, []);
+
+  const menuVisivel =
+    perfil === "admin"
+      ? menu
+      : menu.filter((item) =>
+          ["/reservas", "/hospedes", "/quartos", "/financeiro"].includes(
+            item.href
+          )
+        );
+
+  const footerMenuVisivel =
+    perfil === "admin"
+      ? footerMenu
+      : footerMenu.filter((item) => item.href === "/suporte");
 
   const renderItem = (item) => {
     const ativo =
@@ -78,10 +113,10 @@ export default function Sidebar() {
         </div>
       </div>
 
-      <nav className={styles.nav}>{menu.map(renderItem)}</nav>
+      <nav className={styles.nav}>{menuVisivel.map(renderItem)}</nav>
 
       <div className={styles.sidebarFooter}>
-        {footerMenu.map(renderItem)}
+        {footerMenuVisivel.map(renderItem)}
 
         {erro && <p className={styles.logoutError}>{erro}</p>}
 
