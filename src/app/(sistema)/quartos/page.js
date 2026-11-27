@@ -65,6 +65,7 @@ export default function QuartosPage() {
 
   const [busca, setBusca] = useState("");
   const [data, setData] = useState(obterDataAtual());
+  const [dataSaida, setDataSaida] = useState("");
   const [filtro, setFiltro] = useState("Todos");
 
   const [quartos, setQuartos] = useState([]);
@@ -104,7 +105,7 @@ export default function QuartosPage() {
       .filter((reserva) => {
         return (
           Number(reserva.quartoId) === Number(quarto.id) &&
-          ["Confirmada", "Em hospedagem"].includes(reserva.satatus)
+          ["Confirmada", "Em hospedagem"].includes(reserva.status)
         );
       })
       .sort((a, b) => {
@@ -266,15 +267,37 @@ export default function QuartosPage() {
             />
           </div>
 
-          <label className={styles.dateBox}>
-            {icons.calendar}
+          <div className={styles.dateField}>
+            <span className={styles.dateLabel}>
+              Data de entrada
+            </span>
 
-            <input
-              type="date"
-              value={data}
-              onChange={(e) => setData(e.target.value)}
-            />
-          </label>
+            <label className={styles.dateBox}>
+              {icons.calendar}
+
+              <input
+                type="date"
+                value={data}
+                onChange={(e) => setData(e.target.value)}
+              />
+            </label>
+          </div>
+
+          <div className={styles.dateField}>
+            <span className={styles.dateLabel}>
+              Data de saída
+            </span>
+
+            <label className={styles.dateBox}>
+              {icons.calendar}
+
+              <input
+                type="date"
+                value={dataSaida}
+                onChange={(e) => setDataSaida(e.target.value)}
+              />
+            </label>
+          </div>
 
           <div className={styles.selectBox}>
             <select
