@@ -154,6 +154,7 @@ export default function Hospedes() {
       };
       const response = await fetch(`/api/hospedes/${hospedeEmEdicao.id}`, {
         method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
       const data = await response.json();
@@ -225,7 +226,7 @@ export default function Hospedes() {
 
           <div className={styles.guestList}>
             {carregando ? <p className={styles.empty}>Carregando hóspedes...</p> : erro ? <p className={styles.empty}>{erro}</p> : filtrados.map((hospede) => (
-              <div className={styles.guestRow} key={hospede.cpf}>
+              <div className={styles.guestRow} key={hospede.id}>
                 <div className={styles.guestAvatar}>{icons.user}</div>
 
                 <strong className={styles.guestName}>{hospede.nome}</strong>
@@ -361,6 +362,34 @@ export default function Hospedes() {
                     value={hospedeEmEdicao.email || ""}
                     onChange={(event) => atualizarEdicao("email", event.target.value)}
                   />
+                </label>
+                <label className={styles.field}>
+                  <span>CEP</span>
+                  <input value={hospedeEmEdicao.cep || ""} onChange={(event) => atualizarEdicao("cep", event.target.value)} />
+                </label>
+                <label className={styles.field}>
+                  <span>Rua / Logradouro</span>
+                  <input value={hospedeEmEdicao.rua || ""} onChange={(event) => atualizarEdicao("rua", event.target.value)} />
+                </label>
+                <label className={styles.field}>
+                  <span>Número</span>
+                  <input value={hospedeEmEdicao.numero || ""} onChange={(event) => atualizarEdicao("numero", event.target.value)} />
+                </label>
+                <label className={styles.field}>
+                  <span>Complemento</span>
+                  <input value={hospedeEmEdicao.complemento || ""} onChange={(event) => atualizarEdicao("complemento", event.target.value)} />
+                </label>
+                <label className={styles.field}>
+                  <span>Bairro</span>
+                  <input value={hospedeEmEdicao.bairro || ""} onChange={(event) => atualizarEdicao("bairro", event.target.value)} />
+                </label>
+                <label className={styles.field}>
+                  <span>Cidade</span>
+                  <input value={hospedeEmEdicao.cidade || ""} onChange={(event) => atualizarEdicao("cidade", event.target.value)} />
+                </label>
+                <label className={styles.field}>
+                  <span>UF</span>
+                  <input maxLength={2} value={hospedeEmEdicao.estado || ""} onChange={(event) => atualizarEdicao("estado", event.target.value.toUpperCase().slice(0, 2))} />
                 </label>
                 <div className={styles.companionSection}>
                   <div className={styles.companionHeader}>
