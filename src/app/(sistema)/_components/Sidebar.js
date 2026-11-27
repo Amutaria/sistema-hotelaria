@@ -21,6 +21,7 @@ const menu = [
 ];
 
 const footerMenu = [
+  { label: "Meu Perfil", href: "/meu-perfil", icon: icons.users },
   { label: "Configurações", href: "/configuracoes", icon: icons.settings },
   { label: "Suporte", href: "/suporte", icon: icons.help },
 ];
