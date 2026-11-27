@@ -1,4 +1,4 @@
-import { getAuthenticatedSupabase, jsonError, normalizeGuestPayload, normalizeCompanions } from "@/lib/supabase-server";
+import { getAuthenticatedSupabase, jsonError, normalizeGuestPayload, normalizeCompanions, isValidCpf } from "@/lib/supabase-server";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +20,7 @@ export async function POST(request) {
   if (!guest.nome || !guest.cpf || !guest.email || !guest.telefone) {
     return jsonError("Preencha nome, CPF, e-mail e telefone.");
   }
+  if (!isValidCpf(guest.cpf)) return jsonError("Informe um CPF válido.");
   if (guest.estado && guest.estado.length !== 2) return jsonError("O estado deve conter a sigla de 2 letras.");
 
   const inserted = await db.request("hospedes?select=*", {
