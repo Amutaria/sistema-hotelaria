@@ -1,6 +1,7 @@
 "use client";
  
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createClient } from "../../lib/supabase/client";
 import styles from "./suporte.module.css";
  
 /* ---------- Ícones (SVG inline) ---------- */
@@ -69,9 +70,30 @@ const perguntas = [
  
 /* ---------- Página ---------- */
 export default function SuportePage() {
+  const [perfil, setPerfil] = useState(null);
   const [busca, setBusca] = useState("");
   const [aberta, setAberta] = useState(0);
  
+  useEffect(() => {
+    async function carregarPerfil() {
+      const supabase = createClient();
+
+      const { data, error } = await supabase
+        .from("perfis")
+        .select("perfil")
+        .single();
+
+      if (error) {
+        console.error("Erro ao carregar perfil:", error.message);
+        return;
+      }
+
+      setPerfil(data?.perfil ?? null);
+    }
+
+    carregarPerfil();
+  }, []);
+  
   const termo = busca.trim().toLowerCase();
   const filtradas = perguntas
     .map((p, i) => ({ ...p, indice: i }))
@@ -88,7 +110,13 @@ export default function SuportePage() {
       <header className={styles.topbar}>
         <span className={styles.topbarTitle}>Hotel Grand Plaza / Central de Reservas</span>
         <div className={styles.topbarUser}>
-          <span>Admin Painel</span>
+          <span>
+            {perfil === "admin"
+              ? "Administrador"
+              : perfil === "colaborador"
+                ? "Colaborador"
+                : "Usuário"}
+          </span>
           <div className={styles.avatar} />
         </div>
       </header>

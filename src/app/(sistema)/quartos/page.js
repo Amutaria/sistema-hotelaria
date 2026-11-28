@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { icons } from "../_components/icons";
+import { createClient } from "../../lib/supabase/client";
 import styles from "./quarto.module.css";
 
 const statusClass = {
@@ -70,6 +71,27 @@ export default function QuartosPage() {
 
   const [quartos, setQuartos] = useState([]);
   const [reservas, setReservas] = useState([]);
+  const [perfil, setPerfil] = useState(null);
+
+  useEffect(() => {
+    async function carregarPerfil() {
+      const supabase = createClient();
+
+      const { data, error } = await supabase
+        .from("perfis")
+        .select("perfil")
+        .single();
+
+      if (error) {
+        console.error("Erro ao carregar perfil:", error.message);
+        return;
+      }
+
+      setPerfil(data?.perfil ?? null);
+    }
+
+    carregarPerfil();
+  }, []);
 
   // Carrega os quartos e as reservas
   useEffect(() => {
@@ -214,7 +236,13 @@ export default function QuartosPage() {
         </span>
 
         <div className={styles.topbarUser}>
-          <span>Admin Painel</span>
+          <span>
+            {perfil === "admin"
+              ? "Administrador"
+              : perfil === "colaborador"
+                ? "Colaborador"
+                : "Usuário"}
+          </span>
           <div className={styles.avatar} />
         </div>
       </header>

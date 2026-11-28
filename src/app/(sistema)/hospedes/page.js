@@ -2,6 +2,7 @@
  
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { createClient } from "../../lib/supabase/client";
 import styles from "./hospedes.module.css";
  
 /* ---------- Ícones (SVG inline) ---------- */
@@ -64,6 +65,27 @@ export default function Hospedes() {
   const [hospedeEmEdicao, setHospedeEmEdicao] = useState(null);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
+  const [perfil, setPerfil] = useState(null);
+
+  useEffect(() => {
+    async function carregarPerfil() {
+      const supabase = createClient();
+
+      const { data, error } = await supabase
+        .from("perfis")
+        .select("perfil")
+        .single();
+
+      if (error) {
+        console.error("Erro ao carregar perfil:", error.message);
+        return;
+      }
+
+      setPerfil(data?.perfil ?? null);
+    }
+
+    carregarPerfil();
+  }, []);
 
   useEffect(() => {
     const carregarHospedes = async () => {
@@ -181,7 +203,13 @@ export default function Hospedes() {
       <header className={styles.topbar}>
         <span className={styles.topbarTitle}>Hotel Grand Plaza / Central de Reservas</span>
         <div className={styles.topbarUser}>
-          <span>Admin Painel</span>
+          <span>
+            {perfil === "admin"
+              ? "Administrador"
+              : perfil === "colaborador"
+                ? "Colaborador"
+                : "Usuário"}
+          </span>
           <div className={styles.avatar} />
         </div>
       </header>

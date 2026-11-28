@@ -4,6 +4,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { icons } from "../_components/icons";
+import { createClient } from "../../lib/supabase/client";
 import styles from "./reservas.module.css";
 
 const statusClass = {
@@ -122,6 +123,27 @@ export default function ReservasPage() {
     const [filtroHistorico, setFiltroHistorico] = useState("Todas");
     const [acaoEmAndamento, setAcaoEmAndamento] = useState(null);
     const [mensagemHistorico, setMensagemHistorico] = useState("");
+    const [perfil, setPerfil] = useState(null);
+
+    useEffect(() => {
+        async function carregarPerfil() {
+            const supabase = createClient();
+
+            const { data, error } = await supabase
+                .from("perfis")
+                .select("perfil")
+                .single();
+
+            if (error) {
+                console.error("Erro ao carregar perfil:", error.message);
+                return;
+            }
+
+            setPerfil(data?.perfil ?? null);
+        }
+
+        carregarPerfil();
+    }, []);
 
     // Atualiza o histórico após uma ação
     const carregarReservas = useCallback(async () => {
@@ -341,7 +363,13 @@ export default function ReservasPage() {
 
         <div className={styles.topbarUser}>
 
-          <span>Admin Painel</span>
+          <span>
+              {perfil === "admin"
+                  ? "Administrador"
+                  : perfil === "colaborador"
+                      ? "Colaborador"
+                      : "Usuário"}
+          </span>
 
           <div className={styles.avatar}/>
 

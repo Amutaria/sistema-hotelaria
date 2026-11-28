@@ -66,7 +66,9 @@ export default function Sidebar() {
   const footerMenuVisivel =
     perfil === "admin"
       ? footerMenu
-      : footerMenu.filter((item) => item.href === "/suporte");
+      : footerMenu.filter((item) =>
+          ["/meu-perfil", "/suporte"].includes(item.href)
+        );
 
   const renderItem = (item) => {
     const ativo =
